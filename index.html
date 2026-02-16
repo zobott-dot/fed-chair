@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Fed Chair">
+  <link rel="apple-touch-icon" href="icon.png">
+  <title>Fed Chair: The War Room</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@200;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; padding: 0; overflow-x: hidden; }
+    body { 
+      font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+      background: #0a0f1a;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+    }
+    .font-mono { font-family: 'IBM Plex Mono', monospace; }
+    
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: rgba(17, 24, 39, 0.5); }
+    ::-webkit-scrollbar-thumb { background: rgba(75, 85, 99, 0.5); border-radius: 2px; }
+    
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+    
+    @keyframes loadingBar { 0% { width: 0%; } 100% { width: 100%; } }
+    
+    @keyframes slideIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+    .animate-slideIn { animation: slideIn 0.3s ease-out forwards; }
+    
+    @keyframes slideInDelay { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+    .animate-d1 { animation: slideInDelay 0.3s ease-out 0.1s forwards; opacity: 0; }
+    .animate-d2 { animation: slideInDelay 0.3s ease-out 0.2s forwards; opacity: 0; }
+    .animate-d3 { animation: slideInDelay 0.3s ease-out 0.3s forwards; opacity: 0; }
+    
+    @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .ticker-scroll { animation: tickerScroll 12s linear infinite; }
+    
+    @keyframes gradeReveal { 0% { transform: scale(0.5); opacity: 0; } 50% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+    .grade-reveal { animation: gradeReveal 0.5s ease-out forwards; }
+    
+    button { 
+      min-height: 44px; 
+      touch-action: manipulation;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    
+    .grid-responsive {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .grid-responsive { grid-template-columns: repeat(2, 1fr); }
+    }
+    
+    .grid-aftermath {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 768px) {
+      .grid-aftermath { grid-template-columns: 2fr 1fr; }
+    }
+    
+    .grid-markets {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    @media (min-width: 640px) {
+      .grid-markets { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .grid-markets { grid-template-columns: repeat(6, 1fr); }
+    }
+    
+    .grid-sectors {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (min-width: 640px) {
+      .grid-sectors { grid-template-columns: repeat(4, 1fr); }
+    }
+    
+    .rate-btn-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    @media (min-width: 480px) {
+      .rate-btn-grid { grid-template-columns: repeat(5, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useEffect, useCallback } = React;
+
+    const FedChairGame = () => {
+      const [activeView, setActiveView] = useState('dashboard');
+      const [activePanel, setActivePanel] = useState('governors');
+      const [dataLoaded, setDataLoaded] = useState(false);
+      const [currentTime, setCurrentTime] = useState(new Date());
+      const [gameMode, setGameMode] = useState('full');
+      const [currentRate, setCurrentRate] = useState(3.625);
+      const [rateDecision, setRateDecision] = useState(0);
+      const [selectedStatements, setSelectedStatements] = useState([]);
+      const [decisionPublished, setDecisionPublished] = useState(false);
+      const [showReaction, setShowReaction] = useState(false);
+      const [marketReaction, setMarketReaction] = useState(null);
+      const [aftermathPhase, setAftermathPhase] = useState(0);
+      const [score, setScore] = useState(null);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setDataLoaded(true), 1800);
+        const clock = setInterval(() => setCurrentTime(new Date()), 1000);
+        return () => { clearTimeout(timer); clearInterval(clock); };
+      }, []);
+
+      useEffect(() => {
+        if (showReaction && aftermathPhase < 5) {
+          const timer = setTimeout(() => setAftermathPhase(p => p + 1), 500);
+          return () => clearTimeout(timer);
+        }
+      }, [showReaction, aftermathPhase]);
+
+      const economicData = {
+        fedFundsRate: { target: '3.50% - 3.75%', effective: '3.64%', change: 'HOLD', lastMeeting: 'Jan 28, 2026' },
+        inflation: {
+          cpiHeadline: { value: '2.4%', trend: 'down', label: 'CPI' },
+          cpiCore: { value: '2.5%', trend: 'down', label: 'Core CPI' },
+          pceHeadline: { value: '2.8%', trend: 'stable', label: 'PCE' },
+          pceCore: { value: '2.8%', trend: 'stable', label: 'Core PCE' },
+        },
+        employment: {
+          unemploymentU3: { value: '4.3%', trend: 'down', label: 'Unemployment' },
+          unemploymentU6: { value: '7.9%', trend: 'stable', label: 'U-6' },
+          lfpr: { value: '62.3%', trend: 'stable', label: 'LFPR' },
+          nfp: { value: '+130K', trend: 'up', label: 'Payrolls' },
+        },
+        markets: {
+          sp500: { value: 6836, display: '6,836', label: 'S&P 500' },
+          vix: { value: 20.60, display: '20.60', label: 'VIX' },
+          treasury10y: { value: 4.07, display: '4.07%', label: '10Y' },
+          treasury2y: { value: 3.76, display: '3.76%', label: '2Y' },
+          yieldSpread: { value: '+31 bps', label: '2s/10s' },
+          dxy: { value: 96.88, display: '96.88', label: 'DXY' },
+        },
+        gdp: { current: 1.9, forecast: 1.8 },
+        unemployment: { current: 4.3, forecast: 4.5 },
+        inflationForecast: { current: 2.8, forecast: 2.5 },
+        nextMeeting: 'March 17-18, 2026',
+        marketExpects: 0,
+      };
+
+      const statementPhrases = {
+        economic: [
+          { id: 'ec1', text: 'Economic activity has been expanding at a solid pace.', hawkScore: 1 },
+          { id: 'ec2', text: 'Economic activity has been expanding at a moderate pace.', hawkScore: 0 },
+          { id: 'ec3', text: 'Economic activity appears to be slowing.', hawkScore: -1 },
+        ],
+        labor: [
+          { id: 'lb1', text: 'Job gains have remained strong.', hawkScore: 1 },
+          { id: 'lb2', text: 'Job gains have remained low, with signs of stabilization.', hawkScore: 0 },
+          { id: 'lb3', text: 'The labor market has shown signs of cooling.', hawkScore: -1 },
+        ],
+        inflation: [
+          { id: 'in1', text: 'Inflation remains elevated and is a significant concern.', hawkScore: 2 },
+          { id: 'in2', text: 'Inflation remains somewhat elevated.', hawkScore: 1 },
+          { id: 'in3', text: 'Inflation has made meaningful progress toward 2 percent.', hawkScore: -1 },
+        ],
+        guidance: [
+          { id: 'gd1', text: 'Further rate increases may be appropriate.', hawkScore: 3 },
+          { id: 'gd2', text: 'The Committee will carefully assess incoming data.', hawkScore: 1 },
+          { id: 'gd3', text: 'The Committee is prepared to adjust policy as appropriate.', hawkScore: -1 },
+          { id: 'gd4', text: 'Further easing may be appropriate.', hawkScore: -2 },
+        ],
+      };
+
+      const boardOfGovernors = [
+        { name: 'Jerome H. Powell', role: 'Chair', stance: 'Centrist' },
+        { name: 'Philip N. Jefferson', role: 'Vice Chair', stance: 'Dovish' },
+        { name: 'Michelle W. Bowman', role: 'Governor', stance: 'Hawkish' },
+        { name: 'Michael S. Barr', role: 'Governor', stance: 'Dovish' },
+        { name: 'Lisa D. Cook', role: 'Governor', stance: 'Dovish' },
+        { name: 'Stephen I. Miran', role: 'Governor', stance: 'Very Dovish' },
+        { name: 'Christopher J. Waller', role: 'Governor', stance: 'Dovish' },
+      ];
+
+      const regionalPresidents = [
+        { name: 'John C. Williams', bank: 'New York', stance: 'Centrist' },
+        { name: 'Beth M. Hammack', bank: 'Cleveland', stance: 'Hawkish' },
+        { name: 'Patrick T. Harker', bank: 'Philadelphia', stance: 'Centrist' },
+        { name: 'Lorie K. Logan', bank: 'Dallas', stance: 'Hawkish' },
+        { name: 'Neel Kashkari', bank: 'Minneapolis', stance: 'Dovish' },
+        { name: 'Anna Paulson', bank: 'Chicago', stance: 'Centrist' },
+      ];
+
+      const newsHeadlines = [
+        { headline: 'CPI Falls to 2.4% in January — Lowest Since May 2025', source: 'CNBC' },
+        { headline: 'Payrolls Surge 130K, Unemployment at 4.3%', source: 'BLS' },
+        { headline: 'Markets Price 92% Chance of Hold at March Meeting', source: 'CME' },
+        { headline: 'Warsh Confirmation Delayed by Tillis', source: 'CBS' },
+      ];
+
+      const getStanceColor = (stance) => {
+        const colors = { 'Very Hawkish': '#dc2626', 'Hawkish': '#f97316', 'Centrist': '#a3a3a3', 'Dovish': '#22c55e', 'Very Dovish': '#15803d' };
+        return colors[stance] || '#a3a3a3';
+      };
+
+      const formatRate = (rate) => `${(rate - 0.125).toFixed(2)}% - ${(rate + 0.125).toFixed(2)}%`;
+      
+      const getDecisionLabel = (bps) => {
+        if (bps === -50) return '-50';
+        if (bps === -25) return '-25';
+        if (bps === 0) return 'HOLD';
+        if (bps === 25) return '+25';
+        if (bps === 50) return '+50';
+        return `${bps}`;
+      };
+
+      const getDecisionLabelFull = (bps) => {
+        if (bps === 0) return 'HOLD';
+        return `${bps > 0 ? '+' : ''}${bps} bps`;
+      };
+
+      const getDecisionColor = (bps) => {
+        if (bps < 0) return '#22c55e';
+        if (bps > 0) return '#ef4444';
+        return '#60a5fa';
+      };
+
+      const calculateHawkScore = () => {
+        return selectedStatements.reduce((sum, id) => {
+          for (const category of Object.values(statementPhrases)) {
+            const phrase = category.find(p => p.id === id);
+            if (phrase) return sum + phrase.hawkScore;
+          }
+          return sum;
+        }, 0);
+      };
+
+      const getHawkLabel = (score) => {
+        if (score >= 4) return { label: 'VERY HAWKISH', color: '#dc2626' };
+        if (score >= 2) return { label: 'HAWKISH', color: '#f97316' };
+        if (score >= -1) return { label: 'NEUTRAL', color: '#a3a3a3' };
+        if (score >= -3) return { label: 'DOVISH', color: '#22c55e' };
+        return { label: 'VERY DOVISH', color: '#15803d' };
+      };
+
+      const calculateMarketReaction = useCallback(() => {
+        const surprise = rateDecision - economicData.marketExpects;
+        const hawkScore = calculateHawkScore();
+        
+        let sp500Change = 0, vixChange = 0, yield10yChange = 0, yield2yChange = 0, dxyChange = 0;
+        let techChange = 0, financialsChange = 0, utilitiesChange = 0, creditSpreadChange = 0;
+        
+        if (surprise < 0) {
+          sp500Change = Math.abs(surprise) * 0.4 + Math.random() * 0.3;
+          vixChange = -Math.abs(surprise) * 0.08 - Math.random() * 0.5;
+          yield10yChange = -Math.abs(surprise) * 0.03 - Math.random() * 0.02;
+          yield2yChange = -Math.abs(surprise) * 0.05 - Math.random() * 0.02;
+          dxyChange = -Math.abs(surprise) * 0.1 - Math.random() * 0.1;
+          techChange = sp500Change * 1.3;
+          financialsChange = sp500Change * 0.7;
+          utilitiesChange = sp500Change * 0.5;
+          creditSpreadChange = -Math.abs(surprise) * 0.5;
+        } else if (surprise > 0) {
+          sp500Change = -surprise * 0.5 - Math.random() * 0.4;
+          vixChange = surprise * 0.15 + Math.random() * 0.8;
+          yield10yChange = surprise * 0.04 + Math.random() * 0.02;
+          yield2yChange = surprise * 0.06 + Math.random() * 0.03;
+          dxyChange = surprise * 0.15 + Math.random() * 0.1;
+          techChange = sp500Change * 1.4;
+          financialsChange = sp500Change * 0.6;
+          utilitiesChange = sp500Change * 0.8;
+          creditSpreadChange = surprise * 0.8;
+        } else {
+          sp500Change = (Math.random() - 0.5) * 0.3;
+          vixChange = (Math.random() - 0.5) * 0.4;
+          yield10yChange = (Math.random() - 0.5) * 0.02;
+          yield2yChange = (Math.random() - 0.5) * 0.02;
+          dxyChange = (Math.random() - 0.5) * 0.1;
+          techChange = sp500Change * 1.1;
+          financialsChange = sp500Change * 0.9;
+          utilitiesChange = sp500Change * 0.8;
+          creditSpreadChange = (Math.random() - 0.5) * 0.3;
+        }
+        
+        if (gameMode === 'full' && selectedStatements.length > 0) {
+          const toneEffect = hawkScore * 0.08;
+          sp500Change -= toneEffect;
+          yield10yChange += toneEffect * 0.01;
+          techChange -= toneEffect * 1.2;
+        }
+        
+        let gdpShift = 0, unemploymentShift = 0, inflationShift = 0;
+        if (rateDecision < 0) {
+          gdpShift = Math.abs(rateDecision) * 0.004;
+          unemploymentShift = -Math.abs(rateDecision) * 0.002;
+          inflationShift = Math.abs(rateDecision) * 0.003;
+        } else if (rateDecision > 0) {
+          gdpShift = -rateDecision * 0.006;
+          unemploymentShift = rateDecision * 0.003;
+          inflationShift = -rateDecision * 0.004;
+        }
+        
+        let headline = '';
+        if (surprise < -25) headline = 'Fed Surprises with Aggressive Cut';
+        else if (surprise < 0) headline = 'Fed Delivers Dovish Surprise';
+        else if (surprise === 0 && rateDecision === 0) headline = 'Fed Holds Steady as Expected';
+        else if (surprise > 25) headline = 'Fed Shocks with Aggressive Hike';
+        else if (surprise > 0) headline = 'Hawkish Fed Surprises Markets';
+        else headline = 'Fed Decision in Line';
+
+        const questions = [
+          { outlet: 'WSJ', question: 'What drove today\'s decision?' },
+          { outlet: 'CNBC', question: 'When do you expect the next move?' },
+          { outlet: 'Reuters', question: 'How do tariffs factor in?' },
+        ];
+        
+        return {
+          sp500: { value: economicData.markets.sp500.value + (economicData.markets.sp500.value * sp500Change / 100), change: sp500Change },
+          vix: { value: economicData.markets.vix.value + vixChange, change: vixChange },
+          treasury10y: { value: economicData.markets.treasury10y.value + yield10yChange, change: yield10yChange * 100 },
+          treasury2y: { value: economicData.markets.treasury2y.value + yield2yChange, change: yield2yChange * 100 },
+          dxy: { value: economicData.markets.dxy.value + dxyChange, change: dxyChange },
+          sectors: { tech: techChange, financials: financialsChange, utilities: utilitiesChange },
+          creditSpread: creditSpreadChange,
+          projections: {
+            gdp: economicData.gdp.forecast + gdpShift,
+            unemployment: economicData.unemployment.forecast + unemploymentShift,
+            inflation: economicData.inflationForecast.forecast + inflationShift,
+          },
+          headline, surprise, questions,
+        };
+      }, [rateDecision, selectedStatements, gameMode]);
+
+      const calculateScore = useCallback((reaction) => {
+        const hawkScore = calculateHawkScore();
+        let marketStability = 100, credibility = 100, mandateBalance = 100;
+        
+        const absSpChange = Math.abs(reaction.sp500.change);
+        if (absSpChange > 2) marketStability -= 40;
+        else if (absSpChange > 1) marketStability -= 20;
+        else if (absSpChange > 0.5) marketStability -= 10;
+        
+        const actionTone = rateDecision < 0 ? -2 : rateDecision > 0 ? 2 : 0;
+        const toneMismatch = Math.abs(hawkScore - actionTone);
+        if (toneMismatch > 4) credibility -= 40;
+        else if (toneMismatch > 2) credibility -= 20;
+        
+        if (rateDecision < -25) mandateBalance -= 20;
+        if (rateDecision > 25) mandateBalance -= 15;
+        
+        const overall = Math.round((marketStability + credibility + mandateBalance) / 3);
+        
+        const getGrade = (score) => {
+          if (score >= 90) return { grade: 'A', color: '#22c55e', text: 'Excellent' };
+          if (score >= 80) return { grade: 'B', color: '#84cc16', text: 'Good' };
+          if (score >= 70) return { grade: 'C', color: '#eab308', text: 'Adequate' };
+          if (score >= 60) return { grade: 'D', color: '#f97316', text: 'Poor' };
+          return { grade: 'F', color: '#ef4444', text: 'Failing' };
+        };
+        
+        return {
+          marketStability: { score: Math.max(0, marketStability), ...getGrade(marketStability) },
+          credibility: { score: Math.max(0, credibility), ...getGrade(credibility) },
+          mandateBalance: { score: Math.max(0, mandateBalance), ...getGrade(mandateBalance) },
+          overall: { score: overall, ...getGrade(overall) },
+        };
+      }, [rateDecision, selectedStatements]);
+
+      const handleDecision = (bps) => {
+        if (gameMode === 'quick') {
+          setRateDecision(bps);
+          const reaction = calculateMarketReaction();
+          setMarketReaction(reaction);
+          setScore(calculateScore(reaction));
+          setShowReaction(true);
+          setActiveView('aftermath');
+        } else {
+          setRateDecision(bps);
+        }
+      };
+
+      const handlePublish = () => {
+        setDecisionPublished(true);
+        const reaction = calculateMarketReaction();
+        setMarketReaction(reaction);
+        setScore(calculateScore(reaction));
+        setTimeout(() => {
+          setShowReaction(true);
+          setActiveView('aftermath');
+        }, 400);
+      };
+
+      const handleReset = () => {
+        setRateDecision(0);
+        setSelectedStatements([]);
+        setDecisionPublished(false);
+        setShowReaction(false);
+        setMarketReaction(null);
+        setAftermathPhase(0);
+        setScore(null);
+        setActiveView('decision');
+      };
+
+      const toggleStatement = (id) => {
+        setSelectedStatements(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]);
+      };
+
+      if (!dataLoaded) {
+        return (
+          <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #0a0f1a 0%, #1a1f2e 50%, #0d1117 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#e5e7eb', padding: '20px' }}>
+            <div style={{ fontSize: 'clamp(28px, 8vw, 48px)', fontWeight: '200', letterSpacing: '4px', marginBottom: '16px', color: '#60a5fa', textAlign: 'center' }}>FED CHAIR</div>
+            <div style={{ fontSize: 'clamp(10px, 3vw, 14px)', letterSpacing: '3px', color: '#6b7280', marginBottom: '40px' }}>THE WAR ROOM</div>
+            <div style={{ width: 'min(200px, 60vw)', height: '2px', background: '#1f2937', borderRadius: '1px', overflow: 'hidden' }}>
+              <div style={{ height: '100%', background: 'linear-gradient(90deg, #3b82f6, #60a5fa)', animation: 'loadingBar 1.8s ease-in-out forwards' }} />
+            </div>
+            <div style={{ marginTop: '20px', fontSize: '11px', color: '#4b5563', fontFamily: '"IBM Plex Mono", monospace' }}>INITIALIZING...</div>
+          </div>
+        );
+      }
+
+      const hawkScore = calculateHawkScore();
+      const hawkLabel = getHawkLabel(hawkScore);
+
+      const panelStyle = {
+        background: 'linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.7) 100%)',
+        border: '1px solid rgba(75, 85, 99, 0.3)',
+        borderRadius: '12px',
+        overflow: 'hidden',
+      };
+
+      return (
+        <div style={{ minHeight: '100vh', background: 'linear-gradient(180deg, #0a0f1a 0%, #0d1117 100%)', color: '#e5e7eb' }}>
+          
+          {/* Header */}
+          <header style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)', background: 'rgba(10, 15, 26, 0.95)', backdropFilter: 'blur(10px)', position: 'sticky', top: 0, zIndex: 100 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1400px', margin: '0 auto' }}>
+              <div>
+                <h1 style={{ fontSize: 'clamp(18px, 5vw, 24px)', fontWeight: '200', letterSpacing: '3px', margin: 0, color: '#60a5fa' }}>FED CHAIR</h1>
+              </div>
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ padding: '6px 10px', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <div className="animate-pulse" style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e' }} />
+                  <span style={{ fontSize: '9px', color: '#22c55e', letterSpacing: '1px' }}>LIVE</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Nav Tabs */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '12px' }}>
+              {['dashboard', 'decision', ...(showReaction ? ['aftermath'] : [])].map(view => (
+                <button key={view} onClick={() => setActiveView(view)} style={{ flex: 1, maxWidth: '110px', padding: '10px', fontSize: '10px', letterSpacing: '1px', background: activeView === view ? 'rgba(59, 130, 246, 0.2)' : 'rgba(17, 24, 39, 0.5)', border: activeView === view ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid rgba(75, 85, 99, 0.3)', color: activeView === view ? '#60a5fa' : '#6b7280', borderRadius: '6px', cursor: 'pointer' }}>
+                  {view === 'dashboard' ? '📊 DATA' : view === 'decision' ? '⚡ DECIDE' : '📈 RESULT'}
+                </button>
+              ))}
+            </div>
+          </header>
+
+          {/* Meeting Banner */}
+          <div style={{ background: 'rgba(30, 58, 138, 0.15)', padding: '10px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.2)', textAlign: 'center' }}>
+            <span style={{ fontSize: '11px', color: '#9ca3af' }}>Next FOMC: </span>
+            <span style={{ fontSize: '12px', color: '#60a5fa', fontWeight: '500' }}>{economicData.nextMeeting}</span>
+            <span style={{ fontSize: '11px', color: '#6b7280', marginLeft: '12px' }}>Market: 92% HOLD</span>
+          </div>
+
+          {/* AFTERMATH VIEW */}
+          {activeView === 'aftermath' && showReaction && marketReaction && score && (
+            <main style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
+              
+              {/* Breaking Ticker - Now teal/blue gradient, faster */}
+              <div style={{ background: 'linear-gradient(90deg, #0891b2, #0d9488)', padding: '8px 0', marginBottom: '16px', borderRadius: '8px', overflow: 'hidden' }}>
+                <div style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', paddingLeft: '100%' }} className="ticker-scroll">
+                  <span style={{ fontSize: '12px', fontWeight: '600', color: 'white', marginRight: '40px' }}>📢 {marketReaction.headline}</span>
+                  <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)', marginRight: '40px' }}>S&P: {marketReaction.sp500.change >= 0 ? '+' : ''}{marketReaction.sp500.change.toFixed(2)}%</span>
+                  <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)', marginRight: '40px' }}>10Y: {marketReaction.treasury10y.change >= 0 ? '+' : ''}{marketReaction.treasury10y.change.toFixed(1)}bps</span>
+                  <span style={{ fontSize: '12px', fontWeight: '600', color: 'white', marginRight: '40px' }}>📢 {marketReaction.headline}</span>
+                </div>
+              </div>
+
+              <div className="grid-aftermath">
+                {/* Left Column */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  
+                  {/* Market Reaction */}
+                  {aftermathPhase >= 1 && (
+                    <div className="animate-slideIn" style={panelStyle}>
+                      <div style={{ padding: '14px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)', background: marketReaction.surprise < 0 ? 'rgba(34, 197, 94, 0.1)' : marketReaction.surprise > 0 ? 'rgba(239, 68, 68, 0.1)' : 'rgba(59, 130, 246, 0.1)' }}>
+                        <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af' }}>MARKET REACTION</div>
+                      </div>
+                      <div style={{ padding: '16px' }}>
+                        <div className="grid-markets" style={{ marginBottom: '12px' }}>
+                          {[
+                            { label: 'S&P 500', value: marketReaction.sp500.value.toLocaleString(undefined, { maximumFractionDigits: 0 }), change: marketReaction.sp500.change, unit: '%' },
+                            { label: 'VIX', value: marketReaction.vix.value.toFixed(2), change: marketReaction.vix.change, unit: '', inv: true },
+                            { label: '10Y', value: marketReaction.treasury10y.value.toFixed(2) + '%', change: marketReaction.treasury10y.change, unit: 'bp', inv: true },
+                            { label: '2Y', value: marketReaction.treasury2y.value.toFixed(2) + '%', change: marketReaction.treasury2y.change, unit: 'bp', inv: true },
+                            { label: 'DXY', value: marketReaction.dxy.value.toFixed(2), change: marketReaction.dxy.change, unit: '%' },
+                          ].map((m, i) => (
+                            <div key={i} style={{ padding: '12px', background: 'rgba(17, 24, 39, 0.5)', borderRadius: '8px', border: `1px solid ${(m.inv ? m.change <= 0 : m.change >= 0) ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'}` }}>
+                              <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '4px' }}>{m.label}</div>
+                              <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '16px', color: '#f9fafb' }}>{m.value}</div>
+                              <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '12px', color: (m.inv ? m.change <= 0 : m.change >= 0) ? '#22c55e' : '#ef4444' }}>
+                                {m.change >= 0 ? '+' : ''}{m.change.toFixed(m.unit === 'bp' ? 1 : 2)}{m.unit}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Sectors */}
+                  {aftermathPhase >= 2 && (
+                    <div className="animate-d1" style={{ ...panelStyle, padding: '16px' }}>
+                      <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '12px' }}>SECTORS</div>
+                      <div className="grid-sectors">
+                        {[
+                          { name: 'Tech', change: marketReaction.sectors.tech, icon: '💻' },
+                          { name: 'Banks', change: marketReaction.sectors.financials, icon: '🏦' },
+                          { name: 'Utilities', change: marketReaction.sectors.utilities, icon: '⚡' },
+                          { name: 'Credit', change: marketReaction.creditSpread, icon: '📊', unit: 'bp' },
+                        ].map((s, i) => (
+                          <div key={i} style={{ padding: '12px', background: 'rgba(17, 24, 39, 0.5)', borderRadius: '8px', textAlign: 'center' }}>
+                            <div style={{ fontSize: '18px', marginBottom: '6px' }}>{s.icon}</div>
+                            <div style={{ fontSize: '10px', color: '#9ca3af', marginBottom: '2px' }}>{s.name}</div>
+                            <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '14px', color: (s.unit === 'bp' ? s.change <= 0 : s.change >= 0) ? '#22c55e' : '#ef4444' }}>
+                              {s.change >= 0 ? '+' : ''}{s.change.toFixed(s.unit === 'bp' ? 1 : 2)}{s.unit || '%'}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Projections */}
+                  {aftermathPhase >= 3 && (
+                    <div className="animate-d2" style={{ ...panelStyle, padding: '16px' }}>
+                      <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '12px' }}>2026 PROJECTIONS (REVISED)</div>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+                        {[
+                          { label: 'GDP', before: economicData.gdp.forecast, after: marketReaction.projections.gdp, good: 'up' },
+                          { label: 'Unemp.', before: economicData.unemployment.forecast, after: marketReaction.projections.unemployment, good: 'down' },
+                          { label: 'PCE', before: economicData.inflationForecast.forecast, after: marketReaction.projections.inflation, good: 'down' },
+                        ].map((p, i) => {
+                          const diff = p.after - p.before;
+                          const isGood = p.good === 'up' ? diff > 0 : diff < 0;
+                          return (
+                            <div key={i} style={{ padding: '12px', background: 'rgba(17, 24, 39, 0.5)', borderRadius: '8px', textAlign: 'center' }}>
+                              <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '6px' }}>{p.label}</div>
+                              <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '16px', color: isGood ? '#22c55e' : '#ef4444' }}>{p.after.toFixed(1)}%</div>
+                              <div style={{ fontSize: '10px', color: '#6b7280' }}>was {p.before.toFixed(1)}%</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Press Q&A */}
+                  {aftermathPhase >= 4 && (
+                    <div className="animate-d3" style={panelStyle}>
+                      <div style={{ padding: '14px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)', background: 'rgba(59, 130, 246, 0.1)' }}>
+                        <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af' }}>🎤 PRESS CONFERENCE</div>
+                      </div>
+                      <div style={{ padding: '12px' }}>
+                        {marketReaction.questions.map((q, i) => (
+                          <div key={i} style={{ padding: '10px', background: i % 2 === 0 ? 'rgba(17, 24, 39, 0.3)' : 'transparent', borderRadius: '6px', marginBottom: '6px' }}>
+                            <div style={{ fontSize: '10px', color: '#60a5fa', marginBottom: '2px' }}>{q.outlet}</div>
+                            <div style={{ fontSize: '12px', color: '#e5e7eb', fontStyle: 'italic' }}>"{q.question}"</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Right Column */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  
+                  {/* Decision Summary */}
+                  <div style={{ background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.3) 0%, rgba(17, 24, 39, 0.8) 100%)', border: '1px solid rgba(75, 85, 99, 0.3)', borderRadius: '12px', padding: '20px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '8px' }}>YOUR DECISION</div>
+                    <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '28px', color: getDecisionColor(rateDecision) }}>{getDecisionLabelFull(rateDecision)}</div>
+                    <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '8px' }}>New Rate: <span style={{ color: '#60a5fa' }}>{formatRate(currentRate + rateDecision / 100)}</span></div>
+                    {selectedStatements.length > 0 && (
+                      <div style={{ marginTop: '12px', padding: '8px', background: `${hawkLabel.color}15`, borderRadius: '6px', border: `1px solid ${hawkLabel.color}30` }}>
+                        <span style={{ fontSize: '11px', color: hawkLabel.color }}>{hawkLabel.label}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Score Card */}
+                  {aftermathPhase >= 2 && (
+                    <div className="animate-d1" style={{ ...panelStyle, padding: '20px' }}>
+                      <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '16px', textAlign: 'center' }}>SCORECARD</div>
+                      
+                      <div className="grade-reveal" style={{ textAlign: 'center', marginBottom: '20px' }}>
+                        <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: `${score.overall.color}20`, border: `3px solid ${score.overall.color}`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px' }}>
+                          <span style={{ fontSize: '32px', fontWeight: '600', color: score.overall.color }}>{score.overall.grade}</span>
+                        </div>
+                        <div style={{ fontSize: '13px', color: score.overall.color, fontWeight: '500' }}>{score.overall.text}</div>
+                        <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '4px' }}>{score.overall.score}/100</div>
+                      </div>
+                      
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        {[
+                          { label: 'Market Stability', data: score.marketStability, icon: '📊' },
+                          { label: 'Credibility', data: score.credibility, icon: '🎯' },
+                          { label: 'Mandate Balance', data: score.mandateBalance, icon: '⚖️' },
+                        ].map((item, i) => (
+                          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <span style={{ fontSize: '14px' }}>{item.icon}</span>
+                            <div style={{ flex: 1 }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px' }}>
+                                <span style={{ fontSize: '10px', color: '#9ca3af' }}>{item.label}</span>
+                                <span style={{ fontSize: '10px', color: item.data.color, fontWeight: '500' }}>{item.data.grade}</span>
+                              </div>
+                              <div style={{ height: '5px', background: 'rgba(75, 85, 99, 0.3)', borderRadius: '3px', overflow: 'hidden' }}>
+                                <div style={{ width: `${item.data.score}%`, height: '100%', background: item.data.color, borderRadius: '3px', transition: 'width 0.8s ease-out' }} />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Try Again */}
+                  {aftermathPhase >= 4 && (
+                    <button onClick={handleReset} className="animate-d3" style={{ padding: '16px', fontSize: '13px', fontWeight: '500', letterSpacing: '1px', background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)', border: 'none', color: '#fff', borderRadius: '8px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)' }}>
+                      🔄 TRY AGAIN
+                    </button>
+                  )}
+                </div>
+              </div>
+            </main>
+          )}
+
+          {/* DECISION VIEW */}
+          {activeView === 'decision' && (
+            <main style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
+              
+              {/* Mode Toggle */}
+              <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', background: 'rgba(17, 24, 39, 0.8)', borderRadius: '8px', padding: '4px', border: '1px solid rgba(75, 85, 99, 0.3)' }}>
+                  <button onClick={() => { setGameMode('quick'); handleReset(); }} style={{ padding: '12px 20px', fontSize: '11px', letterSpacing: '1px', background: gameMode === 'quick' ? 'rgba(59, 130, 246, 0.2)' : 'transparent', border: gameMode === 'quick' ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid transparent', color: gameMode === 'quick' ? '#60a5fa' : '#6b7280', borderRadius: '6px', cursor: 'pointer' }}>⚡ QUICK</button>
+                  <button onClick={() => { setGameMode('full'); handleReset(); }} style={{ padding: '12px 20px', fontSize: '11px', letterSpacing: '1px', background: gameMode === 'full' ? 'rgba(59, 130, 246, 0.2)' : 'transparent', border: gameMode === 'full' ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid transparent', color: gameMode === 'full' ? '#60a5fa' : '#6b7280', borderRadius: '6px', cursor: 'pointer' }}>📋 FULL</button>
+                </div>
+              </div>
+
+              <div style={panelStyle}>
+                <div style={{ padding: '16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)', background: 'rgba(30, 58, 138, 0.2)' }}>
+                  <div style={{ fontSize: '12px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '4px' }}>FOMC DECISION</div>
+                  <div style={{ fontSize: '11px', color: '#6b7280' }}>{gameMode === 'quick' ? 'Tap a rate to see reaction' : 'Set rate, build statement, publish'}</div>
+                </div>
+                
+                <div style={{ padding: '20px' }}>
+                  {/* Current Rate */}
+                  <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                    <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '8px', letterSpacing: '1px' }}>CURRENT RATE</div>
+                    <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: 'clamp(24px, 7vw, 32px)', color: '#60a5fa' }}>{economicData.fedFundsRate.target}</div>
+                  </div>
+
+                  {/* Rate Buttons */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <div style={{ fontSize: '11px', color: '#9ca3af', marginBottom: '10px', letterSpacing: '1px', textAlign: 'center' }}>YOUR DECISION</div>
+                    <div className="rate-btn-grid">
+                      {[-50, -25, 0, 25, 50].map(bps => (
+                        <button key={bps} onClick={() => handleDecision(bps)} disabled={decisionPublished} style={{ padding: '14px 8px', fontSize: '14px', fontFamily: '"IBM Plex Mono", monospace', fontWeight: '500', background: rateDecision === bps ? `${getDecisionColor(bps)}30` : 'rgba(17, 24, 39, 0.6)', border: rateDecision === bps ? `2px solid ${getDecisionColor(bps)}` : '2px solid rgba(75, 85, 99, 0.3)', color: rateDecision === bps ? getDecisionColor(bps) : '#9ca3af', borderRadius: '8px', cursor: decisionPublished ? 'not-allowed' : 'pointer', opacity: decisionPublished ? 0.5 : 1 }}>
+                          {getDecisionLabel(bps)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* New Rate Preview */}
+                  {rateDecision !== 0 && (
+                    <div style={{ textAlign: 'center', padding: '14px', background: 'rgba(17, 24, 39, 0.5)', borderRadius: '8px', marginBottom: '20px' }}>
+                      <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '6px' }}>NEW RATE</div>
+                      <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '20px', color: getDecisionColor(rateDecision) }}>{formatRate(currentRate + rateDecision / 100)}</div>
+                    </div>
+                  )}
+
+                  {/* Statement Builder */}
+                  {gameMode === 'full' && !decisionPublished && (
+                    <div style={{ marginTop: '24px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
+                        <div style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>BUILD STATEMENT</div>
+                        <div style={{ padding: '4px 10px', borderRadius: '4px', fontSize: '10px', fontWeight: '500', background: `${hawkLabel.color}20`, color: hawkLabel.color, border: `1px solid ${hawkLabel.color}40` }}>{hawkLabel.label}</div>
+                      </div>
+                      
+                      {Object.entries(statementPhrases).map(([category, phrases]) => (
+                        <div key={category} style={{ marginBottom: '14px' }}>
+                          <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                            {category === 'economic' && '📈 Economy'}
+                            {category === 'labor' && '👥 Labor'}
+                            {category === 'inflation' && '📊 Inflation'}
+                            {category === 'guidance' && '🎯 Guidance'}
+                          </div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                            {phrases.map(phrase => (
+                              <button key={phrase.id} onClick={() => toggleStatement(phrase.id)} style={{ padding: '12px', fontSize: '12px', textAlign: 'left', background: selectedStatements.includes(phrase.id) ? 'rgba(59, 130, 246, 0.15)' : 'rgba(17, 24, 39, 0.4)', border: selectedStatements.includes(phrase.id) ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid rgba(75, 85, 99, 0.2)', color: selectedStatements.includes(phrase.id) ? '#e5e7eb' : '#9ca3af', borderRadius: '6px', cursor: 'pointer', lineHeight: '1.4', minHeight: '48px' }}>
+                                {phrase.text}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Publish Button */}
+                  {gameMode === 'full' && !decisionPublished && (
+                    <div style={{ marginTop: '24px' }}>
+                      <button onClick={handlePublish} style={{ width: '100%', padding: '16px', fontSize: '14px', fontWeight: '500', letterSpacing: '1px', background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)', border: 'none', color: '#fff', borderRadius: '8px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)' }}>
+                        📢 PUBLISH DECISION
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </main>
+          )}
+
+          {/* DASHBOARD VIEW */}
+          {activeView === 'dashboard' && (
+            <main style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
+              
+              {/* Fed Funds Rate Hero */}
+              <div style={{ background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.3) 0%, rgba(17, 24, 39, 0.8) 100%)', border: '1px solid rgba(75, 85, 99, 0.3)', borderRadius: '12px', padding: '20px', marginBottom: '16px', textAlign: 'center' }}>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '8px', letterSpacing: '1px' }}>FEDERAL FUNDS RATE</div>
+                <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: 'clamp(28px, 8vw, 36px)', color: '#60a5fa', marginBottom: '12px' }}>{economicData.fedFundsRate.target}</div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                  <span style={{ padding: '6px 12px', background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)', borderRadius: '6px', fontSize: '12px', color: '#60a5fa' }}>{economicData.fedFundsRate.change}</span>
+                  <button onClick={() => setActiveView('decision')} style={{ padding: '10px 20px', fontSize: '12px', fontWeight: '500', background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)', border: 'none', color: '#fff', borderRadius: '6px', cursor: 'pointer' }}>⚡ DECIDE</button>
+                </div>
+              </div>
+
+              <div className="grid-responsive">
+                {/* Inflation */}
+                <div style={panelStyle}>
+                  <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
+                    <span style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>INFLATION</span>
+                  </div>
+                  <div style={{ padding: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                    {Object.entries(economicData.inflation).map(([key, data]) => (
+                      <div key={key} style={{ padding: '10px', background: 'rgba(17, 24, 39, 0.5)', borderRadius: '6px' }}>
+                        <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '18px', color: '#f9fafb' }}>{data.value}</div>
+                        <div style={{ fontSize: '10px', color: '#6b7280' }}>{data.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Employment */}
+                <div style={panelStyle}>
+                  <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
+                    <span style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>EMPLOYMENT</span>
+                  </div>
+                  <div style={{ padding: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                    {Object.entries(economicData.employment).map(([key, data]) => (
+                      <div key={key} style={{ padding: '10px', background: 'rgba(17, 24, 39, 0.5)', borderRadius: '6px' }}>
+                        <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '18px', color: '#f9fafb' }}>{data.value}</div>
+                        <div style={{ fontSize: '10px', color: '#6b7280' }}>{data.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* FOMC */}
+                <div style={panelStyle}>
+                  <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>FOMC</span>
+                    <div style={{ display: 'flex', gap: '4px' }}>
+                      <button onClick={() => setActivePanel('governors')} style={{ padding: '4px 8px', fontSize: '10px', background: activePanel === 'governors' ? 'rgba(59, 130, 246, 0.2)' : 'transparent', border: 'none', color: activePanel === 'governors' ? '#60a5fa' : '#6b7280', borderRadius: '4px', cursor: 'pointer', minHeight: '28px' }}>BOG</button>
+                      <button onClick={() => setActivePanel('presidents')} style={{ padding: '4px 8px', fontSize: '10px', background: activePanel === 'presidents' ? 'rgba(59, 130, 246, 0.2)' : 'transparent', border: 'none', color: activePanel === 'presidents' ? '#60a5fa' : '#6b7280', borderRadius: '4px', cursor: 'pointer', minHeight: '28px' }}>FRB</button>
+                    </div>
+                  </div>
+                  <div style={{ maxHeight: '220px', overflowY: 'auto' }}>
+                    {(activePanel === 'governors' ? boardOfGovernors : regionalPresidents).map((person, i) => (
+                      <div key={i} style={{ padding: '10px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.15)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div>
+                          <div style={{ fontSize: '12px', color: '#f9fafb' }}>{person.name}</div>
+                          <div style={{ fontSize: '10px', color: '#6b7280' }}>{person.role || person.bank}</div>
+                        </div>
+                        <span style={{ padding: '2px 6px', borderRadius: '3px', fontSize: '9px', background: `${getStanceColor(person.stance)}20`, color: getStanceColor(person.stance) }}>{person.stance}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* News */}
+                <div style={panelStyle}>
+                  <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
+                    <span style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>NEWS</span>
+                  </div>
+                  <div style={{ maxHeight: '220px', overflowY: 'auto' }}>
+                    {newsHeadlines.map((item, i) => (
+                      <div key={i} style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.15)' }}>
+                        <div style={{ fontSize: '12px', color: '#f9fafb', lineHeight: '1.4', marginBottom: '4px' }}>{item.headline}</div>
+                        <div style={{ fontSize: '10px', color: '#6b7280' }}>{item.source}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Markets */}
+              <div style={{ ...panelStyle, marginTop: '16px' }}>
+                <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
+                  <span style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>MARKETS</span>
+                </div>
+                <div style={{ padding: '12px' }}>
+                  <div className="grid-markets">
+                    {Object.entries(economicData.markets).map(([key, data]) => (
+                      <div key={key} style={{ padding: '10px', background: 'rgba(17, 24, 39, 0.5)', borderRadius: '6px', textAlign: 'center' }}>
+                        <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '16px', color: '#f9fafb' }}>{data.display || data.value}</div>
+                        <div style={{ fontSize: '10px', color: '#6b7280' }}>{data.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </main>
+          )}
+
+          {/* Footer */}
+          <footer style={{ padding: '16px', borderTop: '1px solid rgba(75, 85, 99, 0.2)', textAlign: 'center', fontSize: '10px', color: '#4b5563', marginTop: '20px' }}>
+            <div>Data: February 15, 2026 | Fed Chair: The War Room</div>
+          </footer>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<FedChairGame />);
+  </script>
+</body>
+</html>
