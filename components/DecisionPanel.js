@@ -27,12 +27,18 @@ const getDecisionColor = (bps) => {
   return '#60a5fa';
 };
 
+const getCredibilityColor = (credibility) => {
+  if (credibility >= 80) return '#22c55e';
+  if (credibility >= 60) return '#84cc16';
+  if (credibility >= 40) return '#eab308';
+  if (credibility >= 20) return '#f97316';
+  return '#ef4444';
+};
+
 window.FedChair.Components.DecisionPanel = function({
   economicData,
   statementPhrases,
   currentRate,
-  gameMode,
-  setGameMode,
   rateDecision,
   setRateDecision,
   selectedStatements,
@@ -41,7 +47,7 @@ window.FedChair.Components.DecisionPanel = function({
   hawkLabel,
   onDecision,
   onPublish,
-  onReset
+  gameState
 }) {
   const toggleStatement = (id) => {
     setSelectedStatements(prev =>
@@ -49,48 +55,45 @@ window.FedChair.Components.DecisionPanel = function({
     );
   };
 
+  const meetingNumber = gameState?.meetingNumber || 1;
+  const totalMeetings = gameState?.totalMeetings || 8;
+  const credibility = gameState?.credibility || 100;
+  const marketExpects = gameState?.marketExpects || 0;
+
   return (
     <main style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
 
-      {/* Mode Toggle */}
-      <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-        <div style={{
-          display: 'flex',
-          background: 'rgba(17, 24, 39, 0.8)',
-          borderRadius: '8px',
-          padding: '4px',
-          border: '1px solid rgba(75, 85, 99, 0.3)'
-        }}>
-          <button
-            onClick={() => { setGameMode('quick'); onReset(); }}
-            style={{
-              padding: '12px 20px',
-              fontSize: '11px',
-              letterSpacing: '1px',
-              background: gameMode === 'quick' ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
-              border: gameMode === 'quick' ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid transparent',
-              color: gameMode === 'quick' ? '#60a5fa' : '#6b7280',
-              borderRadius: '6px',
-              cursor: 'pointer'
-            }}
-          >
-            ⚡ QUICK
-          </button>
-          <button
-            onClick={() => { setGameMode('full'); onReset(); }}
-            style={{
-              padding: '12px 20px',
-              fontSize: '11px',
-              letterSpacing: '1px',
-              background: gameMode === 'full' ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
-              border: gameMode === 'full' ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid transparent',
-              color: gameMode === 'full' ? '#60a5fa' : '#6b7280',
-              borderRadius: '6px',
-              cursor: 'pointer'
-            }}
-          >
-            📋 FULL
-          </button>
+      {/* Meeting Context */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '16px',
+        padding: '12px 16px',
+        background: 'rgba(17, 24, 39, 0.6)',
+        border: '1px solid rgba(75, 85, 99, 0.3)',
+        borderRadius: '8px'
+      }}>
+        <div>
+          <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '2px' }}>Meeting</div>
+          <div style={{ fontSize: '14px', color: '#60a5fa' }}>
+            {meetingNumber} of {totalMeetings}
+          </div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '2px' }}>Market Expects</div>
+          <div style={{
+            fontSize: '14px',
+            color: marketExpects > 0 ? '#ef4444' : marketExpects < 0 ? '#22c55e' : '#60a5fa'
+          }}>
+            {marketExpects === 0 ? 'HOLD' : `${marketExpects > 0 ? '+' : ''}${marketExpects}bp`}
+          </div>
+        </div>
+        <div style={{ textAlign: 'right' }}>
+          <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '2px' }}>Credibility</div>
+          <div style={{ fontSize: '14px', color: getCredibilityColor(credibility) }}>
+            {credibility}/100
+          </div>
         </div>
       </div>
 
@@ -104,7 +107,7 @@ window.FedChair.Components.DecisionPanel = function({
             FOMC DECISION
           </div>
           <div style={{ fontSize: '11px', color: '#6b7280' }}>
-            {gameMode === 'quick' ? 'Tap a rate to see reaction' : 'Set rate, build statement, publish'}
+            Set the target rate and craft your statement
           </div>
         </div>
 
@@ -159,6 +162,29 @@ window.FedChair.Components.DecisionPanel = function({
             </div>
           </div>
 
+          {/* Surprise Indicator */}
+          {rateDecision !== marketExpects && (
+            <div style={{
+              textAlign: 'center',
+              padding: '10px',
+              marginBottom: '16px',
+              background: Math.abs(rateDecision - marketExpects) > 25
+                ? 'rgba(239, 68, 68, 0.1)'
+                : 'rgba(234, 179, 8, 0.1)',
+              border: `1px solid ${Math.abs(rateDecision - marketExpects) > 25
+                ? 'rgba(239, 68, 68, 0.3)'
+                : 'rgba(234, 179, 8, 0.3)'}`,
+              borderRadius: '6px',
+              fontSize: '11px'
+            }}>
+              <span style={{
+                color: Math.abs(rateDecision - marketExpects) > 25 ? '#ef4444' : '#eab308'
+              }}>
+                ⚠️ {Math.abs(rateDecision - marketExpects) > 25 ? 'Major' : 'Mild'} surprise vs market expectations
+              </span>
+            </div>
+          )}
+
           {/* New Rate Preview */}
           {rateDecision !== 0 && (
             <div style={{
@@ -180,7 +206,7 @@ window.FedChair.Components.DecisionPanel = function({
           )}
 
           {/* Statement Builder */}
-          {gameMode === 'full' && !decisionPublished && (
+          {!decisionPublished && (
             <div style={{ marginTop: '24px' }}>
               <div style={{
                 display: 'flex',
@@ -206,7 +232,7 @@ window.FedChair.Components.DecisionPanel = function({
                 </div>
               </div>
 
-              {Object.entries(statementPhrases).map(([category, phrases]) => (
+              {statementPhrases && Object.entries(statementPhrases).map(([category, phrases]) => (
                 <div key={category} style={{ marginBottom: '14px' }}>
                   <div style={{
                     fontSize: '10px',
@@ -252,7 +278,7 @@ window.FedChair.Components.DecisionPanel = function({
           )}
 
           {/* Publish Button */}
-          {gameMode === 'full' && !decisionPublished && (
+          {!decisionPublished && (
             <div style={{ marginTop: '24px' }}>
               <button
                 onClick={onPublish}
@@ -276,6 +302,21 @@ window.FedChair.Components.DecisionPanel = function({
           )}
         </div>
       </div>
+
+      {/* Pending Effects Reminder */}
+      {gameState?.pendingEffects?.length > 0 && (
+        <div style={{
+          marginTop: '16px',
+          padding: '12px 16px',
+          background: 'rgba(59, 130, 246, 0.1)',
+          border: '1px solid rgba(59, 130, 246, 0.3)',
+          borderRadius: '8px',
+          fontSize: '11px',
+          color: '#60a5fa'
+        }}>
+          💡 Remember: Your past decisions are still working through the economy. Rate changes take 2-3 meetings to fully impact inflation and growth.
+        </div>
+      )}
     </main>
   );
 };

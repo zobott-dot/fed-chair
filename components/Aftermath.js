@@ -1,4 +1,4 @@
-// Aftermath Component - Market reaction and scorecard
+// Aftermath Component - Market reaction, scorecard, and game progression
 
 window.FedChair = window.FedChair || {};
 window.FedChair.Components = window.FedChair.Components || {};
@@ -23,6 +23,20 @@ const getDecisionColor = (bps) => {
   return '#60a5fa';
 };
 
+const getCredibilityColor = (credibility) => {
+  if (credibility >= 80) return '#22c55e';
+  if (credibility >= 60) return '#84cc16';
+  if (credibility >= 40) return '#eab308';
+  if (credibility >= 20) return '#f97316';
+  return '#ef4444';
+};
+
+const getEndResultStyle = (result) => {
+  if (result === 'win') return { bg: 'rgba(34, 197, 94, 0.15)', border: 'rgba(34, 197, 94, 0.4)', color: '#22c55e', icon: '🎉' };
+  if (result === 'lose') return { bg: 'rgba(239, 68, 68, 0.15)', border: 'rgba(239, 68, 68, 0.4)', color: '#ef4444', icon: '📉' };
+  return { bg: 'rgba(234, 179, 8, 0.15)', border: 'rgba(234, 179, 8, 0.4)', color: '#eab308', icon: '🤷' };
+};
+
 window.FedChair.Components.Aftermath = function({
   marketReaction,
   score,
@@ -32,49 +46,196 @@ window.FedChair.Components.Aftermath = function({
   hawkLabel,
   aftermathPhase,
   economicData,
-  onReset
+  gameState,
+  onAdvance,
+  onNewGame
 }) {
+  const isGameOver = gameState?.gamePhase === 'ended';
+  const endResult = gameState?.endResult;
+  const endReason = gameState?.endReason;
+
+  // Game Over Screen
+  if (isGameOver) {
+    const resultStyle = getEndResultStyle(endResult);
+    const endMessages = {
+      'soft_landing': 'You achieved the elusive soft landing! Inflation is under control, growth is positive, and your credibility remains strong.',
+      'recession': 'The economy has entered a recession. Your tight monetary policy pushed growth negative for too long.',
+      'runaway_inflation': 'Inflation spiraled out of control. Your loose monetary policy allowed prices to rise unchecked.',
+      'stagflation': 'The worst of both worlds: high inflation combined with high unemployment.',
+      'credibility_collapse': 'Markets no longer trust Fed guidance. Your inconsistent messaging eroded all credibility.',
+      'muddle_through': 'You avoided disaster, but the landing was bumpy. Not a soft landing, but not a catastrophe either.'
+    };
+
+    return (
+      <main style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
+        <div style={{
+          background: resultStyle.bg,
+          border: `2px solid ${resultStyle.border}`,
+          borderRadius: '16px',
+          padding: '32px',
+          textAlign: 'center',
+          marginBottom: '24px'
+        }}>
+          <div style={{ fontSize: '64px', marginBottom: '16px' }}>{resultStyle.icon}</div>
+          <div style={{
+            fontSize: '28px',
+            fontWeight: '600',
+            color: resultStyle.color,
+            marginBottom: '12px',
+            textTransform: 'uppercase',
+            letterSpacing: '2px'
+          }}>
+            {endResult === 'win' ? 'SOFT LANDING' : endResult === 'lose' ? 'POLICY FAILURE' : 'MUDDLED THROUGH'}
+          </div>
+          <div style={{ fontSize: '14px', color: '#9ca3af', lineHeight: '1.6', maxWidth: '500px', margin: '0 auto' }}>
+            {endMessages[endReason] || 'The game has ended.'}
+          </div>
+        </div>
+
+        {/* Final Stats */}
+        <div style={{ ...panelStyle, padding: '24px', marginBottom: '24px' }}>
+          <div style={{ fontSize: '12px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '20px', textAlign: 'center' }}>
+            FINAL ECONOMIC STATE
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+            {[
+              { label: 'PCE Inflation', value: `${gameState.economy.pceInflation.toFixed(1)}%`, target: '2.0%', good: gameState.economy.pceInflation >= 1.5 && gameState.economy.pceInflation <= 3.0 },
+              { label: 'GDP Growth', value: `${gameState.economy.gdpGrowth.toFixed(1)}%`, target: '> 0%', good: gameState.economy.gdpGrowth > 0 },
+              { label: 'Unemployment', value: `${gameState.economy.unemploymentRate.toFixed(1)}%`, target: '< 6%', good: gameState.economy.unemploymentRate < 6 },
+              { label: 'Credibility', value: `${gameState.credibility}`, target: '> 50', good: gameState.credibility > 50 }
+            ].map((stat, i) => (
+              <div key={i} style={{
+                padding: '16px',
+                background: stat.good ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                borderRadius: '8px',
+                border: `1px solid ${stat.good ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+                textAlign: 'center'
+              }}>
+                <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '4px' }}>{stat.label}</div>
+                <div style={{
+                  fontFamily: '"IBM Plex Mono", monospace',
+                  fontSize: '20px',
+                  color: stat.good ? '#22c55e' : '#ef4444'
+                }}>
+                  {stat.value}
+                </div>
+                <div style={{ fontSize: '9px', color: '#6b7280', marginTop: '4px' }}>Target: {stat.target}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Performance Summary */}
+        <div style={{ ...panelStyle, padding: '24px', marginBottom: '24px' }}>
+          <div style={{ fontSize: '12px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '20px', textAlign: 'center' }}>
+            YOUR TENURE
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', textAlign: 'center' }}>
+            <div>
+              <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '4px' }}>Meetings</div>
+              <div style={{ fontSize: '24px', color: '#60a5fa' }}>{gameState.meetingNumber - 1} / 8</div>
+            </div>
+            <div>
+              <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '4px' }}>Average Score</div>
+              <div style={{ fontSize: '24px', color: '#60a5fa' }}>
+                {gameState.meetingScores.length > 0
+                  ? Math.round(gameState.totalScore / gameState.meetingScores.length)
+                  : 0}
+              </div>
+            </div>
+            <div>
+              <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '4px' }}>Final Rate</div>
+              <div style={{ fontSize: '24px', color: '#60a5fa' }}>{formatRate(gameState.currentRate)}</div>
+            </div>
+          </div>
+
+          {/* Rate History Mini Chart */}
+          <div style={{ marginTop: '24px' }}>
+            <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '8px' }}>Rate History</div>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '60px' }}>
+              {gameState.rateHistory.map((r, i) => {
+                const height = Math.max(10, (r.rate / 5) * 60);
+                return (
+                  <div key={i} style={{
+                    flex: 1,
+                    height: `${height}px`,
+                    background: r.decision > 0 ? '#ef4444' : r.decision < 0 ? '#22c55e' : '#60a5fa',
+                    borderRadius: '2px',
+                    opacity: 0.7
+                  }} title={`Meeting ${r.meeting}: ${r.rate.toFixed(2)}%`} />
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <button
+          onClick={onNewGame}
+          style={{
+            width: '100%',
+            padding: '20px',
+            fontSize: '16px',
+            fontWeight: '600',
+            letterSpacing: '2px',
+            background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
+            border: 'none',
+            color: '#fff',
+            borderRadius: '10px',
+            cursor: 'pointer',
+            boxShadow: '0 6px 20px rgba(59, 130, 246, 0.4)',
+            marginTop: '8px'
+          }}
+        >
+          🔄 PLAY AGAIN
+        </button>
+      </main>
+    );
+  }
+
+  // Normal Aftermath (during game)
   return (
     <main style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
 
       {/* Breaking Ticker */}
-      <div style={{
-        background: 'linear-gradient(90deg, #0891b2, #0d9488)',
-        padding: '8px 0',
-        marginBottom: '16px',
-        borderRadius: '8px',
-        overflow: 'hidden'
-      }}>
-        <div
-          className="ticker-scroll"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            whiteSpace: 'nowrap',
-            paddingLeft: '100%'
-          }}
-        >
-          <span style={{ fontSize: '12px', fontWeight: '600', color: 'white', marginRight: '40px' }}>
-            📢 {marketReaction.headline}
-          </span>
-          <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)', marginRight: '40px' }}>
-            S&P: {marketReaction.sp500.change >= 0 ? '+' : ''}{marketReaction.sp500.change.toFixed(2)}%
-          </span>
-          <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)', marginRight: '40px' }}>
-            10Y: {marketReaction.treasury10y.change >= 0 ? '+' : ''}{marketReaction.treasury10y.change.toFixed(1)}bps
-          </span>
-          <span style={{ fontSize: '12px', fontWeight: '600', color: 'white', marginRight: '40px' }}>
-            📢 {marketReaction.headline}
-          </span>
+      {marketReaction && (
+        <div style={{
+          background: 'linear-gradient(90deg, #0891b2, #0d9488)',
+          padding: '8px 0',
+          marginBottom: '16px',
+          borderRadius: '8px',
+          overflow: 'hidden'
+        }}>
+          <div
+            className="ticker-scroll"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              whiteSpace: 'nowrap',
+              paddingLeft: '100%'
+            }}
+          >
+            <span style={{ fontSize: '12px', fontWeight: '600', color: 'white', marginRight: '40px' }}>
+              📢 {marketReaction.headline}
+            </span>
+            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)', marginRight: '40px' }}>
+              S&P: {marketReaction.sp500.change >= 0 ? '+' : ''}{marketReaction.sp500.change.toFixed(2)}%
+            </span>
+            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)', marginRight: '40px' }}>
+              10Y: {marketReaction.treasury10y.change >= 0 ? '+' : ''}{marketReaction.treasury10y.change.toFixed(1)}bps
+            </span>
+            <span style={{ fontSize: '12px', fontWeight: '600', color: 'white', marginRight: '40px' }}>
+              📢 {marketReaction.headline}
+            </span>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="grid-aftermath">
         {/* Left Column */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
           {/* Market Reaction */}
-          {aftermathPhase >= 1 && (
+          {aftermathPhase >= 1 && marketReaction && (
             <div className="animate-slideIn" style={panelStyle}>
               <div style={{
                 padding: '14px 16px',
@@ -126,7 +287,7 @@ window.FedChair.Components.Aftermath = function({
           )}
 
           {/* Sectors */}
-          {aftermathPhase >= 2 && (
+          {aftermathPhase >= 2 && marketReaction && (
             <div className="animate-d1" style={{ ...panelStyle, padding: '16px' }}>
               <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '12px' }}>
                 SECTORS
@@ -162,49 +323,9 @@ window.FedChair.Components.Aftermath = function({
             </div>
           )}
 
-          {/* Projections */}
-          {aftermathPhase >= 3 && (
-            <div className="animate-d2" style={{ ...panelStyle, padding: '16px' }}>
-              <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '12px' }}>
-                2026 PROJECTIONS (REVISED)
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
-                {[
-                  { label: 'GDP', before: economicData.gdp.forecast, after: marketReaction.projections.gdp, good: 'up' },
-                  { label: 'Unemp.', before: economicData.unemployment.forecast, after: marketReaction.projections.unemployment, good: 'down' },
-                  { label: 'PCE', before: economicData.inflationForecast.forecast, after: marketReaction.projections.inflation, good: 'down' }
-                ].map((p, i) => {
-                  const diff = p.after - p.before;
-                  const isGood = p.good === 'up' ? diff > 0 : diff < 0;
-                  return (
-                    <div
-                      key={i}
-                      style={{
-                        padding: '12px',
-                        background: 'rgba(17, 24, 39, 0.5)',
-                        borderRadius: '8px',
-                        textAlign: 'center'
-                      }}
-                    >
-                      <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '6px' }}>{p.label}</div>
-                      <div style={{
-                        fontFamily: '"IBM Plex Mono", monospace',
-                        fontSize: '16px',
-                        color: isGood ? '#22c55e' : '#ef4444'
-                      }}>
-                        {p.after.toFixed(1)}%
-                      </div>
-                      <div style={{ fontSize: '10px', color: '#6b7280' }}>was {p.before.toFixed(1)}%</div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
           {/* Press Q&A */}
-          {aftermathPhase >= 4 && (
-            <div className="animate-d3" style={panelStyle}>
+          {aftermathPhase >= 3 && marketReaction && (
+            <div className="animate-d2" style={panelStyle}>
               <div style={{
                 padding: '14px 16px',
                 borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
@@ -269,8 +390,47 @@ window.FedChair.Components.Aftermath = function({
             )}
           </div>
 
+          {/* Credibility */}
+          {aftermathPhase >= 1 && gameState && (
+            <div className="animate-slideIn" style={{ ...panelStyle, padding: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af' }}>CREDIBILITY</div>
+                <div style={{
+                  fontSize: '20px',
+                  fontFamily: '"IBM Plex Mono", monospace',
+                  color: getCredibilityColor(gameState.credibility)
+                }}>
+                  {gameState.credibility}
+                </div>
+              </div>
+              <div style={{
+                height: '8px',
+                background: 'rgba(75, 85, 99, 0.3)',
+                borderRadius: '4px',
+                overflow: 'hidden'
+              }}>
+                <div style={{
+                  width: `${gameState.credibility}%`,
+                  height: '100%',
+                  background: getCredibilityColor(gameState.credibility),
+                  borderRadius: '4px',
+                  transition: 'width 0.5s ease-out'
+                }} />
+              </div>
+              {gameState.credibilityHistory.length > 1 && (
+                <div style={{ marginTop: '8px', fontSize: '10px', color: '#6b7280' }}>
+                  {gameState.credibility > gameState.credibilityHistory[gameState.credibilityHistory.length - 2]
+                    ? '↑ Credibility improved'
+                    : gameState.credibility < gameState.credibilityHistory[gameState.credibilityHistory.length - 2]
+                      ? '↓ Credibility declined'
+                      : '→ Credibility unchanged'}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Score Card */}
-          {aftermathPhase >= 2 && (
+          {aftermathPhase >= 2 && score && (
             <div className="animate-d1" style={{ ...panelStyle, padding: '20px' }}>
               <div style={{
                 fontSize: '11px',
@@ -279,7 +439,7 @@ window.FedChair.Components.Aftermath = function({
                 marginBottom: '16px',
                 textAlign: 'center'
               }}>
-                SCORECARD
+                MEETING SCORECARD
               </div>
 
               <div className="grade-reveal" style={{ textAlign: 'center', marginBottom: '20px' }}>
@@ -342,14 +502,41 @@ window.FedChair.Components.Aftermath = function({
             </div>
           )}
 
-          {/* Try Again */}
+          {/* Meeting Progress */}
+          {aftermathPhase >= 3 && gameState && (
+            <div className="animate-d2" style={{ ...panelStyle, padding: '16px' }}>
+              <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '12px' }}>
+                PROGRESS
+              </div>
+              <div style={{ display: 'flex', gap: '4px' }}>
+                {Array.from({ length: gameState.totalMeetings }).map((_, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      flex: 1,
+                      height: '8px',
+                      borderRadius: '4px',
+                      background: i < gameState.meetingNumber
+                        ? '#3b82f6'
+                        : 'rgba(75, 85, 99, 0.3)'
+                    }}
+                  />
+                ))}
+              </div>
+              <div style={{ fontSize: '10px', color: '#6b7280', marginTop: '8px', textAlign: 'center' }}>
+                Meeting {gameState.meetingNumber} of {gameState.totalMeetings}
+              </div>
+            </div>
+          )}
+
+          {/* Next Meeting Button */}
           {aftermathPhase >= 4 && (
             <button
-              onClick={onReset}
+              onClick={onAdvance}
               className="animate-d3"
               style={{
-                padding: '16px',
-                fontSize: '13px',
+                padding: '18px',
+                fontSize: '14px',
                 fontWeight: '500',
                 letterSpacing: '1px',
                 background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
@@ -360,7 +547,9 @@ window.FedChair.Components.Aftermath = function({
                 boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
               }}
             >
-              🔄 TRY AGAIN
+              {gameState.meetingNumber >= gameState.totalMeetings
+                ? '📊 VIEW FINAL RESULTS'
+                : '➡️ NEXT MEETING'}
             </button>
           )}
         </div>

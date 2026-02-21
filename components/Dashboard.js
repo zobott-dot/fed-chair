@@ -21,17 +21,156 @@ const getStanceColor = (stance) => {
   return colors[stance] || '#a3a3a3';
 };
 
+const getTrendIcon = (trend) => {
+  if (trend === 'up') return '↑';
+  if (trend === 'down') return '↓';
+  return '→';
+};
+
+const getTrendColor = (trend, inverse = false) => {
+  if (trend === 'up') return inverse ? '#ef4444' : '#22c55e';
+  if (trend === 'down') return inverse ? '#22c55e' : '#ef4444';
+  return '#9ca3af';
+};
+
+const getCredibilityColor = (credibility) => {
+  if (credibility >= 80) return '#22c55e';
+  if (credibility >= 60) return '#84cc16';
+  if (credibility >= 40) return '#eab308';
+  if (credibility >= 20) return '#f97316';
+  return '#ef4444';
+};
+
 window.FedChair.Components.Dashboard = function({
   economicData,
   boardOfGovernors,
   regionalPresidents,
   newsHeadlines,
-  setActiveView
+  setActiveView,
+  gameState
 }) {
   const [activePanel, setActivePanel] = React.useState('governors');
 
+  const meetingNumber = gameState?.meetingNumber || 1;
+  const totalMeetings = gameState?.totalMeetings || 8;
+  const credibility = gameState?.credibility || 100;
+  const hasPreviousMeeting = meetingNumber > 1;
+
   return (
     <main style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
+
+      {/* Meeting Progress Bar */}
+      {gameState && (
+        <div style={{
+          background: 'rgba(17, 24, 39, 0.6)',
+          border: '1px solid rgba(75, 85, 99, 0.3)',
+          borderRadius: '8px',
+          padding: '12px 16px',
+          marginBottom: '16px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '16px'
+        }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+              <span style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>
+                MEETING {meetingNumber} OF {totalMeetings}
+              </span>
+              <span style={{ fontSize: '11px', color: '#60a5fa' }}>
+                {economicData.nextMeeting}
+              </span>
+            </div>
+            <div style={{ display: 'flex', gap: '3px' }}>
+              {Array.from({ length: totalMeetings }).map((_, i) => (
+                <div
+                  key={i}
+                  style={{
+                    flex: 1,
+                    height: '4px',
+                    borderRadius: '2px',
+                    background: i < meetingNumber ? '#3b82f6' : 'rgba(75, 85, 99, 0.3)'
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+          <div style={{
+            padding: '8px 12px',
+            background: `${getCredibilityColor(credibility)}15`,
+            border: `1px solid ${getCredibilityColor(credibility)}30`,
+            borderRadius: '6px',
+            textAlign: 'center'
+          }}>
+            <div style={{ fontSize: '9px', color: '#6b7280', marginBottom: '2px' }}>CREDIBILITY</div>
+            <div style={{
+              fontSize: '16px',
+              fontFamily: '"IBM Plex Mono", monospace',
+              color: getCredibilityColor(credibility)
+            }}>
+              {credibility}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Since Last Meeting Panel */}
+      {hasPreviousMeeting && gameState?.economyChanges && (
+        <div style={{
+          ...panelStyle,
+          marginBottom: '16px',
+          background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(17, 24, 39, 0.8) 100%)'
+        }}>
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
+            <span style={{ fontSize: '11px', color: '#60a5fa', letterSpacing: '1px' }}>
+              📰 SINCE LAST MEETING
+            </span>
+          </div>
+          <div style={{ padding: '12px 16px' }}>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '12px' }}>
+              {[
+                { label: 'GDP', change: gameState.economyChanges.gdpGrowth, inverse: false },
+                { label: 'CPI', change: gameState.economyChanges.cpiInflation, inverse: true },
+                { label: 'PCE', change: gameState.economyChanges.pceInflation, inverse: true },
+                { label: 'Unemployment', change: gameState.economyChanges.unemploymentRate, inverse: true }
+              ].filter(item => Math.abs(item.change) > 0.05).map((item, i) => {
+                const isGood = item.inverse ? item.change < 0 : item.change > 0;
+                return (
+                  <div key={i} style={{
+                    padding: '6px 10px',
+                    background: isGood ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                    border: `1px solid ${isGood ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+                    borderRadius: '4px',
+                    fontSize: '11px'
+                  }}>
+                    <span style={{ color: '#9ca3af' }}>{item.label}: </span>
+                    <span style={{ color: isGood ? '#22c55e' : '#ef4444' }}>
+                      {item.change >= 0 ? '+' : ''}{item.change.toFixed(2)}%
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+            {/* Active Shocks */}
+            {gameState.activeShocks?.length > 0 && (
+              <div style={{ marginTop: '8px' }}>
+                {gameState.activeShocks.map((shock, i) => (
+                  <div key={i} style={{
+                    padding: '6px 10px',
+                    background: 'rgba(234, 179, 8, 0.1)',
+                    border: '1px solid rgba(234, 179, 8, 0.3)',
+                    borderRadius: '4px',
+                    fontSize: '11px',
+                    color: '#eab308',
+                    marginBottom: '4px'
+                  }}>
+                    ⚠️ {shock.name} (ongoing)
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Fed Funds Rate Hero */}
       <div style={{
@@ -77,7 +216,7 @@ window.FedChair.Components.Dashboard = function({
               cursor: 'pointer'
             }}
           >
-            ⚡ DECIDE
+            ⚡ MAKE DECISION
           </button>
         </div>
       </div>
@@ -91,8 +230,13 @@ window.FedChair.Components.Dashboard = function({
           <div style={{ padding: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
             {Object.entries(economicData.inflation).map(([key, data]) => (
               <div key={key} style={{ padding: '10px', background: 'rgba(17, 24, 39, 0.5)', borderRadius: '6px' }}>
-                <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '18px', color: '#f9fafb' }}>
-                  {data.value}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '18px', color: '#f9fafb' }}>
+                    {data.value}
+                  </div>
+                  <span style={{ fontSize: '12px', color: getTrendColor(data.trend, true) }}>
+                    {getTrendIcon(data.trend)}
+                  </span>
                 </div>
                 <div style={{ fontSize: '10px', color: '#6b7280' }}>{data.label}</div>
               </div>
@@ -108,8 +252,13 @@ window.FedChair.Components.Dashboard = function({
           <div style={{ padding: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
             {Object.entries(economicData.employment).map(([key, data]) => (
               <div key={key} style={{ padding: '10px', background: 'rgba(17, 24, 39, 0.5)', borderRadius: '6px' }}>
-                <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '18px', color: '#f9fafb' }}>
-                  {data.value}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '18px', color: '#f9fafb' }}>
+                    {data.value}
+                  </div>
+                  <span style={{ fontSize: '12px', color: getTrendColor(data.trend, key.includes('unemployment')) }}>
+                    {getTrendIcon(data.trend)}
+                  </span>
                 </div>
                 <div style={{ fontSize: '10px', color: '#6b7280' }}>{data.label}</div>
               </div>
@@ -237,6 +386,21 @@ window.FedChair.Components.Dashboard = function({
           </div>
         </div>
       </div>
+
+      {/* Pending Rate Effects Indicator */}
+      {gameState?.pendingEffects?.length > 0 && (
+        <div style={{
+          marginTop: '16px',
+          padding: '12px 16px',
+          background: 'rgba(234, 179, 8, 0.1)',
+          border: '1px solid rgba(234, 179, 8, 0.3)',
+          borderRadius: '8px',
+          fontSize: '11px',
+          color: '#eab308'
+        }}>
+          ⏳ {gameState.pendingEffects.length} past rate decision{gameState.pendingEffects.length > 1 ? 's' : ''} still working through the economy
+        </div>
+      )}
     </main>
   );
 };
