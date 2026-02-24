@@ -174,3 +174,53 @@ button {
     grid-template-columns: repeat(5, 1fr);
   }
 }
+
+/* Briefing sub-nav */
+.grid-briefing-nav {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.grid-briefing-nav::-webkit-scrollbar {
+  display: none;
+}
+
+/* Briefing district cards */
+.grid-briefing-districts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .grid-briefing-districts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Staff projections grid */
+.grid-staff-projections {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .grid-staff-projections {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Probability bar fill animation */
+@keyframes barFill {
+  0% { width: 0%; }
+  100% { width: var(--target-width); }
+}
+
+.animate-bar-fill {
+  animation: barFill 0.6s ease-out forwards;
+}

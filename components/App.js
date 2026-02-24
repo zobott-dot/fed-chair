@@ -5,14 +5,15 @@ window.FedChair = window.FedChair || {};
 window.FedChair.Components = window.FedChair.Components || {};
 
 const { useState, useEffect, useCallback } = React;
-const { LoadingScreen, Header, MeetingBanner, Footer, Dashboard, DecisionPanel, Aftermath } = window.FedChair.Components;
+const { LoadingScreen, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, Aftermath } = window.FedChair.Components;
 const { calculateMarketReaction } = window.FedChair.Engine;
 const { calculateScore, calculateHawkScore, getHawkLabel } = window.FedChair.Engine;
-const { createGameState, advanceToNextMeeting, gameStateToEconomicData } = window.FedChair.Engine;
+const { createGameState, advanceToNextMeeting, gameStateToEconomicData, generateBriefing } = window.FedChair.Engine;
 
 window.FedChair.Components.App = function() {
   // Game state (persistent across rounds)
   const [gameState, setGameState] = useState(null);
+  const [briefingData, setBriefingData] = useState(null);
 
   // Static data
   const [statementPhrases, setStatementPhrases] = useState(null);
@@ -42,6 +43,7 @@ window.FedChair.Components.App = function() {
       // Initialize game state from starting data
       const initialGameState = createGameState(data.economicData);
       setGameState(initialGameState);
+      setBriefingData(generateBriefing(initialGameState));
 
       setStatementPhrases(data.statementPhrases);
       setBoardOfGovernors(data.boardOfGovernors);
@@ -127,6 +129,7 @@ window.FedChair.Components.App = function() {
 
     // Update game state
     setGameState({ ...result.gameState });
+    setBriefingData(generateBriefing(result.gameState));
 
     // Reset meeting-specific state
     setRateDecision(0);
@@ -155,6 +158,7 @@ window.FedChair.Components.App = function() {
     const data = await API.getAllGameData();
     const newGameState = createGameState(data.economicData);
     setGameState(newGameState);
+    setBriefingData(generateBriefing(newGameState));
 
     // Reset all state
     setRateDecision(0);
@@ -246,6 +250,14 @@ window.FedChair.Components.App = function() {
           gameState={gameState}
           onAdvance={handleAdvanceToNextMeeting}
           onNewGame={handleNewGame}
+        />
+      )}
+
+      {activeView === 'briefing' && briefingData && (
+        <Briefing
+          briefingData={briefingData}
+          gameState={gameState}
+          setActiveView={setActiveView}
         />
       )}
 

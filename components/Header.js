@@ -14,7 +14,7 @@ window.FedChair.Components.Header = function({
   onNewGame
 }) {
   const [showConfirm, setShowConfirm] = React.useState(false);
-  const views = ['dashboard', 'decision', ...(showReaction ? ['aftermath'] : [])];
+  const views = ['dashboard', 'briefing', 'decision', ...(showReaction ? ['aftermath'] : [])];
 
   const handleNewGameClick = () => {
     // If game is over or at meeting 1 with no decisions, no need to confirm
@@ -202,7 +202,7 @@ window.FedChair.Components.Header = function({
             onClick={() => setActiveView(view)}
             style={{
               flex: 1,
-              maxWidth: '110px',
+              maxWidth: '100px',
               padding: '10px',
               fontSize: '10px',
               letterSpacing: '1px',
@@ -213,7 +213,7 @@ window.FedChair.Components.Header = function({
               cursor: 'pointer'
             }}
           >
-            {view === 'dashboard' ? '📊 DATA' : view === 'decision' ? '⚡ DECIDE' : '📈 RESULT'}
+            {view === 'dashboard' ? '📊 DATA' : view === 'briefing' ? '📋 BRIEF' : view === 'decision' ? '⚡ DECIDE' : '📈 RESULT'}
           </button>
         ))}
       </div>

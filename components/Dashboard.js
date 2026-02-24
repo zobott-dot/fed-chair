@@ -204,6 +204,21 @@ window.FedChair.Components.Dashboard = function({
             {economicData.fedFundsRate.change}
           </span>
           <button
+            onClick={() => setActiveView('briefing')}
+            style={{
+              padding: '10px 20px',
+              fontSize: '12px',
+              fontWeight: '500',
+              background: 'rgba(234, 179, 8, 0.12)',
+              border: '1px solid rgba(234, 179, 8, 0.3)',
+              color: '#eab308',
+              borderRadius: '6px',
+              cursor: 'pointer'
+            }}
+          >
+            📋 REVIEW BRIEFING
+          </button>
+          <button
             onClick={() => setActiveView('decision')}
             style={{
               padding: '10px 20px',
