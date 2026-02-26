@@ -210,22 +210,22 @@ window.FedChair.Components.Aftermath = function({
             style={{
               display: 'flex',
               alignItems: 'center',
-              whiteSpace: 'nowrap',
-              paddingLeft: '100%'
+              whiteSpace: 'nowrap'
             }}
           >
-            <span style={{ fontSize: '12px', fontWeight: '600', color: 'white', marginRight: '40px' }}>
-              📢 {marketReaction.headline}
-            </span>
-            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)', marginRight: '40px' }}>
-              S&P: {marketReaction.sp500.change >= 0 ? '+' : ''}{marketReaction.sp500.change.toFixed(2)}%
-            </span>
-            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)', marginRight: '40px' }}>
-              10Y: {marketReaction.treasury10y.change >= 0 ? '+' : ''}{marketReaction.treasury10y.change.toFixed(1)}bps
-            </span>
-            <span style={{ fontSize: '12px', fontWeight: '600', color: 'white', marginRight: '40px' }}>
-              📢 {marketReaction.headline}
-            </span>
+            {[0, 1, 2].map(i => (
+              <React.Fragment key={i}>
+                <span style={{ fontSize: '12px', fontWeight: '600', color: 'white', marginRight: '40px' }}>
+                  📢 {marketReaction.headline}
+                </span>
+                <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)', marginRight: '40px' }}>
+                  S&P: {marketReaction.sp500.change >= 0 ? '+' : ''}{marketReaction.sp500.change.toFixed(2)}%
+                </span>
+                <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)', marginRight: '40px' }}>
+                  10Y: {marketReaction.treasury10y.change >= 0 ? '+' : ''}{marketReaction.treasury10y.change.toFixed(1)}bps
+                </span>
+              </React.Fragment>
+            ))}
           </div>
         </div>
       )}

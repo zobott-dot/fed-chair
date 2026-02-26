@@ -93,7 +93,8 @@ window.FedChair.Components.App = function() {
       unemployment: economicData.unemployment,
       inflationForecast: economicData.inflationForecast,
       gameMode: 'full',
-      statementCount: selectedStatements.length
+      statementCount: selectedStatements.length,
+      credibility: gameState.credibility
     });
   }, [rateDecision, economicData, gameState, hawkScore, selectedStatements.length]);
 
@@ -118,13 +119,14 @@ window.FedChair.Components.App = function() {
 
     setTransitioning(true);
 
-    // Advance the simulation
+    // Advance the simulation (pass selectedStatements for guidance tracking)
     const result = advanceToNextMeeting(
       gameState,
       rateDecision,
       hawkScore,
       marketReaction,
-      score.overall.score
+      score.overall.score,
+      selectedStatements
     );
 
     // Update game state

@@ -26,46 +26,55 @@ window.FedChair.Engine.calculateMarketReaction = function({
   unemployment,
   inflationForecast,
   gameMode,
-  statementCount
+  statementCount,
+  credibility
 }) {
   const surprise = rateDecision - marketExpects;
+
+  // Credibility scales market reaction intensity
+  // High credibility (100) = 1.0x, markets trust you
+  // Low credibility (50) = 1.5x, markets are jittery
+  // Very low credibility (0) = 2.0x, everything is a shock
+  const cred = typeof credibility === 'number' ? credibility : 100;
+  const credMultiplier = 1 + (100 - cred) / 100;
 
   let sp500Change = 0, vixChange = 0, yield10yChange = 0, yield2yChange = 0, dxyChange = 0;
   let techChange = 0, financialsChange = 0, utilitiesChange = 0, creditSpreadChange = 0;
 
   if (surprise < 0) {
     // Dovish surprise - markets rally
-    sp500Change = Math.abs(surprise) * 0.4 + Math.random() * 0.3;
-    vixChange = -Math.abs(surprise) * 0.08 - Math.random() * 0.5;
-    yield10yChange = -Math.abs(surprise) * 0.03 - Math.random() * 0.02;
-    yield2yChange = -Math.abs(surprise) * 0.05 - Math.random() * 0.02;
-    dxyChange = -Math.abs(surprise) * 0.1 - Math.random() * 0.1;
+    sp500Change = (Math.abs(surprise) * 0.4 + Math.random() * 0.3) * credMultiplier;
+    vixChange = (-Math.abs(surprise) * 0.08 - Math.random() * 0.5) * credMultiplier;
+    yield10yChange = (-Math.abs(surprise) * 0.03 - Math.random() * 0.02) * credMultiplier;
+    yield2yChange = (-Math.abs(surprise) * 0.05 - Math.random() * 0.02) * credMultiplier;
+    dxyChange = (-Math.abs(surprise) * 0.1 - Math.random() * 0.1) * credMultiplier;
     techChange = sp500Change * 1.3;
     financialsChange = sp500Change * 0.7;
     utilitiesChange = sp500Change * 0.5;
-    creditSpreadChange = -Math.abs(surprise) * 0.5;
+    creditSpreadChange = -Math.abs(surprise) * 0.5 * credMultiplier;
   } else if (surprise > 0) {
     // Hawkish surprise - markets sell off
-    sp500Change = -surprise * 0.5 - Math.random() * 0.4;
-    vixChange = surprise * 0.15 + Math.random() * 0.8;
-    yield10yChange = surprise * 0.04 + Math.random() * 0.02;
-    yield2yChange = surprise * 0.06 + Math.random() * 0.03;
-    dxyChange = surprise * 0.15 + Math.random() * 0.1;
+    sp500Change = (-surprise * 0.5 - Math.random() * 0.4) * credMultiplier;
+    vixChange = (surprise * 0.15 + Math.random() * 0.8) * credMultiplier;
+    yield10yChange = (surprise * 0.04 + Math.random() * 0.02) * credMultiplier;
+    yield2yChange = (surprise * 0.06 + Math.random() * 0.03) * credMultiplier;
+    dxyChange = (surprise * 0.15 + Math.random() * 0.1) * credMultiplier;
     techChange = sp500Change * 1.4;
     financialsChange = sp500Change * 0.6;
     utilitiesChange = sp500Change * 0.8;
-    creditSpreadChange = surprise * 0.8;
+    creditSpreadChange = surprise * 0.8 * credMultiplier;
   } else {
-    // In line with expectations
-    sp500Change = (Math.random() - 0.5) * 0.3;
-    vixChange = (Math.random() - 0.5) * 0.4;
-    yield10yChange = (Math.random() - 0.5) * 0.02;
-    yield2yChange = (Math.random() - 0.5) * 0.02;
-    dxyChange = (Math.random() - 0.5) * 0.1;
+    // In line with expectations — high credibility = calmer markets
+    const calmFactor = 0.5 + 0.5 * (cred / 100); // 0.5 at cred 0, 1.0 at cred 100
+    sp500Change = (Math.random() - 0.5) * 0.3 * calmFactor;
+    vixChange = (Math.random() - 0.5) * 0.4 * calmFactor;
+    yield10yChange = (Math.random() - 0.5) * 0.02 * calmFactor;
+    yield2yChange = (Math.random() - 0.5) * 0.02 * calmFactor;
+    dxyChange = (Math.random() - 0.5) * 0.1 * calmFactor;
     techChange = sp500Change * 1.1;
     financialsChange = sp500Change * 0.9;
     utilitiesChange = sp500Change * 0.8;
-    creditSpreadChange = (Math.random() - 0.5) * 0.3;
+    creditSpreadChange = (Math.random() - 0.5) * 0.3 * calmFactor;
   }
 
   // Statement tone affects markets in full mode
