@@ -211,29 +211,29 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
             return (
               <div key={metric.key} style={{
                 ...briefingPanelStyle,
-                padding: '16px'
+                padding: '20px'
               }}>
                 <div style={{ ...labelStyle, fontSize: 'var(--text-sm)' }}>{metric.label}</div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '4px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
                   <div>
-                    <span style={{ ...valueStyle, color: '#f9fafb' }}>
+                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'var(--text-xl)', color: '#f9fafb' }}>
                       {data.current.toFixed(1)}{metric.unit}
                     </span>
-                    <span style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginLeft: '6px' }}>current</span>
+                    <span style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginLeft: '8px' }}>current</span>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: '16px', fontSize: 'var(--text-sm)', marginTop: '6px' }}>
+                <div style={{ display: 'flex', gap: '20px', fontSize: 'var(--text-base)', marginTop: '10px', marginBottom: '14px' }}>
                   <div>
                     <span style={{ color: '#3b82f6', fontFamily: "'IBM Plex Mono', monospace" }}>
                       {data.staffForecast.toFixed(1)}{metric.unit}
                     </span>
-                    <span style={{ color: '#8b95a5', marginLeft: '4px' }}>staff</span>
+                    <span style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginLeft: '4px' }}>staff</span>
                   </div>
                   <div>
                     <span style={{ color: '#eab308', fontFamily: "'IBM Plex Mono', monospace" }}>
                       {data.marketForecast.toFixed(1)}{metric.unit}
                     </span>
-                    <span style={{ color: '#8b95a5', marginLeft: '4px' }}>market</span>
+                    <span style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginLeft: '4px' }}>market</span>
                   </div>
                 </div>
                 {renderRangeBar(metric)}
