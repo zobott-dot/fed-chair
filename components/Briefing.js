@@ -209,20 +209,20 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
           {metrics.map(metric => {
             const data = sp[metric.key];
             return (
-              <div key={metric.key} style={{
+              <div key={metric.key} className="staff-forecast-card" style={{
                 ...briefingPanelStyle,
                 padding: '20px'
               }}>
                 <div style={{ ...labelStyle, fontSize: 'var(--text-sm)' }}>{metric.label}</div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
                   <div>
-                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'var(--text-xl)', color: '#f9fafb' }}>
+                    <span className="staff-current-value" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'var(--text-xl)', color: '#f9fafb' }}>
                       {data.current.toFixed(1)}{metric.unit}
                     </span>
                     <span style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginLeft: '8px' }}>current</span>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: '20px', fontSize: 'var(--text-base)', marginTop: '10px', marginBottom: '14px' }}>
+                <div className="staff-forecast-values" style={{ display: 'flex', gap: '20px', fontSize: 'var(--text-base)', marginTop: '10px', marginBottom: '14px' }}>
                   <div>
                     <span style={{ color: '#3b82f6', fontFamily: "'IBM Plex Mono', monospace" }}>
                       {data.staffForecast.toFixed(1)}{metric.unit}
@@ -293,7 +293,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
             }}>
               {/* Left: Name & Source */}
               <div style={{ flex: '1 1 200px' }}>
-                <div style={{ fontSize: '13px', color: '#e5e7eb', fontWeight: '500' }}>
+                <div className="data-release-name" style={{ fontSize: '13px', color: '#e5e7eb', fontWeight: '500' }}>
                   {release.name}
                 </div>
                 <div style={{ fontSize: '10px', color: '#8b95a5', marginTop: '2px' }}>
@@ -306,7 +306,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
                 {/* Previous */}
                 <div style={{ textAlign: 'center', minWidth: '55px' }}>
                   <div style={{ fontSize: '9px', color: '#8b95a5', marginBottom: '2px' }}>PREV</div>
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: '#8b95a5' }}>
+                  <div className="data-release-prev" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: '#8b95a5' }}>
                     {release.previous}
                   </div>
                 </div>
@@ -314,7 +314,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
                 {/* Expected */}
                 <div style={{ textAlign: 'center', minWidth: '55px' }}>
                   <div style={{ fontSize: '9px', color: '#8b95a5', marginBottom: '2px' }}>EXP</div>
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: '#9ca3af' }}>
+                  <div className="data-release-exp" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: '#9ca3af' }}>
                     {release.expected}
                   </div>
                 </div>
@@ -322,7 +322,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
                 {/* Actual */}
                 <div style={{ textAlign: 'center', minWidth: '55px' }}>
                   <div style={{ fontSize: '9px', color: '#8b95a5', marginBottom: '2px' }}>ACTUAL</div>
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '13px', color: '#f9fafb', fontWeight: '500' }}>
+                  <div className="data-release-actual" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '13px', color: '#f9fafb', fontWeight: '500' }}>
                     {release.actual}
                   </div>
                 </div>
@@ -422,7 +422,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
               .filter(([, prob]) => prob > 0)
               .map(([key, prob]) => (
                 <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{
+                  <div className="prob-label" style={{
                     width: '55px',
                     fontSize: '11px',
                     fontFamily: "'IBM Plex Mono', monospace",
@@ -449,7 +449,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
                       }}
                     />
                   </div>
-                  <div style={{
+                  <div className="prob-pct" style={{
                     width: '36px',
                     fontSize: '11px',
                     fontFamily: "'IBM Plex Mono', monospace",

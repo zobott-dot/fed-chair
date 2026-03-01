@@ -234,7 +234,7 @@ window.FedChair.Components.DecisionPanel = function({
 
               {statementPhrases && Object.entries(statementPhrases).map(([category, phrases]) => (
                 <div key={category} style={{ marginBottom: '14px' }}>
-                  <div style={{
+                  <div className="statement-category-label" style={{
                     fontSize: '10px',
                     color: '#8b95a5',
                     marginBottom: '8px',

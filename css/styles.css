@@ -257,6 +257,44 @@ button {
     padding: 10px 16px !important;
     font-size: 11px !important;
   }
+
+  /* Staff Forecast cards */
+  .staff-forecast-card {
+    padding: 24px !important;
+  }
+  .staff-forecast-card .staff-current-value {
+    font-size: var(--text-2xl) !important;
+  }
+  .staff-forecast-card .staff-forecast-values {
+    font-size: var(--text-lg) !important;
+  }
+
+  /* Data Releases */
+  .data-release-name {
+    font-size: var(--text-lg) !important;
+  }
+  .data-release-prev,
+  .data-release-exp {
+    font-size: var(--text-base) !important;
+  }
+  .data-release-actual {
+    font-size: var(--text-lg) !important;
+  }
+
+  /* Market Pricing probability bars */
+  .prob-label {
+    font-size: var(--text-base) !important;
+    width: 65px !important;
+  }
+  .prob-pct {
+    font-size: var(--text-base) !important;
+    width: 44px !important;
+  }
+
+  /* Statement builder category labels */
+  .statement-category-label {
+    font-size: var(--text-sm) !important;
+  }
 }
 
 /* Game-over stats: 2 columns on narrow screens */
