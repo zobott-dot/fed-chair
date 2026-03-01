@@ -162,14 +162,14 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
             position: 'absolute',
             top: '-2px',
             left: '0',
-            fontSize: '9px',
+            fontSize: 'var(--text-xs)',
             color: '#8b95a5'
           }}>{data.range[0].toFixed(1)}</div>
           <div style={{
             position: 'absolute',
             top: '-2px',
             right: '0',
-            fontSize: '9px',
+            fontSize: 'var(--text-xs)',
             color: '#8b95a5'
           }}>{data.range[1].toFixed(1)}</div>
         </div>
@@ -213,16 +213,16 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
                 ...briefingPanelStyle,
                 padding: '16px'
               }}>
-                <div style={labelStyle}>{metric.label}</div>
+                <div style={{ ...labelStyle, fontSize: 'var(--text-sm)' }}>{metric.label}</div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '4px' }}>
                   <div>
                     <span style={{ ...valueStyle, color: '#f9fafb' }}>
                       {data.current.toFixed(1)}{metric.unit}
                     </span>
-                    <span style={{ fontSize: '10px', color: '#8b95a5', marginLeft: '6px' }}>current</span>
+                    <span style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginLeft: '6px' }}>current</span>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: '16px', fontSize: '11px', marginTop: '6px' }}>
+                <div style={{ display: 'flex', gap: '16px', fontSize: 'var(--text-sm)', marginTop: '6px' }}>
                   <div>
                     <span style={{ color: '#3b82f6', fontFamily: "'IBM Plex Mono', monospace" }}>
                       {data.staffForecast.toFixed(1)}{metric.unit}
