@@ -62,6 +62,19 @@ window.FedChair.Components.DecisionPanel = function({
   const credibility = gameState?.credibility || 100;
   const marketExpects = gameState?.marketExpects || 0;
 
+  // Dot plot responsive measurement — render SVG at native pixel size for crisp lines
+  const dotPlotContainerRef = React.useRef(null);
+  const [dotPlotWidth, setDotPlotWidth] = React.useState(0);
+  React.useEffect(() => {
+    const el = dotPlotContainerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(entries => {
+      setDotPlotWidth(Math.floor(entries[0].contentRect.width));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <main style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
 
@@ -290,7 +303,7 @@ window.FedChair.Components.DecisionPanel = function({
             const monthAbbrs = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
             const schedule = gameState?.meetingSchedule || [];
 
-            const chartWidth = 600;
+            const chartWidth = dotPlotWidth;
             const chartHeight = 220;
             const leftMargin = 50;
             const rightMargin = 10;
@@ -340,10 +353,8 @@ window.FedChair.Components.DecisionPanel = function({
               if (!setDotSelections) return;
               const svg = event.currentTarget;
               const rect = svg.getBoundingClientRect();
-              const scaleX = chartWidth / rect.width;
-              const scaleY = chartHeight / rect.height;
-              const x = (event.clientX - rect.left) * scaleX;
-              const y = (event.clientY - rect.top) * scaleY;
+              const x = event.clientX - rect.left;
+              const y = event.clientY - rect.top;
 
               if (x < leftMargin || x > chartWidth - rightMargin) return;
               if (y < topMargin || y > chartHeight - bottomMargin) return;
@@ -395,25 +406,28 @@ window.FedChair.Components.DecisionPanel = function({
                 </div>
 
                 {/* SVG Chart */}
-                <div style={{
+                <div ref={dotPlotContainerRef} style={{
                   background: 'linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.7) 100%)',
                   border: '1px solid rgba(75, 85, 99, 0.3)',
                   borderRadius: '8px',
                   padding: '8px',
-                  cursor: 'crosshair'
+                  cursor: 'crosshair',
+                  minHeight: chartHeight + 16 + 'px'
                 }}>
-                  <svg
-                    viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-                    style={{ width: '100%', height: '220px', display: 'block' }}
+                  {chartWidth > 0 && <svg
+                    width={chartWidth}
+                    height={chartHeight}
+                    style={{ display: 'block' }}
                     onClick={handleChartClick}
                   >
                     {/* Grid lines */}
                     {gridRates.map(r => (
                       <line
                         key={r}
-                        x1={leftMargin} y1={rateToY(r)}
-                        x2={chartWidth - rightMargin} y2={rateToY(r)}
+                        x1={leftMargin} y1={Math.round(rateToY(r)) + 0.5}
+                        x2={chartWidth - rightMargin} y2={Math.round(rateToY(r)) + 0.5}
                         stroke="rgba(75, 85, 99, 0.2)" strokeWidth="1"
+                        shapeRendering="crispEdges"
                       />
                     ))}
 
@@ -456,10 +470,11 @@ window.FedChair.Components.DecisionPanel = function({
 
                     {/* Current rate dashed line */}
                     <line
-                      x1={leftMargin} y1={rateToY(currentRate)}
-                      x2={chartWidth - rightMargin} y2={rateToY(currentRate)}
+                      x1={leftMargin} y1={Math.round(rateToY(currentRate)) + 0.5}
+                      x2={chartWidth - rightMargin} y2={Math.round(rateToY(currentRate)) + 0.5}
                       stroke="#60a5fa" strokeWidth="1"
                       strokeDasharray="6,4" opacity="0.5"
+                      shapeRendering="crispEdges"
                     />
 
                     {/* Committee median line */}
@@ -509,7 +524,7 @@ window.FedChair.Components.DecisionPanel = function({
                         />
                       );
                     })}
-                  </svg>
+                  </svg>}
                 </div>
 
                 {/* Instruction */}
