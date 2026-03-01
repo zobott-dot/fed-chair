@@ -485,6 +485,54 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
           </div>
         </div>
 
+        {/* Your Previous Projections (Phase 4) */}
+        {(() => {
+          const dots = gameState?.dotProjections || [];
+          const projections = [];
+          for (let m = gameState.meetingNumber; m <= gameState.totalMeetings; m++) {
+            const dotsForMeeting = dots.filter(d => d.meeting === m && d.placedAtMeeting < gameState.meetingNumber);
+            if (dotsForMeeting.length > 0) {
+              projections.push(dotsForMeeting[dotsForMeeting.length - 1]);
+            }
+          }
+          if (projections.length === 0) return null;
+          return (
+            <div style={{
+              ...briefingPanelStyle,
+              padding: '16px',
+              marginBottom: '16px',
+              borderLeft: '3px solid #60a5fa'
+            }}>
+              <div style={labelStyle}>YOUR PREVIOUS PROJECTIONS</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {projections.map(d => {
+                  const isCurrentMeeting = d.meeting === gameState.meetingNumber;
+                  const matchesRate = isCurrentMeeting && Math.abs(d.projectedRate - gameState.currentRate) < 0.01;
+                  return (
+                    <div key={`${d.meeting}-${d.placedAtMeeting}`} style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      fontSize: 'var(--text-base)',
+                      fontFamily: "'IBM Plex Mono', monospace"
+                    }}>
+                      <span style={{ color: '#9ca3af' }}>Meeting {d.meeting}:</span>
+                      <span style={{ color: isCurrentMeeting ? '#60a5fa' : '#d1d5db' }}>
+                        {d.projectedRate.toFixed(3)}%
+                        {isCurrentMeeting && (
+                          <span style={{ marginLeft: '8px', fontSize: 'var(--text-sm)', color: matchesRate ? '#22c55e' : '#eab308' }}>
+                            (current: {gameState.currentRate.toFixed(3)}%{matchesRate ? ' \u2713' : ''})
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })()}
+
         {/* Forward guidance */}
         <div style={{
           ...briefingPanelStyle,

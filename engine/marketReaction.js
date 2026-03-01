@@ -27,7 +27,10 @@ window.FedChair.Engine.calculateMarketReaction = function({
   inflationForecast,
   gameMode,
   statementCount,
-  credibility
+  credibility,
+  dotProjections,
+  meetingNumber,
+  currentRate
 }) {
   const surprise = rateDecision - marketExpects;
 
@@ -111,6 +114,20 @@ window.FedChair.Engine.calculateMarketReaction = function({
     { outlet: 'CNBC', question: 'When do you expect the next move?' },
     { outlet: 'Reuters', question: 'How do tariffs factor in?' }
   ];
+
+  // Dot plot deviation question (Phase 4)
+  const dotRelevant = (dotProjections || []).filter(d => d.meeting === meetingNumber);
+  if (dotRelevant.length > 0) {
+    const latestDot = dotRelevant[dotRelevant.length - 1];
+    const actualRate = (currentRate || 0) + rateDecision / 100;
+    const dotDev = Math.abs(actualRate - latestDot.projectedRate);
+    if (dotDev > 0.25) {
+      questions.push({
+        outlet: 'Wall Street Journal',
+        question: `Chair, your dot plot from the previous meeting projected ${latestDot.projectedRate.toFixed(2)}% for this meeting, but you've moved to ${actualRate.toFixed(2)}%. What changed in your assessment?`
+      });
+    }
+  }
 
   return {
     sp500: {

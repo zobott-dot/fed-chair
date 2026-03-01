@@ -8,7 +8,7 @@ const { useState, useEffect, useCallback } = React;
 const { LoadingScreen, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, Aftermath } = window.FedChair.Components;
 const { calculateMarketReaction } = window.FedChair.Engine;
 const { calculateScore, calculateHawkScore, getHawkLabel } = window.FedChair.Engine;
-const { createGameState, advanceToNextMeeting, gameStateToEconomicData, generateBriefing } = window.FedChair.Engine;
+const { createGameState, advanceToNextMeeting, gameStateToEconomicData, generateBriefing, generateCommitteeDots } = window.FedChair.Engine;
 
 window.FedChair.Components.App = function() {
   // Game state (persistent across rounds)
@@ -33,6 +33,7 @@ window.FedChair.Components.App = function() {
   const [marketReaction, setMarketReaction] = useState(null);
   const [aftermathPhase, setAftermathPhase] = useState(0);
   const [score, setScore] = useState(null);
+  const [dotSelections, setDotSelections] = useState({});
 
   // Load data and initialize game on mount
   useEffect(() => {
@@ -42,6 +43,7 @@ window.FedChair.Components.App = function() {
 
       // Initialize game state from starting data
       const initialGameState = createGameState(data.economicData);
+      generateCommitteeDots(initialGameState);
       setGameState(initialGameState);
       setBriefingData(generateBriefing(initialGameState));
 
@@ -94,12 +96,26 @@ window.FedChair.Components.App = function() {
       inflationForecast: economicData.inflationForecast,
       gameMode: 'full',
       statementCount: selectedStatements.length,
-      credibility: gameState.credibility
+      credibility: gameState.credibility,
+      dotProjections: gameState.dotProjections,
+      meetingNumber: gameState.meetingNumber,
+      currentRate: gameState.currentRate
     });
   }, [rateDecision, economicData, gameState, hawkScore, selectedStatements.length]);
 
   // Handle publish decision
   const handlePublish = () => {
+    // Store dot projections in gameState (Phase 4)
+    const newDots = Object.entries(dotSelections).map(([meeting, rate]) => ({
+      meeting: parseInt(meeting),
+      placedAtMeeting: gameState.meetingNumber,
+      projectedRate: rate
+    }));
+    if (newDots.length > 0) {
+      gameState.dotProjections = [...(gameState.dotProjections || []), ...newDots];
+      gameState.dotHistory = [...(gameState.dotHistory || []), ...newDots];
+    }
+
     setDecisionPublished(true);
     const reaction = computeMarketReaction();
     setMarketReaction(reaction);
@@ -141,6 +157,7 @@ window.FedChair.Components.App = function() {
     setMarketReaction(null);
     setAftermathPhase(0);
     setScore(null);
+    setDotSelections({});
 
     // Brief transition animation
     setTimeout(() => {
@@ -159,6 +176,7 @@ window.FedChair.Components.App = function() {
     const API = window.FedChair.Data.API;
     const data = await API.getAllGameData();
     const newGameState = createGameState(data.economicData);
+    generateCommitteeDots(newGameState);
     setGameState(newGameState);
     setBriefingData(generateBriefing(newGameState));
 
@@ -170,6 +188,7 @@ window.FedChair.Components.App = function() {
     setMarketReaction(null);
     setAftermathPhase(0);
     setScore(null);
+    setDotSelections({});
     setActiveView('dashboard');
   };
 
@@ -280,6 +299,8 @@ window.FedChair.Components.App = function() {
           onPublish={handlePublish}
           onReset={() => {}}
           gameState={gameState}
+          dotSelections={dotSelections}
+          setDotSelections={setDotSelections}
         />
       )}
 

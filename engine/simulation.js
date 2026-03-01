@@ -237,7 +237,12 @@ window.FedChair.Engine.createGameState = function(startingData) {
     // Track what changed since last meeting
     lastMeetingEconomy: null,
     lastMeetingMarkets: null,
-    economyChanges: null
+    economyChanges: null,
+
+    // Dot plot (Phase 4)
+    dotProjections: [],
+    dotHistory: [],
+    committeeDots: {}
   };
 };
 
@@ -671,6 +676,15 @@ window.FedChair.Engine.calculateMarketExpectations = function(gameState) {
     expectedMove += avgOlderHawk * 2;
   }
 
+  // Dot plot projection influence (Phase 4)
+  const nextMeetingDot = (gameState.dotProjections || []).find(
+    d => d.meeting === gameState.meetingNumber && d.placedAtMeeting === gameState.meetingNumber - 1
+  );
+  if (nextMeetingDot) {
+    const impliedMove = Math.round((nextMeetingDot.projectedRate - gameState.currentRate) * 100);
+    expectedMove = expectedMove * 0.4 + impliedMove * 0.6;
+  }
+
   // Round to nearest 25
   return Math.round(expectedMove / 25) * 25;
 };
@@ -745,6 +759,26 @@ window.FedChair.Engine.updateCredibility = function(gameState, decision, hawkSco
     credibilityChange -= 3; // Hiking with low inflation
   } else if (economy.gdpGrowth < 0.5 && decision > 0) {
     credibilityChange -= 4; // Hiking into weakness
+  }
+
+  // === Dot plot consistency (Phase 4) ===
+  const relevantDots = (gameState.dotProjections || []).filter(
+    d => d.meeting === gameState.meetingNumber
+  );
+  if (relevantDots.length > 0) {
+    const latestDot = relevantDots[relevantDots.length - 1];
+    const actualRate = gameState.currentRate + decision / 100;
+    const dotDeviation = Math.abs(actualRate - latestDot.projectedRate);
+
+    if (dotDeviation < 0.01) {
+      credibilityChange += 4;
+    } else if (dotDeviation <= 0.25) {
+      credibilityChange += 1;
+    } else if (dotDeviation <= 0.50) {
+      credibilityChange -= 5;
+    } else {
+      credibilityChange -= 12;
+    }
   }
 
   // === Asymmetric bounds: harder to build, easier to lose ===
@@ -914,6 +948,9 @@ window.FedChair.Engine.advanceToNextMeeting = function(gameState, decision, hawk
   gameState.meetingDate = nextMeeting.date;
   gameState.meetingDisplayDate = nextMeeting.displayDate;
 
+  // Generate committee dots for new meeting (Phase 4)
+  window.FedChair.Engine.generateCommitteeDots(gameState);
+
   // Apply lagged rate effects
   const laggedChanges = window.FedChair.Engine.applyLaggedEffects(gameState);
 
@@ -1018,6 +1055,56 @@ window.FedChair.Engine.gameStateToEconomicData = function(gameState) {
     marketExpects: gameState.marketExpects || 0,
     currentRate: gameState.currentRate
   };
+};
+
+/**
+ * Generate committee dot projections for remaining meetings
+ * Each of 13 FOMC participants projects rates based on stance + economic conditions + noise
+ * @param {Object} gameState - Current game state
+ * @returns {Object} Committee dots keyed by meeting number
+ */
+window.FedChair.Engine.generateCommitteeDots = function(gameState) {
+  const participants = [
+    ...(window.FedChair.Data.boardOfGovernors || []),
+    ...(window.FedChair.Data.regionalPresidents || [])
+  ];
+
+  // Stance bias: rate change preference per meeting (in percentage points)
+  const stanceBiases = {
+    'Very Hawkish': 0.094,
+    'Hawkish': 0.0625,
+    'Centrist': 0,
+    'Dovish': -0.0625,
+    'Very Dovish': -0.094
+  };
+
+  // Economic adjustment per meeting (in percentage points)
+  let econAdjustment = 0;
+  const pce = gameState.economy.pceInflation;
+  if (pce > 3.0) econAdjustment += 0.03;
+  else if (pce > 2.5) econAdjustment += 0.015;
+  if (pce < 1.5) econAdjustment -= 0.03;
+  if (gameState.economy.unemploymentRate > 5.0) econAdjustment -= 0.02;
+  if (gameState.economy.gdpGrowth < 1.0) econAdjustment -= 0.02;
+
+  const committeeDots = {};
+  const currentMeeting = gameState.meetingNumber;
+  const totalMeetings = gameState.totalMeetings;
+
+  for (let m = currentMeeting + 1; m <= totalMeetings; m++) {
+    const meetingsAhead = m - currentMeeting;
+    const meetingDots = participants.map(participant => {
+      const bias = stanceBiases[participant.stance] || 0;
+      const noise = (Math.random() - 0.5) * 0.30; // ±15bp
+      const projectedRate = gameState.currentRate + (bias + econAdjustment) * meetingsAhead + noise;
+      // Round to nearest 12.5bp (0.125)
+      return Math.round(projectedRate / 0.125) * 0.125;
+    });
+    committeeDots[m] = meetingDots;
+  }
+
+  gameState.committeeDots = committeeDots;
+  return committeeDots;
 };
 
 // Export constants and utilities for use elsewhere
