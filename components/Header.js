@@ -156,7 +156,7 @@ window.FedChair.Components.Header = function({
             <div style={{ fontSize: '16px', color: '#f9fafb', marginBottom: '8px' }}>
               Start New Game?
             </div>
-            <div style={{ fontSize: '13px', color: '#9ca3af', marginBottom: '24px', lineHeight: '1.5' }}>
+            <div style={{ fontSize: '13px', fontFamily: 'var(--font-prose)', color: '#9ca3af', marginBottom: '24px', lineHeight: 'var(--leading-normal)' }}>
               You're currently at Meeting {meetingNumber} of {totalMeetings}.
               Starting a new game will reset all progress.
             </div>
@@ -208,7 +208,7 @@ window.FedChair.Components.Header = function({
               letterSpacing: '1px',
               background: activeView === view ? 'rgba(59, 130, 246, 0.2)' : 'rgba(17, 24, 39, 0.5)',
               border: activeView === view ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid rgba(75, 85, 99, 0.3)',
-              color: activeView === view ? '#60a5fa' : '#6b7280',
+              color: activeView === view ? '#60a5fa' : '#8b95a5',
               borderRadius: '6px',
               cursor: 'pointer'
             }}
@@ -288,7 +288,7 @@ window.FedChair.Components.Footer = function() {
       borderTop: '1px solid rgba(75, 85, 99, 0.2)',
       textAlign: 'center',
       fontSize: '10px',
-      color: '#4b5563',
+      color: '#6b7280',
       marginTop: '20px'
     }}>
       <div>Fed Chair: The War Room | Multi-Round Simulation</div>

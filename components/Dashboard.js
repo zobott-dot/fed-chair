@@ -101,7 +101,7 @@ window.FedChair.Components.Dashboard = function({
             borderRadius: '6px',
             textAlign: 'center'
           }}>
-            <div style={{ fontSize: '9px', color: '#6b7280', marginBottom: '2px' }}>CREDIBILITY</div>
+            <div style={{ fontSize: '9px', color: '#8b95a5', marginBottom: '2px' }}>CREDIBILITY</div>
             <div style={{
               fontSize: '16px',
               fontFamily: '"IBM Plex Mono", monospace',
@@ -181,7 +181,7 @@ window.FedChair.Components.Dashboard = function({
         marginBottom: '16px',
         textAlign: 'center'
       }}>
-        <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '8px', letterSpacing: '1px' }}>
+        <div style={{ fontSize: '11px', color: '#8b95a5', marginBottom: '8px', letterSpacing: '1px' }}>
           FEDERAL FUNDS RATE
         </div>
         <div style={{
@@ -253,7 +253,7 @@ window.FedChair.Components.Dashboard = function({
                     {getTrendIcon(data.trend)}
                   </span>
                 </div>
-                <div style={{ fontSize: '10px', color: '#6b7280' }}>{data.label}</div>
+                <div style={{ fontSize: '10px', color: '#8b95a5' }}>{data.label}</div>
               </div>
             ))}
           </div>
@@ -275,7 +275,7 @@ window.FedChair.Components.Dashboard = function({
                     {getTrendIcon(data.trend)}
                   </span>
                 </div>
-                <div style={{ fontSize: '10px', color: '#6b7280' }}>{data.label}</div>
+                <div style={{ fontSize: '10px', color: '#8b95a5' }}>{data.label}</div>
               </div>
             ))}
           </div>
@@ -299,7 +299,7 @@ window.FedChair.Components.Dashboard = function({
                   fontSize: '10px',
                   background: activePanel === 'governors' ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
                   border: 'none',
-                  color: activePanel === 'governors' ? '#60a5fa' : '#6b7280',
+                  color: activePanel === 'governors' ? '#60a5fa' : '#8b95a5',
                   borderRadius: '4px',
                   cursor: 'pointer',
                   minHeight: '28px'
@@ -314,7 +314,7 @@ window.FedChair.Components.Dashboard = function({
                   fontSize: '10px',
                   background: activePanel === 'presidents' ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
                   border: 'none',
-                  color: activePanel === 'presidents' ? '#60a5fa' : '#6b7280',
+                  color: activePanel === 'presidents' ? '#60a5fa' : '#8b95a5',
                   borderRadius: '4px',
                   cursor: 'pointer',
                   minHeight: '28px'
@@ -338,7 +338,7 @@ window.FedChair.Components.Dashboard = function({
               >
                 <div>
                   <div style={{ fontSize: '12px', color: '#f9fafb' }}>{person.name}</div>
-                  <div style={{ fontSize: '10px', color: '#6b7280' }}>{person.role || person.bank}</div>
+                  <div style={{ fontSize: '10px', color: '#8b95a5' }}>{person.role || person.bank}</div>
                 </div>
                 <span style={{
                   padding: '2px 6px',
@@ -365,10 +365,10 @@ window.FedChair.Components.Dashboard = function({
                 key={i}
                 style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.15)' }}
               >
-                <div style={{ fontSize: '12px', color: '#f9fafb', lineHeight: '1.4', marginBottom: '4px' }}>
+                <div style={{ fontSize: 'var(--text-base)', fontFamily: 'var(--font-prose)', color: '#f9fafb', lineHeight: 'var(--leading-normal)', marginBottom: '4px' }}>
                   {item.headline}
                 </div>
-                <div style={{ fontSize: '10px', color: '#6b7280' }}>{item.source}</div>
+                <div style={{ fontSize: '10px', color: '#8b95a5' }}>{item.source}</div>
               </div>
             ))}
           </div>
@@ -395,7 +395,7 @@ window.FedChair.Components.Dashboard = function({
                 <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '16px', color: '#f9fafb' }}>
                   {data.display || data.value}
                 </div>
-                <div style={{ fontSize: '10px', color: '#6b7280' }}>{data.label}</div>
+                <div style={{ fontSize: '10px', color: '#8b95a5' }}>{data.label}</div>
               </div>
             ))}
           </div>
@@ -410,7 +410,8 @@ window.FedChair.Components.Dashboard = function({
           background: 'rgba(234, 179, 8, 0.1)',
           border: '1px solid rgba(234, 179, 8, 0.3)',
           borderRadius: '8px',
-          fontSize: '11px',
+          fontSize: 'var(--text-base)',
+          fontFamily: 'var(--font-prose)',
           color: '#eab308'
         }}>
           ⏳ {gameState.pendingEffects.length} past rate decision{gameState.pendingEffects.length > 1 ? 's' : ''} still working through the economy

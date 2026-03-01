@@ -75,13 +75,13 @@ window.FedChair.Components.DecisionPanel = function({
         borderRadius: '8px'
       }}>
         <div>
-          <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '2px' }}>Meeting</div>
+          <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '2px' }}>Meeting</div>
           <div style={{ fontSize: '14px', color: '#60a5fa' }}>
             {meetingNumber} of {totalMeetings}
           </div>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '2px' }}>Market Expects</div>
+          <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '2px' }}>Market Expects</div>
           <div style={{
             fontSize: '14px',
             color: marketExpects > 0 ? '#ef4444' : marketExpects < 0 ? '#22c55e' : '#60a5fa'
@@ -90,7 +90,7 @@ window.FedChair.Components.DecisionPanel = function({
           </div>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '2px' }}>Credibility</div>
+          <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '2px' }}>Credibility</div>
           <div style={{ fontSize: '14px', color: getCredibilityColor(credibility) }}>
             {credibility}/100
           </div>
@@ -106,7 +106,7 @@ window.FedChair.Components.DecisionPanel = function({
           <div style={{ fontSize: '12px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '4px' }}>
             FOMC DECISION
           </div>
-          <div style={{ fontSize: '11px', color: '#6b7280' }}>
+          <div style={{ fontSize: '11px', color: '#8b95a5' }}>
             Set the target rate and craft your statement
           </div>
         </div>
@@ -114,7 +114,7 @@ window.FedChair.Components.DecisionPanel = function({
         <div style={{ padding: '20px' }}>
           {/* Current Rate */}
           <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-            <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '8px', letterSpacing: '1px' }}>
+            <div style={{ fontSize: '11px', color: '#8b95a5', marginBottom: '8px', letterSpacing: '1px' }}>
               CURRENT RATE
             </div>
             <div style={{
@@ -194,7 +194,7 @@ window.FedChair.Components.DecisionPanel = function({
               borderRadius: '8px',
               marginBottom: '20px'
             }}>
-              <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '6px' }}>NEW RATE</div>
+              <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '6px' }}>NEW RATE</div>
               <div style={{
                 fontFamily: '"IBM Plex Mono", monospace',
                 fontSize: '20px',
@@ -236,7 +236,7 @@ window.FedChair.Components.DecisionPanel = function({
                 <div key={category} style={{ marginBottom: '14px' }}>
                   <div style={{
                     fontSize: '10px',
-                    color: '#6b7280',
+                    color: '#8b95a5',
                     marginBottom: '8px',
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
@@ -253,7 +253,8 @@ window.FedChair.Components.DecisionPanel = function({
                         onClick={() => toggleStatement(phrase.id)}
                         style={{
                           padding: '12px',
-                          fontSize: '12px',
+                          fontSize: 'var(--text-base)',
+                          fontFamily: 'var(--font-prose)',
                           textAlign: 'left',
                           background: selectedStatements.includes(phrase.id)
                             ? 'rgba(59, 130, 246, 0.15)'
@@ -264,7 +265,7 @@ window.FedChair.Components.DecisionPanel = function({
                           color: selectedStatements.includes(phrase.id) ? '#e5e7eb' : '#9ca3af',
                           borderRadius: '6px',
                           cursor: 'pointer',
-                          lineHeight: '1.4',
+                          lineHeight: 'var(--leading-normal)',
                           minHeight: '48px'
                         }}
                       >
@@ -311,7 +312,8 @@ window.FedChair.Components.DecisionPanel = function({
           background: 'rgba(59, 130, 246, 0.1)',
           border: '1px solid rgba(59, 130, 246, 0.3)',
           borderRadius: '8px',
-          fontSize: '11px',
+          fontSize: 'var(--text-base)',
+          fontFamily: 'var(--font-prose)',
           color: '#60a5fa'
         }}>
           💡 Remember: Your past decisions are still working through the economy. Rate changes take 2-3 meetings to fully impact inflation and growth.

@@ -28,7 +28,7 @@ window.FedChair.Components.LoadingScreen = function() {
       <div style={{
         fontSize: 'clamp(10px, 3vw, 14px)',
         letterSpacing: '3px',
-        color: '#6b7280',
+        color: '#8b95a5',
         marginBottom: '40px'
       }}>
         THE WAR ROOM
@@ -49,7 +49,7 @@ window.FedChair.Components.LoadingScreen = function() {
       <div style={{
         marginTop: '20px',
         fontSize: '11px',
-        color: '#4b5563',
+        color: '#6b7280',
         fontFamily: '"IBM Plex Mono", monospace'
       }}>
         INITIALIZING...

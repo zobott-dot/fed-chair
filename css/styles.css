@@ -16,6 +16,35 @@ body {
   background: #0a0f1a;
   min-height: 100vh;
   min-height: -webkit-fill-available;
+
+  /* Font system */
+  --font-ui: 'IBM Plex Sans', -apple-system, sans-serif;
+  --font-data: 'IBM Plex Mono', monospace;
+  --font-prose: 'Source Sans 3', 'IBM Plex Sans', sans-serif;
+
+  /* Type scale (mobile-first) */
+  --text-xs: 10px;
+  --text-sm: 12px;
+  --text-base: 15px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+
+  /* Line heights */
+  --leading-tight: 1.3;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+}
+
+@media (min-width: 768px) {
+  body {
+    --text-xs: 10px;
+    --text-sm: 11px;
+    --text-base: 14px;
+    --text-lg: 17px;
+    --text-xl: 24px;
+    --text-2xl: 32px;
+  }
 }
 
 .font-mono {
@@ -212,6 +241,28 @@ button {
 @media (min-width: 640px) {
   .grid-staff-projections {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile typography and layout adjustments */
+@media (max-width: 767px) {
+  /* Briefing horizontal padding */
+  .briefing-container {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  /* Briefing sub-nav buttons */
+  .grid-briefing-nav button {
+    padding: 10px 16px !important;
+    font-size: 11px !important;
+  }
+}
+
+/* Game-over stats: 2 columns on narrow screens */
+@media (max-width: 639px) {
+  .grid-final-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 
