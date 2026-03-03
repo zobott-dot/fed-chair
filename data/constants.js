@@ -33,7 +33,7 @@ window.FedChair.Data.boardOfGovernors = [
   { name: 'Michelle W. Bowman', role: 'Governor', stance: 'Hawkish' },
   { name: 'Michael S. Barr', role: 'Governor', stance: 'Dovish' },
   { name: 'Lisa D. Cook', role: 'Governor', stance: 'Dovish' },
-  { name: 'Stephen I. Miran', role: 'Governor', stance: 'Very Dovish' },
+  { name: 'Stephen I. Miran', role: 'Governor (term expired Mar 1 — serving until successor confirmed)', stance: 'Very Dovish' },
   { name: 'Christopher J. Waller', role: 'Governor', stance: 'Dovish' }
 ];
 
@@ -47,8 +47,12 @@ window.FedChair.Data.regionalPresidents = [
 ];
 
 window.FedChair.Data.newsHeadlines = [
-  { headline: 'CPI Falls to 2.4% in January — Lowest Since May 2025', source: 'CNBC' },
-  { headline: 'Payrolls Surge 130K, Unemployment at 4.3%', source: 'BLS' },
-  { headline: 'Markets Price 92% Chance of Hold at March Meeting', source: 'CME' },
-  { headline: 'Warsh Confirmation Delayed by Tillis', source: 'CBS' }
+  { headline: 'Core PCE Spikes to 3.0% in December — Highest Since April 2024', source: 'BEA' },
+  { headline: 'BLS Benchmark Revision Slashes 2025 Job Gains by 911K — Avg Monthly Only 15K', source: 'BLS' },
+  { headline: 'Warsh Formally Nominated as Fed Chair Feb 24 — Senate Confirmation Hearings in March', source: 'White House' },
+  { headline: 'DOJ Grand Jury Subpoenas Powell Over Eccles Renovation Testimony', source: 'WSJ' },
+  { headline: 'Markets Price ~94% Hold at March Meeting, Two Cuts Priced for Later 2026', source: 'CME' },
+  { headline: 'Goldman Warns January PCE (Due March 13) Could Also Run Hot', source: 'Goldman Sachs' },
+  { headline: 'Gov. Miran Seat Expired March 1 — Will Stay Until Successor Confirmed', source: 'Reuters' },
+  { headline: 'Several FOMC Participants Raised Possibility of Rate Increases If Inflation Persists', source: 'Fed Minutes' }
 ];

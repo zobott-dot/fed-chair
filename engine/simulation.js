@@ -193,7 +193,7 @@ window.FedChair.Engine.createGameState = function(startingData) {
     economy: {
       gdpGrowth: startingData.gdp?.current || 1.9,
       cpiInflation: parseFloat(startingData.inflation?.cpiHeadline?.value) || 2.4,
-      pceInflation: parseFloat(startingData.inflation?.pceHeadline?.value) || 2.8,
+      pceInflation: parseFloat(startingData.inflation?.pceHeadline?.value) || 2.9,
       coreInflation: parseFloat(startingData.inflation?.cpiCore?.value) || 2.5,
       unemploymentRate: parseFloat(startingData.employment?.unemploymentU3?.value) || 4.3,
       payrollsChange: parseInt(startingData.employment?.nfp?.value?.replace(/[^0-9-]/g, '')) || 130,
@@ -202,11 +202,11 @@ window.FedChair.Engine.createGameState = function(startingData) {
 
     // Market levels
     markets: {
-      sp500: startingData.markets?.sp500?.value || 6836,
-      vix: startingData.markets?.vix?.value || 20.6,
-      treasury10y: startingData.markets?.treasury10y?.value || 4.07,
-      treasury2y: startingData.markets?.treasury2y?.value || 3.76,
-      dxy: startingData.markets?.dxy?.value || 96.88
+      sp500: startingData.markets?.sp500?.value || 6882,
+      vix: startingData.markets?.vix?.value || 21.44,
+      treasury10y: startingData.markets?.treasury10y?.value || 4.04,
+      treasury2y: startingData.markets?.treasury2y?.value || 3.48,
+      dxy: startingData.markets?.dxy?.value || 98.51
     },
 
     // Player performance
