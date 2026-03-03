@@ -672,9 +672,15 @@ window.FedChair.Engine = window.FedChair.Engine || {};
   // ========================================
 
   window.FedChair.Engine.generateBriefing = function(gameState) {
+    var useLive = gameState.mode === 'live' && gameState.meetingNumber <= 2;
+
     return {
-      beigeBook: generateBeigeBook(gameState),
-      staffProjections: generateStaffProjections(gameState),
+      beigeBook: (useLive && window.FedChair.Engine.generateLiveBeigeBook)
+        ? window.FedChair.Engine.generateLiveBeigeBook(gameState)
+        : generateBeigeBook(gameState),
+      staffProjections: (useLive && window.FedChair.Engine.generateLiveStaffProjections)
+        ? window.FedChair.Engine.generateLiveStaffProjections(gameState)
+        : generateStaffProjections(gameState),
       dataReleases: generateDataReleases(gameState),
       marketPositioning: generateMarketPositioning(gameState),
       conflictingSignals: generateConflictingSignals(gameState)

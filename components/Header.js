@@ -11,7 +11,8 @@ window.FedChair.Components.Header = function({
   meetingNumber,
   totalMeetings,
   gameEnded,
-  onNewGame
+  onNewGame,
+  gameMode
 }) {
   const [showConfirm, setShowConfirm] = React.useState(false);
   const views = ['dashboard', 'briefing', 'decision', ...(showReaction ? ['aftermath'] : [])];
@@ -108,8 +109,8 @@ window.FedChair.Components.Header = function({
 
           <div style={{
             padding: '6px 10px',
-            background: 'rgba(34, 197, 94, 0.1)',
-            border: '1px solid rgba(34, 197, 94, 0.3)',
+            background: gameMode === 'scenario' ? 'rgba(168, 85, 247, 0.1)' : 'rgba(34, 197, 94, 0.1)',
+            border: '1px solid ' + (gameMode === 'scenario' ? 'rgba(168, 85, 247, 0.3)' : 'rgba(34, 197, 94, 0.3)'),
             borderRadius: '4px',
             display: 'flex',
             alignItems: 'center',
@@ -121,10 +122,12 @@ window.FedChair.Components.Header = function({
                 width: '6px',
                 height: '6px',
                 borderRadius: '50%',
-                background: '#22c55e'
+                background: gameMode === 'scenario' ? '#a855f7' : '#22c55e'
               }}
             />
-            <span style={{ fontSize: '9px', color: '#22c55e', letterSpacing: '1px' }}>LIVE</span>
+            <span style={{ fontSize: '9px', color: gameMode === 'scenario' ? '#a855f7' : '#22c55e', letterSpacing: '1px' }}>
+              {gameMode === 'scenario' ? 'SCENARIO' : 'LIVE'}
+            </span>
           </div>
         </div>
       </div>

@@ -167,7 +167,7 @@ const RATE_EFFECTS = {
  * @param {Object} startingData - Initial economic data from data/economicData.js
  * @returns {Object} Initial game state
  */
-window.FedChair.Engine.createGameState = function(startingData) {
+window.FedChair.Engine.createGameState = function(startingData, mode) {
   return {
     // Meeting info
     meetingNumber: 1,
@@ -242,7 +242,10 @@ window.FedChair.Engine.createGameState = function(startingData) {
     // Dot plot (Phase 4)
     dotProjections: [],
     dotHistory: [],
-    committeeDots: {}
+    committeeDots: {},
+
+    // Game mode (Phase 5)
+    mode: mode || 'live'
   };
 };
 

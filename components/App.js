@@ -5,7 +5,7 @@ window.FedChair = window.FedChair || {};
 window.FedChair.Components = window.FedChair.Components || {};
 
 const { useState, useEffect, useCallback } = React;
-const { LoadingScreen, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, Aftermath } = window.FedChair.Components;
+const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, Aftermath } = window.FedChair.Components;
 const { calculateMarketReaction } = window.FedChair.Engine;
 const { calculateScore, calculateHawkScore, getHawkLabel } = window.FedChair.Engine;
 const { createGameState, advanceToNextMeeting, gameStateToEconomicData, generateBriefing, generateCommitteeDots } = window.FedChair.Engine;
@@ -14,6 +14,12 @@ window.FedChair.Components.App = function() {
   // Game state (persistent across rounds)
   const [gameState, setGameState] = useState(null);
   const [briefingData, setBriefingData] = useState(null);
+
+  // Raw data (loaded before mode selection)
+  const [rawData, setRawData] = useState(null);
+
+  // Mode selection
+  const [selectedMode, setSelectedMode] = useState(null);
 
   // Static data
   const [statementPhrases, setStatementPhrases] = useState(null);
@@ -35,18 +41,13 @@ window.FedChair.Components.App = function() {
   const [score, setScore] = useState(null);
   const [dotSelections, setDotSelections] = useState({});
 
-  // Load data and initialize game on mount
+  // Load data on mount (do NOT create gameState yet — wait for mode selection)
   useEffect(() => {
     const loadData = async () => {
       const API = window.FedChair.Data.API;
       const data = await API.getAllGameData();
 
-      // Initialize game state from starting data
-      const initialGameState = createGameState(data.economicData);
-      generateCommitteeDots(initialGameState);
-      setGameState(initialGameState);
-      setBriefingData(generateBriefing(initialGameState));
-
+      setRawData(data);
       setStatementPhrases(data.statementPhrases);
       setBoardOfGovernors(data.boardOfGovernors);
       setRegionalPresidents(data.regionalPresidents);
@@ -57,6 +58,17 @@ window.FedChair.Components.App = function() {
 
     loadData();
   }, []);
+
+  // Initialize game when user picks a mode
+  const initializeGame = useCallback((mode) => {
+    if (!rawData) return;
+    const gs = createGameState(rawData.economicData, mode);
+    generateCommitteeDots(gs);
+    setGameState(gs);
+    setBriefingData(generateBriefing(gs));
+    setSelectedMode(mode);
+    setActiveView('dashboard');
+  }, [rawData]);
 
   // Aftermath phase progression
   useEffect(() => {
@@ -171,16 +183,19 @@ window.FedChair.Components.App = function() {
     }, 800);
   };
 
-  // Start new game
+  // Start new game — reset to mode selection
   const handleNewGame = async () => {
+    // Re-fetch data in case it changed
     const API = window.FedChair.Data.API;
     const data = await API.getAllGameData();
-    const newGameState = createGameState(data.economicData);
-    generateCommitteeDots(newGameState);
-    setGameState(newGameState);
-    setBriefingData(generateBriefing(newGameState));
+    setRawData(data);
 
-    // Reset all state
+    // Reset to mode selection
+    setSelectedMode(null);
+    setGameState(null);
+    setBriefingData(null);
+
+    // Reset all meeting state
     setRateDecision(0);
     setSelectedStatements([]);
     setDecisionPublished(false);
@@ -193,8 +208,13 @@ window.FedChair.Components.App = function() {
   };
 
   // Show loading screen until data is ready
-  if (!dataLoaded || !gameState) {
+  if (!dataLoaded || !rawData) {
     return <LoadingScreen />;
+  }
+
+  // Show mode selection if no mode chosen yet
+  if (!selectedMode || !gameState) {
+    return <ModeSelect onSelectMode={initializeGame} />;
   }
 
   // Show transition screen
@@ -248,6 +268,7 @@ window.FedChair.Components.App = function() {
         totalMeetings={gameState.totalMeetings}
         gameEnded={gameState.gamePhase === 'ended'}
         onNewGame={handleNewGame}
+        gameMode={gameState.mode}
       />
 
       <MeetingBanner
