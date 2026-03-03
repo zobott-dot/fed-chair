@@ -637,7 +637,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
   // ========================================
   return (
     <div className="briefing-container" style={{
-      maxWidth: '900px',
+      maxWidth: '1200px',
       margin: '0 auto',
       padding: '16px'
     }}>
