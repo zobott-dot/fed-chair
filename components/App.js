@@ -5,10 +5,11 @@ window.FedChair = window.FedChair || {};
 window.FedChair.Components = window.FedChair.Components || {};
 
 const { useState, useEffect, useCallback } = React;
-const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, Aftermath } = window.FedChair.Components;
+const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, PressConference, Aftermath } = window.FedChair.Components;
 const { calculateMarketReaction } = window.FedChair.Engine;
 const { calculateScore, calculateHawkScore, getHawkLabel } = window.FedChair.Engine;
 const { createGameState, advanceToNextMeeting, gameStateToEconomicData, generateBriefing, generateCommitteeDots } = window.FedChair.Engine;
+const { applyPressConferenceToMarketReaction } = window.FedChair.Engine;
 
 window.FedChair.Components.App = function() {
   // Game state (persistent across rounds)
@@ -40,6 +41,7 @@ window.FedChair.Components.App = function() {
   const [aftermathPhase, setAftermathPhase] = useState(0);
   const [score, setScore] = useState(null);
   const [dotSelections, setDotSelections] = useState({});
+  const [pressConferenceImpact, setPressConferenceImpact] = useState(null);
 
   // Load data on mount (do NOT create gameState yet — wait for mode selection)
   useEffect(() => {
@@ -136,9 +138,25 @@ window.FedChair.Components.App = function() {
     setScore(meetingScore);
 
     setTimeout(() => {
-      setShowReaction(true);
-      setActiveView('aftermath');
+      setActiveView('pressConference');
     }, 400);
+  };
+
+  // Handle press conference completion
+  const handlePressConferenceComplete = (impact) => {
+    setPressConferenceImpact(impact);
+
+    // Apply mood to market reaction
+    const modifiedReaction = applyPressConferenceToMarketReaction(marketReaction, impact);
+    setMarketReaction(modifiedReaction);
+
+    // Recalculate score with modified reaction
+    const meetingScore = calculateScore({ reaction: modifiedReaction, rateDecision, hawkScore });
+    setScore(meetingScore);
+
+    // Transition to aftermath
+    setShowReaction(true);
+    setActiveView('aftermath');
   };
 
   // Handle advancing to next meeting
@@ -146,6 +164,11 @@ window.FedChair.Components.App = function() {
     if (!gameState || !marketReaction || !score) return;
 
     setTransitioning(true);
+
+    // Apply press conference credibility before advancing
+    if (pressConferenceImpact) {
+      gameState.credibility = Math.max(0, Math.min(100, gameState.credibility + pressConferenceImpact.totalCredibilityChange));
+    }
 
     // Advance the simulation (pass selectedStatements for guidance tracking)
     const result = advanceToNextMeeting(
@@ -170,6 +193,7 @@ window.FedChair.Components.App = function() {
     setAftermathPhase(0);
     setScore(null);
     setDotSelections({});
+    setPressConferenceImpact(null);
 
     // Brief transition animation
     setTimeout(() => {
@@ -204,6 +228,7 @@ window.FedChair.Components.App = function() {
     setAftermathPhase(0);
     setScore(null);
     setDotSelections({});
+    setPressConferenceImpact(null);
     setActiveView('dashboard');
   };
 
@@ -279,6 +304,18 @@ window.FedChair.Components.App = function() {
         credibility={gameState.credibility}
       />
 
+      {activeView === 'pressConference' && marketReaction && (
+        <PressConference
+          gameState={gameState}
+          rateDecision={rateDecision}
+          hawkScore={hawkScore}
+          hawkLabel={hawkLabel}
+          marketReaction={marketReaction}
+          selectedStatements={selectedStatements}
+          onComplete={handlePressConferenceComplete}
+        />
+      )}
+
       {activeView === 'aftermath' && showReaction && (
         <Aftermath
           marketReaction={marketReaction}
@@ -292,6 +329,7 @@ window.FedChair.Components.App = function() {
           gameState={gameState}
           onAdvance={handleAdvanceToNextMeeting}
           onNewGame={handleNewGame}
+          pressConferenceImpact={pressConferenceImpact}
         />
       )}
 

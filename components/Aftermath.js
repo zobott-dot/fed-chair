@@ -48,7 +48,8 @@ window.FedChair.Components.Aftermath = function({
   economicData,
   gameState,
   onAdvance,
-  onNewGame
+  onNewGame,
+  pressConferenceImpact
 }) {
   const isGameOver = gameState?.gamePhase === 'ended';
   const endResult = gameState?.endResult;
@@ -323,8 +324,8 @@ window.FedChair.Components.Aftermath = function({
             </div>
           )}
 
-          {/* Press Q&A */}
-          {aftermathPhase >= 3 && marketReaction && (
+          {/* Press Conference Recap */}
+          {aftermathPhase >= 3 && pressConferenceImpact && (
             <div className="animate-d2" style={panelStyle}>
               <div style={{
                 padding: '14px 16px',
@@ -332,24 +333,61 @@ window.FedChair.Components.Aftermath = function({
                 background: 'rgba(59, 130, 246, 0.1)'
               }}>
                 <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', fontWeight: '600' }}>
-                  🎤 PRESS CONFERENCE
+                  PRESS CONFERENCE RECAP
                 </div>
               </div>
-              <div style={{ padding: '12px' }}>
-                {marketReaction.questions.map((q, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      padding: '10px',
-                      background: i % 2 === 0 ? 'rgba(17, 24, 39, 0.3)' : 'transparent',
-                      borderRadius: '6px',
-                      marginBottom: '6px'
-                    }}
-                  >
-                    <div style={{ fontSize: 'var(--text-xs)', color: '#60a5fa', marginBottom: '2px' }}>{q.outlet}</div>
-                    <div style={{ fontSize: 'var(--text-base)', fontFamily: 'var(--font-prose)', color: '#e5e7eb', fontStyle: 'italic', lineHeight: 'var(--leading-normal)' }}>"{q.question}"</div>
+              <div style={{ padding: '16px' }}>
+                <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
+                  <div style={{
+                    flex: 1,
+                    padding: '12px',
+                    background: 'rgba(17, 24, 39, 0.5)',
+                    borderRadius: '8px',
+                    textAlign: 'center'
+                  }}>
+                    <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}>Credibility</div>
+                    <div style={{
+                      fontFamily: '"IBM Plex Mono", monospace',
+                      fontSize: 'clamp(16px, 2vw, 22px)',
+                      color: pressConferenceImpact.totalCredibilityChange >= 0 ? '#22c55e' : '#ef4444'
+                    }}>
+                      {pressConferenceImpact.totalCredibilityChange >= 0 ? '+' : ''}{pressConferenceImpact.totalCredibilityChange}
+                    </div>
                   </div>
-                ))}
+                  <div style={{
+                    flex: 1,
+                    padding: '12px',
+                    background: 'rgba(17, 24, 39, 0.5)',
+                    borderRadius: '8px',
+                    textAlign: 'center'
+                  }}>
+                    <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}>Interpretation</div>
+                    <div style={{
+                      fontSize: 'var(--text-sm)',
+                      fontWeight: '600',
+                      color: pressConferenceImpact.interpretation === 'mixed signals' ? '#f97316' :
+                             pressConferenceImpact.interpretation.includes('hawkish') ? '#ef4444' :
+                             pressConferenceImpact.interpretation.includes('dovish') ? '#22c55e' : '#60a5fa',
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px'
+                    }}>
+                      {pressConferenceImpact.interpretation}
+                    </div>
+                  </div>
+                </div>
+                {pressConferenceImpact.keyMoment && (
+                  <div style={{
+                    padding: '10px 12px',
+                    background: 'rgba(59, 130, 246, 0.08)',
+                    borderRadius: '6px',
+                    borderLeft: '3px solid #3b82f6'
+                  }}>
+                    <div style={{ fontSize: '10px', letterSpacing: '1px', color: '#60a5fa', marginBottom: '4px', fontWeight: '600' }}>KEY MOMENT</div>
+                    <div style={{ fontSize: 'var(--text-xs)', fontFamily: 'var(--font-prose)', color: '#9ca3af', lineHeight: 'var(--leading-relaxed)' }}>
+                      {pressConferenceImpact.keyMoment}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
