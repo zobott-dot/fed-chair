@@ -78,7 +78,7 @@ window.FedChair.Components.Aftermath = function({
         }}>
           <div style={{ fontSize: '64px', marginBottom: '16px' }}>{resultStyle.icon}</div>
           <div style={{
-            fontSize: '28px',
+            fontSize: 'clamp(24px, 5vw, 36px)',
             fontWeight: '600',
             color: resultStyle.color,
             marginBottom: '12px',
@@ -94,7 +94,7 @@ window.FedChair.Components.Aftermath = function({
 
         {/* Final Stats */}
         <div style={{ ...panelStyle, padding: '24px', marginBottom: '24px' }}>
-          <div style={{ fontSize: '12px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '20px', textAlign: 'center' }}>
+          <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', marginBottom: '20px', textAlign: 'center', fontWeight: '600' }}>
             FINAL ECONOMIC STATE
           </div>
           <div className="grid-final-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
@@ -111,15 +111,15 @@ window.FedChair.Components.Aftermath = function({
                 border: `1px solid ${stat.good ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
                 textAlign: 'center'
               }}>
-                <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '4px' }}>{stat.label}</div>
+                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}>{stat.label}</div>
                 <div style={{
                   fontFamily: '"IBM Plex Mono", monospace',
-                  fontSize: '20px',
+                  fontSize: 'clamp(20px, 3vw, 28px)',
                   color: stat.good ? '#22c55e' : '#ef4444'
                 }}>
                   {stat.value}
                 </div>
-                <div style={{ fontSize: '9px', color: '#8b95a5', marginTop: '4px' }}>Target: {stat.target}</div>
+                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '4px' }}>Target: {stat.target}</div>
               </div>
             ))}
           </div>
@@ -127,31 +127,31 @@ window.FedChair.Components.Aftermath = function({
 
         {/* Performance Summary */}
         <div style={{ ...panelStyle, padding: '24px', marginBottom: '24px' }}>
-          <div style={{ fontSize: '12px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '20px', textAlign: 'center' }}>
+          <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', marginBottom: '20px', textAlign: 'center', fontWeight: '600' }}>
             YOUR TENURE
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', textAlign: 'center' }}>
             <div>
-              <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '4px' }}>Meetings</div>
-              <div style={{ fontSize: '24px', color: '#60a5fa' }}>{gameState.meetingNumber - 1} / 8</div>
+              <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}>Meetings</div>
+              <div style={{ fontSize: 'clamp(20px, 3vw, 28px)', fontFamily: '"IBM Plex Mono", monospace', color: '#60a5fa' }}>{gameState.meetingNumber - 1} / 8</div>
             </div>
             <div>
-              <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '4px' }}>Average Score</div>
-              <div style={{ fontSize: '24px', color: '#60a5fa' }}>
+              <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}>Average Score</div>
+              <div style={{ fontSize: 'clamp(20px, 3vw, 28px)', fontFamily: '"IBM Plex Mono", monospace', color: '#60a5fa' }}>
                 {gameState.meetingScores.length > 0
                   ? Math.round(gameState.totalScore / gameState.meetingScores.length)
                   : 0}
               </div>
             </div>
             <div>
-              <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '4px' }}>Final Rate</div>
-              <div style={{ fontSize: '24px', color: '#60a5fa' }}>{formatRate(gameState.currentRate)}</div>
+              <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}>Final Rate</div>
+              <div style={{ fontSize: 'clamp(20px, 3vw, 28px)', fontFamily: '"IBM Plex Mono", monospace', color: '#60a5fa' }}>{formatRate(gameState.currentRate)}</div>
             </div>
           </div>
 
           {/* Rate History Mini Chart */}
           <div style={{ marginTop: '24px' }}>
-            <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '8px' }}>Rate History</div>
+            <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '8px' }}>Rate History</div>
             <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '60px' }}>
               {gameState.rateHistory.map((r, i) => {
                 const height = Math.max(10, (r.rate / 5) * 60);
@@ -215,13 +215,13 @@ window.FedChair.Components.Aftermath = function({
           >
             {[0, 1, 2].map(i => (
               <React.Fragment key={i}>
-                <span style={{ fontSize: '12px', fontWeight: '600', color: 'white', marginRight: '40px' }}>
+                <span style={{ fontSize: 'var(--text-sm)', fontWeight: '600', color: 'white', marginRight: '40px' }}>
                   📢 {marketReaction.headline}
                 </span>
-                <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)', marginRight: '40px' }}>
+                <span style={{ fontSize: 'var(--text-sm)', color: 'rgba(255,255,255,0.9)', marginRight: '40px', fontFamily: '"IBM Plex Mono", monospace' }}>
                   S&P: {marketReaction.sp500.change >= 0 ? '+' : ''}{marketReaction.sp500.change.toFixed(2)}%
                 </span>
-                <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)', marginRight: '40px' }}>
+                <span style={{ fontSize: 'var(--text-sm)', color: 'rgba(255,255,255,0.9)', marginRight: '40px', fontFamily: '"IBM Plex Mono", monospace' }}>
                   10Y: {marketReaction.treasury10y.change >= 0 ? '+' : ''}{marketReaction.treasury10y.change.toFixed(1)}bps
                 </span>
               </React.Fragment>
@@ -246,7 +246,7 @@ window.FedChair.Components.Aftermath = function({
                     ? 'rgba(239, 68, 68, 0.1)'
                     : 'rgba(59, 130, 246, 0.1)'
               }}>
-                <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af' }}>
+                <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', fontWeight: '600' }}>
                   MARKET REACTION
                 </div>
               </div>
@@ -268,13 +268,13 @@ window.FedChair.Components.Aftermath = function({
                         border: `1px solid ${(m.inv ? m.change <= 0 : m.change >= 0) ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'}`
                       }}
                     >
-                      <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '4px' }}>{m.label}</div>
-                      <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '16px', color: '#f9fafb' }}>
+                      <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}>{m.label}</div>
+                      <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: 'clamp(16px, 2vw, 22px)', color: '#f9fafb' }}>
                         {m.value}
                       </div>
                       <div style={{
                         fontFamily: '"IBM Plex Mono", monospace',
-                        fontSize: '12px',
+                        fontSize: 'var(--text-sm)',
                         color: (m.inv ? m.change <= 0 : m.change >= 0) ? '#22c55e' : '#ef4444'
                       }}>
                         {m.change >= 0 ? '+' : ''}{m.change.toFixed(m.unit === 'bp' ? 1 : 2)}{m.unit}
@@ -289,7 +289,7 @@ window.FedChair.Components.Aftermath = function({
           {/* Sectors */}
           {aftermathPhase >= 2 && marketReaction && (
             <div className="animate-d1" style={{ ...panelStyle, padding: '16px' }}>
-              <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '12px' }}>
+              <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', marginBottom: '12px', fontWeight: '600' }}>
                 SECTORS
               </div>
               <div className="grid-sectors">
@@ -309,10 +309,10 @@ window.FedChair.Components.Aftermath = function({
                     }}
                   >
                     <div style={{ fontSize: '18px', marginBottom: '6px' }}>{s.icon}</div>
-                    <div style={{ fontSize: '10px', color: '#9ca3af', marginBottom: '2px' }}>{s.name}</div>
+                    <div style={{ fontSize: 'var(--text-xs)', color: '#9ca3af', marginBottom: '2px' }}>{s.name}</div>
                     <div style={{
                       fontFamily: '"IBM Plex Mono", monospace',
-                      fontSize: '14px',
+                      fontSize: 'var(--text-base)',
                       color: (s.unit === 'bp' ? s.change <= 0 : s.change >= 0) ? '#22c55e' : '#ef4444'
                     }}>
                       {s.change >= 0 ? '+' : ''}{s.change.toFixed(s.unit === 'bp' ? 1 : 2)}{s.unit || '%'}
@@ -331,7 +331,7 @@ window.FedChair.Components.Aftermath = function({
                 borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
                 background: 'rgba(59, 130, 246, 0.1)'
               }}>
-                <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af' }}>
+                <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', fontWeight: '600' }}>
                   🎤 PRESS CONFERENCE
                 </div>
               </div>
@@ -346,7 +346,7 @@ window.FedChair.Components.Aftermath = function({
                       marginBottom: '6px'
                     }}
                   >
-                    <div style={{ fontSize: '10px', color: '#60a5fa', marginBottom: '2px' }}>{q.outlet}</div>
+                    <div style={{ fontSize: 'var(--text-xs)', color: '#60a5fa', marginBottom: '2px' }}>{q.outlet}</div>
                     <div style={{ fontSize: 'var(--text-base)', fontFamily: 'var(--font-prose)', color: '#e5e7eb', fontStyle: 'italic', lineHeight: 'var(--leading-normal)' }}>"{q.question}"</div>
                   </div>
                 ))}
@@ -366,16 +366,16 @@ window.FedChair.Components.Aftermath = function({
             padding: '20px',
             textAlign: 'center'
           }}>
-            <div style={{ fontSize: '11px', color: '#8b95a5', marginBottom: '8px' }}>YOUR DECISION</div>
+            <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginBottom: '8px', letterSpacing: '1px' }}>YOUR DECISION</div>
             <div style={{
               fontFamily: '"IBM Plex Mono", monospace',
-              fontSize: '28px',
+              fontSize: 'clamp(24px, 5vw, 34px)',
               color: getDecisionColor(rateDecision)
             }}>
               {getDecisionLabelFull(rateDecision)}
             </div>
-            <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '8px' }}>
-              New Rate: <span style={{ color: '#60a5fa' }}>{formatRate(currentRate + rateDecision / 100)}</span>
+            <div style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', marginTop: '8px' }}>
+              New Rate: <span style={{ color: '#60a5fa', fontFamily: '"IBM Plex Mono", monospace' }}>{formatRate(currentRate + rateDecision / 100)}</span>
             </div>
             {selectedStatements.length > 0 && (
               <div style={{
@@ -385,7 +385,7 @@ window.FedChair.Components.Aftermath = function({
                 borderRadius: '6px',
                 border: `1px solid ${hawkLabel.color}30`
               }}>
-                <span style={{ fontSize: '11px', color: hawkLabel.color }}>{hawkLabel.label}</span>
+                <span style={{ fontSize: 'var(--text-sm)', color: hawkLabel.color }}>{hawkLabel.label}</span>
               </div>
             )}
           </div>
@@ -394,9 +394,9 @@ window.FedChair.Components.Aftermath = function({
           {aftermathPhase >= 1 && gameState && (
             <div className="animate-slideIn" style={{ ...panelStyle, padding: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af' }}>CREDIBILITY</div>
+                <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', fontWeight: '600' }}>CREDIBILITY</div>
                 <div style={{
-                  fontSize: '20px',
+                  fontSize: 'clamp(20px, 3vw, 28px)',
                   fontFamily: '"IBM Plex Mono", monospace',
                   color: getCredibilityColor(gameState.credibility)
                 }}>
@@ -418,7 +418,7 @@ window.FedChair.Components.Aftermath = function({
                 }} />
               </div>
               {gameState.credibilityHistory.length > 1 && (
-                <div style={{ marginTop: '8px', fontSize: '10px', color: '#8b95a5' }}>
+                <div style={{ marginTop: '8px', fontSize: 'var(--text-xs)', color: '#8b95a5' }}>
                   {gameState.credibility > gameState.credibilityHistory[gameState.credibilityHistory.length - 2]
                     ? '↑ Credibility improved'
                     : gameState.credibility < gameState.credibilityHistory[gameState.credibilityHistory.length - 2]
@@ -433,11 +433,12 @@ window.FedChair.Components.Aftermath = function({
           {aftermathPhase >= 2 && score && (
             <div className="animate-d1" style={{ ...panelStyle, padding: '20px' }}>
               <div style={{
-                fontSize: '11px',
+                fontSize: 'var(--text-sm)',
                 letterSpacing: '2px',
                 color: '#9ca3af',
                 marginBottom: '16px',
-                textAlign: 'center'
+                textAlign: 'center',
+                fontWeight: '600'
               }}>
                 MEETING SCORECARD
               </div>
@@ -458,10 +459,10 @@ window.FedChair.Components.Aftermath = function({
                     {score.overall.grade}
                   </span>
                 </div>
-                <div style={{ fontSize: '13px', color: score.overall.color, fontWeight: '500' }}>
+                <div style={{ fontSize: 'var(--text-sm)', color: score.overall.color, fontWeight: '500' }}>
                   {score.overall.text}
                 </div>
-                <div style={{ fontSize: '11px', color: '#8b95a5', marginTop: '4px' }}>
+                <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginTop: '4px' }}>
                   {score.overall.score}/100
                 </div>
               </div>
@@ -476,8 +477,8 @@ window.FedChair.Components.Aftermath = function({
                     <span style={{ fontSize: '14px' }}>{item.icon}</span>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px' }}>
-                        <span style={{ fontSize: '10px', color: '#9ca3af' }}>{item.label}</span>
-                        <span style={{ fontSize: '10px', color: item.data.color, fontWeight: '500' }}>
+                        <span style={{ fontSize: 'var(--text-xs)', color: '#9ca3af' }}>{item.label}</span>
+                        <span style={{ fontSize: 'var(--text-xs)', color: item.data.color, fontWeight: '500' }}>
                           {item.data.grade}
                         </span>
                       </div>
@@ -505,7 +506,7 @@ window.FedChair.Components.Aftermath = function({
           {/* Meeting Progress */}
           {aftermathPhase >= 3 && gameState && (
             <div className="animate-d2" style={{ ...panelStyle, padding: '16px' }}>
-              <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '12px' }}>
+              <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', marginBottom: '12px', fontWeight: '600' }}>
                 PROGRESS
               </div>
               <div style={{ display: 'flex', gap: '4px' }}>
@@ -523,7 +524,7 @@ window.FedChair.Components.Aftermath = function({
                   />
                 ))}
               </div>
-              <div style={{ fontSize: '10px', color: '#8b95a5', marginTop: '8px', textAlign: 'center' }}>
+              <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '8px', textAlign: 'center' }}>
                 Meeting {gameState.meetingNumber} of {gameState.totalMeetings}
               </div>
             </div>
@@ -536,15 +537,16 @@ window.FedChair.Components.Aftermath = function({
               className="animate-d3"
               style={{
                 padding: '18px',
-                fontSize: '14px',
+                fontSize: 'var(--text-base)',
                 fontWeight: '500',
-                letterSpacing: '1px',
+                letterSpacing: '1.5px',
                 background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
                 border: 'none',
                 color: '#fff',
                 borderRadius: '8px',
                 cursor: 'pointer',
-                boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+                minHeight: 'auto'
               }}
             >
               {gameState.meetingNumber >= gameState.totalMeetings

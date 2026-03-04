@@ -37,7 +37,7 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
           FED CHAIR
         </h1>
         <div style={{
-          fontSize: '11px',
+          fontSize: 'var(--text-sm)',
           letterSpacing: '2px',
           color: '#8b95a5'
         }}>
@@ -60,7 +60,7 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
         >
           <div style={{ fontSize: '36px', marginBottom: '16px' }}>📡</div>
           <div style={{
-            fontSize: '16px',
+            fontSize: 'var(--text-lg)',
             fontWeight: '500',
             letterSpacing: '2px',
             color: '#22c55e',
@@ -69,7 +69,7 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
             LIVE MODE
           </div>
           <div style={{
-            fontSize: '13px',
+            fontSize: 'var(--text-base)',
             fontFamily: 'var(--font-prose)',
             color: '#9ca3af',
             lineHeight: '1.6',
@@ -83,7 +83,7 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
             background: 'rgba(34, 197, 94, 0.1)',
             border: '1px solid rgba(34, 197, 94, 0.3)',
             borderRadius: '4px',
-            fontSize: '10px',
+            fontSize: 'var(--text-xs)',
             letterSpacing: '1px',
             color: '#22c55e'
           }}>
@@ -108,7 +108,7 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
             background: 'rgba(168, 85, 247, 0.15)',
             border: '1px solid rgba(168, 85, 247, 0.3)',
             borderRadius: '4px',
-            fontSize: '9px',
+            fontSize: 'var(--text-xs)',
             letterSpacing: '1px',
             color: '#a855f7',
             fontWeight: '600'
@@ -117,7 +117,7 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
           </div>
           <div style={{ fontSize: '36px', marginBottom: '16px' }}>🎮</div>
           <div style={{
-            fontSize: '16px',
+            fontSize: 'var(--text-lg)',
             fontWeight: '500',
             letterSpacing: '2px',
             color: '#a855f7',
@@ -126,7 +126,7 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
             SCENARIO MODE
           </div>
           <div style={{
-            fontSize: '13px',
+            fontSize: 'var(--text-base)',
             fontFamily: 'var(--font-prose)',
             color: '#9ca3af',
             lineHeight: '1.6'

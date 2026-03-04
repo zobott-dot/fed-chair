@@ -64,13 +64,15 @@ window.FedChair.Components.Header = function({
           {/* Meeting indicator */}
           {meetingNumber && totalMeetings && (
             <div style={{
-              padding: '6px 10px',
+              padding: '8px 14px',
               background: 'rgba(59, 130, 246, 0.1)',
               border: '1px solid rgba(59, 130, 246, 0.3)',
               borderRadius: '4px',
-              fontSize: '10px',
+              fontSize: 'var(--text-sm)',
               color: '#60a5fa',
-              letterSpacing: '1px'
+              letterSpacing: '1px',
+              display: 'flex',
+              alignItems: 'center'
             }}>
               {gameEnded ? 'GAME OVER' : `MEETING ${meetingNumber}/${totalMeetings}`}
             </div>
@@ -80,18 +82,19 @@ window.FedChair.Components.Header = function({
           <button
             onClick={handleNewGameClick}
             style={{
-              padding: '6px 10px',
+              padding: '8px 14px',
               background: 'rgba(75, 85, 99, 0.2)',
               border: '1px solid rgba(75, 85, 99, 0.4)',
               borderRadius: '4px',
-              fontSize: '10px',
+              fontSize: 'var(--text-sm)',
               color: '#9ca3af',
               letterSpacing: '1px',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               gap: '4px',
-              transition: 'all 0.2s'
+              transition: 'all 0.2s',
+              minHeight: 'auto'
             }}
             onMouseEnter={(e) => {
               e.target.style.background = 'rgba(239, 68, 68, 0.1)';
@@ -108,7 +111,7 @@ window.FedChair.Components.Header = function({
           </button>
 
           <div style={{
-            padding: '6px 10px',
+            padding: '8px 14px',
             background: gameMode === 'scenario' ? 'rgba(168, 85, 247, 0.1)' : 'rgba(34, 197, 94, 0.1)',
             border: '1px solid ' + (gameMode === 'scenario' ? 'rgba(168, 85, 247, 0.3)' : 'rgba(34, 197, 94, 0.3)'),
             borderRadius: '4px',
@@ -125,7 +128,7 @@ window.FedChair.Components.Header = function({
                 background: gameMode === 'scenario' ? '#a855f7' : '#22c55e'
               }}
             />
-            <span style={{ fontSize: '9px', color: gameMode === 'scenario' ? '#a855f7' : '#22c55e', letterSpacing: '1px' }}>
+            <span style={{ fontSize: 'var(--text-sm)', color: gameMode === 'scenario' ? '#a855f7' : '#22c55e', letterSpacing: '1px' }}>
               {gameMode === 'scenario' ? 'SCENARIO' : 'LIVE'}
             </span>
           </div>
@@ -205,15 +208,16 @@ window.FedChair.Components.Header = function({
             onClick={() => setActiveView(view)}
             style={{
               flex: 1,
-              maxWidth: '100px',
-              padding: '10px',
-              fontSize: '10px',
+              maxWidth: '140px',
+              padding: '12px',
+              fontSize: 'var(--text-sm)',
               letterSpacing: '1px',
               background: activeView === view ? 'rgba(59, 130, 246, 0.2)' : 'rgba(17, 24, 39, 0.5)',
               border: activeView === view ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid rgba(75, 85, 99, 0.3)',
               color: activeView === view ? '#60a5fa' : '#8b95a5',
               borderRadius: '6px',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              minHeight: 'auto'
             }}
           >
             {view === 'dashboard' ? '📊 DATA' : view === 'briefing' ? '📋 BRIEF' : view === 'decision' ? '⚡ DECIDE' : '📈 RESULT'}
@@ -246,35 +250,37 @@ window.FedChair.Components.MeetingBanner = function({
   return (
     <div style={{
       background: 'rgba(30, 58, 138, 0.15)',
-      padding: '10px 16px',
+      padding: '14px 20px',
       borderBottom: '1px solid rgba(75, 85, 99, 0.2)',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      gap: '20px',
+      gap: '28px',
       flexWrap: 'wrap'
     }}>
       <div>
-        <span style={{ fontSize: '11px', color: '#9ca3af' }}>Meeting: </span>
-        <span style={{ fontSize: '12px', color: '#60a5fa', fontWeight: '500' }}>{nextMeeting}</span>
+        <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af' }}>Meeting: </span>
+        <span style={{ fontSize: 'var(--text-base)', color: '#60a5fa', fontWeight: '600', fontFamily: 'var(--font-data)' }}>{nextMeeting}</span>
       </div>
       <div>
-        <span style={{ fontSize: '11px', color: '#9ca3af' }}>Market Expects: </span>
+        <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af' }}>Market Expects: </span>
         <span style={{
-          fontSize: '12px',
+          fontSize: 'var(--text-base)',
           color: getExpectationColor(marketExpects || 0),
-          fontWeight: '500'
+          fontWeight: '600',
+          fontFamily: 'var(--font-data)'
         }}>
           {getExpectationLabel(marketExpects || 0)}
         </span>
       </div>
       {credibility !== undefined && (
         <div>
-          <span style={{ fontSize: '11px', color: '#9ca3af' }}>Credibility: </span>
+          <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af' }}>Credibility: </span>
           <span style={{
-            fontSize: '12px',
+            fontSize: 'var(--text-base)',
             color: credibility >= 60 ? '#22c55e' : credibility >= 40 ? '#eab308' : '#ef4444',
-            fontWeight: '500'
+            fontWeight: '600',
+            fontFamily: 'var(--font-data)'
           }}>
             {credibility}/100
           </span>

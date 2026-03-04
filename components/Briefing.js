@@ -24,16 +24,17 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
   ];
 
   const labelStyle = {
-    fontSize: '10px',
-    letterSpacing: '1px',
+    fontSize: 'var(--text-sm)',
+    letterSpacing: '1.5px',
     color: '#9ca3af',
     textTransform: 'uppercase',
-    marginBottom: '8px'
+    marginBottom: '8px',
+    fontWeight: '600'
   };
 
   const valueStyle = {
     fontFamily: "'IBM Plex Mono', monospace",
-    fontSize: '16px',
+    fontSize: 'var(--text-lg)',
     color: '#f9fafb'
   };
 
@@ -73,11 +74,11 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
               borderLeft: '3px solid ' + sentimentColors[report.sentiment]
             }}>
               <div style={{
-                fontSize: '10px',
+                fontSize: 'var(--text-xs)',
                 letterSpacing: '1.5px',
                 color: sentimentColors[report.sentiment],
                 marginBottom: '8px',
-                fontWeight: '500'
+                fontWeight: '600'
               }}>
                 {report.district.toUpperCase()} — DISTRICT {report.number}
               </div>
@@ -183,7 +184,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
           display: 'flex',
           gap: '16px',
           marginBottom: '16px',
-          fontSize: '10px',
+          fontSize: 'var(--text-xs)',
           color: '#9ca3af',
           flexWrap: 'wrap'
         }}>
@@ -293,10 +294,10 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
             }}>
               {/* Left: Name & Source */}
               <div style={{ flex: '1 1 200px' }}>
-                <div className="data-release-name" style={{ fontSize: '13px', color: '#e5e7eb', fontWeight: '500' }}>
+                <div className="data-release-name" style={{ fontSize: 'var(--text-base)', color: '#e5e7eb', fontWeight: '500' }}>
                   {release.name}
                 </div>
-                <div style={{ fontSize: '10px', color: '#8b95a5', marginTop: '2px' }}>
+                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '2px' }}>
                   {release.source}
                 </div>
               </div>
@@ -304,40 +305,40 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
               {/* Right: Values */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
                 {/* Previous */}
-                <div style={{ textAlign: 'center', minWidth: '55px' }}>
-                  <div style={{ fontSize: '9px', color: '#8b95a5', marginBottom: '2px' }}>PREV</div>
-                  <div className="data-release-prev" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: '#8b95a5' }}>
+                <div style={{ textAlign: 'center', minWidth: '60px' }}>
+                  <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '0.5px' }}>PREV</div>
+                  <div className="data-release-prev" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'var(--text-sm)', color: '#8b95a5' }}>
                     {release.previous}
                   </div>
                 </div>
 
                 {/* Expected */}
-                <div style={{ textAlign: 'center', minWidth: '55px' }}>
-                  <div style={{ fontSize: '9px', color: '#8b95a5', marginBottom: '2px' }}>EXP</div>
-                  <div className="data-release-exp" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: '#9ca3af' }}>
+                <div style={{ textAlign: 'center', minWidth: '60px' }}>
+                  <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '0.5px' }}>EXP</div>
+                  <div className="data-release-exp" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'var(--text-sm)', color: '#9ca3af' }}>
                     {release.expected}
                   </div>
                 </div>
 
                 {/* Actual */}
-                <div style={{ textAlign: 'center', minWidth: '55px' }}>
-                  <div style={{ fontSize: '9px', color: '#8b95a5', marginBottom: '2px' }}>ACTUAL</div>
-                  <div className="data-release-actual" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '13px', color: '#f9fafb', fontWeight: '500' }}>
+                <div style={{ textAlign: 'center', minWidth: '60px' }}>
+                  <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '0.5px' }}>ACTUAL</div>
+                  <div className="data-release-actual" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'var(--text-base)', color: '#f9fafb', fontWeight: '500' }}>
                     {release.actual}
                   </div>
                 </div>
 
                 {/* Surprise badge */}
                 <div style={{
-                  padding: '3px 8px',
+                  padding: '4px 10px',
                   borderRadius: '4px',
-                  fontSize: '9px',
+                  fontSize: 'var(--text-xs)',
                   fontWeight: '600',
                   letterSpacing: '0.5px',
                   background: 'rgba(' + (release.surprise === 'beat' ? '34,197,94' : release.surprise === 'miss' ? '239,68,68' : '156,163,175') + ', 0.15)',
                   color: surpriseColors[release.surprise],
                   border: '1px solid rgba(' + (release.surprise === 'beat' ? '34,197,94' : release.surprise === 'miss' ? '239,68,68' : '156,163,175') + ', 0.3)',
-                  minWidth: '48px',
+                  minWidth: '54px',
                   textAlign: 'center'
                 }}>
                   {surpriseLabels[release.surprise]}
@@ -349,7 +350,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
 
         {/* Significance note */}
         <div style={{
-          fontSize: '10px',
+          fontSize: 'var(--text-xs)',
           color: '#8b95a5',
           marginTop: '12px',
           fontStyle: 'italic'
@@ -398,7 +399,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
           <div style={labelStyle}>FED FUNDS FUTURES PRICING</div>
           <div style={{
             fontFamily: "'IBM Plex Mono', monospace",
-            fontSize: '28px',
+            fontSize: 'clamp(28px, 5vw, 42px)',
             color: decisionColors[maxProb[0]],
             fontWeight: '500',
             margin: '8px 0'
@@ -423,8 +424,8 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
               .map(([key, prob]) => (
                 <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <div className="prob-label" style={{
-                    width: '55px',
-                    fontSize: '11px',
+                    width: '70px',
+                    fontSize: 'var(--text-sm)',
                     fontFamily: "'IBM Plex Mono', monospace",
                     color: decisionColors[key],
                     textAlign: 'right'
@@ -433,7 +434,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
                   </div>
                   <div style={{
                     flex: 1,
-                    height: '20px',
+                    height: '26px',
                     background: 'rgba(17, 24, 39, 0.6)',
                     borderRadius: '4px',
                     overflow: 'hidden'
@@ -450,8 +451,8 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
                     />
                   </div>
                   <div className="prob-pct" style={{
-                    width: '36px',
-                    fontSize: '11px',
+                    width: '44px',
+                    fontSize: 'var(--text-sm)',
                     fontFamily: "'IBM Plex Mono', monospace",
                     color: '#9ca3af',
                     textAlign: 'right'
@@ -590,13 +591,13 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
                   marginBottom: '10px',
                   gap: '12px'
                 }}>
-                  <div style={{ fontSize: '14px', color: '#f9fafb', fontWeight: '500' }}>
+                  <div style={{ fontSize: 'var(--text-lg)', color: '#f9fafb', fontWeight: '500' }}>
                     {signal.title}
                   </div>
                   <div style={{
-                    padding: '2px 8px',
+                    padding: '3px 10px',
                     borderRadius: '4px',
-                    fontSize: '9px',
+                    fontSize: 'var(--text-xs)',
                     fontWeight: '600',
                     letterSpacing: '0.5px',
                     background: colors.bg,
@@ -646,10 +647,10 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
         background: 'rgba(234, 179, 8, 0.06)',
         border: '1px solid rgba(234, 179, 8, 0.15)',
         borderRadius: '6px',
-        padding: '8px 16px',
+        padding: '10px 16px',
         textAlign: 'center',
         marginBottom: '16px',
-        fontSize: '10px',
+        fontSize: 'var(--text-xs)',
         letterSpacing: '2px',
         color: '#eab308'
       }}>
@@ -661,10 +662,10 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
         textAlign: 'center',
         marginBottom: '20px'
       }}>
-        <div style={{ fontSize: '11px', color: '#8b95a5', letterSpacing: '1px' }}>
+        <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', letterSpacing: '1.5px' }}>
           MEETING {gameState.meetingNumber} OF {gameState.totalMeetings}
         </div>
-        <div style={{ fontSize: '16px', color: '#e5e7eb', marginTop: '4px' }}>
+        <div style={{ fontSize: 'var(--text-xl)', color: '#e5e7eb', marginTop: '6px' }}>
           {gameState.meetingDisplayDate}
         </div>
       </div>
@@ -676,8 +677,8 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
             key={section.id}
             onClick={() => setActiveSection(section.id)}
             style={{
-              padding: '8px 14px',
-              fontSize: '10px',
+              padding: '10px 18px',
+              fontSize: 'var(--text-sm)',
               letterSpacing: '0.5px',
               background: activeSection === section.id
                 ? 'rgba(59, 130, 246, 0.2)'
@@ -689,7 +690,8 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
               borderRadius: '6px',
               cursor: 'pointer',
               whiteSpace: 'nowrap',
-              flexShrink: 0
+              flexShrink: 0,
+              minHeight: 'auto'
             }}
           >
             {section.label}
@@ -705,15 +707,16 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
         <button
           onClick={() => setActiveView('decision')}
           style={{
-            padding: '12px 32px',
-            fontSize: '12px',
+            padding: '16px 40px',
+            fontSize: 'var(--text-base)',
             fontWeight: '500',
-            letterSpacing: '1px',
+            letterSpacing: '1.5px',
             background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
             border: 'none',
             color: '#fff',
             borderRadius: '6px',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            minHeight: 'auto'
           }}
         >
           PROCEED TO DECISION

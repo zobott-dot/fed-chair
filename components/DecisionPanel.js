@@ -90,23 +90,24 @@ window.FedChair.Components.DecisionPanel = function({
         borderRadius: '8px'
       }}>
         <div>
-          <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '2px' }}>Meeting</div>
-          <div style={{ fontSize: '14px', color: '#60a5fa' }}>
+          <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '1px' }}>Meeting</div>
+          <div style={{ fontSize: 'var(--text-lg)', color: '#60a5fa', fontFamily: '"IBM Plex Mono", monospace' }}>
             {meetingNumber} of {totalMeetings}
           </div>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '2px' }}>Market Expects</div>
+          <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '1px' }}>Market Expects</div>
           <div style={{
-            fontSize: '14px',
+            fontSize: 'var(--text-lg)',
+            fontFamily: '"IBM Plex Mono", monospace',
             color: marketExpects > 0 ? '#ef4444' : marketExpects < 0 ? '#22c55e' : '#60a5fa'
           }}>
             {marketExpects === 0 ? 'HOLD' : `${marketExpects > 0 ? '+' : ''}${marketExpects}bp`}
           </div>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '2px' }}>Credibility</div>
-          <div style={{ fontSize: '14px', color: getCredibilityColor(credibility) }}>
+          <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '1px' }}>Credibility</div>
+          <div style={{ fontSize: 'var(--text-lg)', fontFamily: '"IBM Plex Mono", monospace', color: getCredibilityColor(credibility) }}>
             {credibility}/100
           </div>
         </div>
@@ -118,10 +119,10 @@ window.FedChair.Components.DecisionPanel = function({
           borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
           background: 'rgba(30, 58, 138, 0.2)'
         }}>
-          <div style={{ fontSize: '12px', letterSpacing: '2px', color: '#9ca3af', marginBottom: '4px' }}>
+          <div style={{ fontSize: 'var(--text-base)', letterSpacing: '2px', color: '#9ca3af', marginBottom: '4px', fontWeight: '600' }}>
             FOMC DECISION
           </div>
-          <div style={{ fontSize: '11px', color: '#8b95a5' }}>
+          <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5' }}>
             Set the target rate and craft your statement
           </div>
         </div>
@@ -129,12 +130,12 @@ window.FedChair.Components.DecisionPanel = function({
         <div style={{ padding: '20px' }}>
           {/* Current Rate */}
           <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-            <div style={{ fontSize: '11px', color: '#8b95a5', marginBottom: '8px', letterSpacing: '1px' }}>
+            <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginBottom: '8px', letterSpacing: '1.5px' }}>
               CURRENT RATE
             </div>
             <div style={{
               fontFamily: '"IBM Plex Mono", monospace',
-              fontSize: 'clamp(24px, 7vw, 32px)',
+              fontSize: 'clamp(28px, 7vw, 42px)',
               color: '#60a5fa'
             }}>
               {economicData.fedFundsRate.target}
@@ -144,10 +145,10 @@ window.FedChair.Components.DecisionPanel = function({
           {/* Rate Buttons */}
           <div style={{ marginBottom: '20px' }}>
             <div style={{
-              fontSize: '11px',
+              fontSize: 'var(--text-sm)',
               color: '#9ca3af',
               marginBottom: '10px',
-              letterSpacing: '1px',
+              letterSpacing: '1.5px',
               textAlign: 'center'
             }}>
               YOUR DECISION
@@ -159,8 +160,8 @@ window.FedChair.Components.DecisionPanel = function({
                   onClick={() => onDecision(bps)}
                   disabled={decisionPublished}
                   style={{
-                    padding: '14px 8px',
-                    fontSize: '14px',
+                    padding: '16px 8px',
+                    fontSize: 'var(--text-base)',
                     fontFamily: '"IBM Plex Mono", monospace',
                     fontWeight: '500',
                     background: rateDecision === bps ? `${getDecisionColor(bps)}30` : 'rgba(17, 24, 39, 0.6)',
@@ -168,7 +169,8 @@ window.FedChair.Components.DecisionPanel = function({
                     color: rateDecision === bps ? getDecisionColor(bps) : '#9ca3af',
                     borderRadius: '8px',
                     cursor: decisionPublished ? 'not-allowed' : 'pointer',
-                    opacity: decisionPublished ? 0.5 : 1
+                    opacity: decisionPublished ? 0.5 : 1,
+                    minHeight: 'auto'
                   }}
                 >
                   {getDecisionLabel(bps)}
@@ -190,7 +192,7 @@ window.FedChair.Components.DecisionPanel = function({
                 ? 'rgba(239, 68, 68, 0.3)'
                 : 'rgba(234, 179, 8, 0.3)'}`,
               borderRadius: '6px',
-              fontSize: '11px'
+              fontSize: 'var(--text-sm)'
             }}>
               <span style={{
                 color: Math.abs(rateDecision - marketExpects) > 25 ? '#ef4444' : '#eab308'
@@ -209,10 +211,10 @@ window.FedChair.Components.DecisionPanel = function({
               borderRadius: '8px',
               marginBottom: '20px'
             }}>
-              <div style={{ fontSize: '10px', color: '#8b95a5', marginBottom: '6px' }}>NEW RATE</div>
+              <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '6px', letterSpacing: '1px' }}>NEW RATE</div>
               <div style={{
                 fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: '20px',
+                fontSize: 'clamp(20px, 3vw, 28px)',
                 color: getDecisionColor(rateDecision)
               }}>
                 {formatRate(currentRate + rateDecision / 100)}
@@ -231,13 +233,13 @@ window.FedChair.Components.DecisionPanel = function({
                 flexWrap: 'wrap',
                 gap: '8px'
               }}>
-                <div style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>
+                <div style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}>
                   BUILD STATEMENT
                 </div>
                 <div style={{
-                  padding: '4px 10px',
+                  padding: '4px 12px',
                   borderRadius: '4px',
-                  fontSize: '10px',
+                  fontSize: 'var(--text-xs)',
                   fontWeight: '500',
                   background: `${hawkLabel.color}20`,
                   color: hawkLabel.color,
@@ -250,7 +252,7 @@ window.FedChair.Components.DecisionPanel = function({
               {statementPhrases && Object.entries(statementPhrases).map(([category, phrases]) => (
                 <div key={category} style={{ marginBottom: '14px' }}>
                   <div className="statement-category-label" style={{
-                    fontSize: '10px',
+                    fontSize: 'var(--text-sm)',
                     color: '#8b95a5',
                     marginBottom: '8px',
                     textTransform: 'uppercase',
@@ -381,12 +383,12 @@ window.FedChair.Components.DecisionPanel = function({
 
             return (
               <div style={{ marginTop: '24px' }}>
-                <div style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px', marginBottom: '10px', textAlign: 'center' }}>
+                <div style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', marginBottom: '10px', textAlign: 'center', fontWeight: '600' }}>
                   FORWARD GUIDANCE DOT PLOT
                 </div>
 
                 {/* Legend */}
-                <div style={{ display: 'flex', gap: '14px', marginBottom: '10px', fontSize: '10px', color: '#9ca3af', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '14px', marginBottom: '10px', fontSize: 'var(--text-xs)', color: '#9ca3af', justifyContent: 'center', flexWrap: 'wrap' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <div style={{ width: '10px', height: '10px', background: '#60a5fa', borderRadius: '50%' }} />
                     Your projection
@@ -435,8 +437,8 @@ window.FedChair.Components.DecisionPanel = function({
                     {labelRates.map(r => (
                       <text
                         key={'yl-' + r}
-                        x={leftMargin - 6} y={rateToY(r) + 3}
-                        fill="#8b95a5" fontSize="10"
+                        x={leftMargin - 6} y={rateToY(r) + 4}
+                        fill="#8b95a5" fontSize="12"
                         fontFamily="'IBM Plex Mono', monospace"
                         textAnchor="end"
                       >
@@ -452,7 +454,7 @@ window.FedChair.Components.DecisionPanel = function({
                         <g key={'x-' + m}>
                           <text
                             x={meetingToX(i)} y={chartHeight - bottomMargin + 16}
-                            fill="#9ca3af" fontSize="11"
+                            fill="#9ca3af" fontSize="13"
                             fontFamily="'IBM Plex Mono', monospace"
                             textAnchor="middle"
                           >
@@ -460,7 +462,7 @@ window.FedChair.Components.DecisionPanel = function({
                           </text>
                           <text
                             x={meetingToX(i)} y={chartHeight - bottomMargin + 28}
-                            fill="#8b95a5" fontSize="9" textAnchor="middle"
+                            fill="#8b95a5" fontSize="11" textAnchor="middle"
                           >
                             {month}
                           </text>
@@ -528,7 +530,7 @@ window.FedChair.Components.DecisionPanel = function({
                 </div>
 
                 {/* Instruction */}
-                <div style={{ fontSize: '10px', color: '#8b95a5', marginTop: '10px', textAlign: 'center', lineHeight: '1.5' }}>
+                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '10px', textAlign: 'center', lineHeight: '1.5' }}>
                   Project your rate path for upcoming meetings. Markets will price your projections as guidance. You may leave meetings blank to preserve flexibility.
                 </div>
               </div>
@@ -542,16 +544,17 @@ window.FedChair.Components.DecisionPanel = function({
                 onClick={onPublish}
                 style={{
                   width: '100%',
-                  padding: '16px',
-                  fontSize: '14px',
+                  padding: '18px',
+                  fontSize: 'var(--text-base)',
                   fontWeight: '500',
-                  letterSpacing: '1px',
+                  letterSpacing: '1.5px',
                   background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
                   border: 'none',
                   color: '#fff',
                   borderRadius: '8px',
                   cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                  boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+                  minHeight: 'auto'
                 }}
               >
                 📢 PUBLISH DECISION

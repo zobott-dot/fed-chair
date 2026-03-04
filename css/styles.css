@@ -23,10 +23,10 @@ body {
   --font-prose: 'Source Sans 3', 'IBM Plex Sans', sans-serif;
 
   /* Type scale (mobile-first) */
-  --text-xs: 10px;
+  --text-xs: 11px;
   --text-sm: 12px;
-  --text-base: 15px;
-  --text-lg: 18px;
+  --text-base: 14px;
+  --text-lg: 17px;
   --text-xl: 22px;
   --text-2xl: 28px;
 
@@ -36,14 +36,25 @@ body {
   --leading-relaxed: 1.75;
 }
 
+@media (min-width: 640px) {
+  body {
+    --text-xs: 12px;
+    --text-sm: 13px;
+    --text-base: 15px;
+    --text-lg: 19px;
+    --text-xl: 25px;
+    --text-2xl: 34px;
+  }
+}
+
 @media (min-width: 768px) {
   body {
-    --text-xs: 10px;
-    --text-sm: 11px;
-    --text-base: 14px;
-    --text-lg: 17px;
-    --text-xl: 24px;
-    --text-2xl: 32px;
+    --text-xs: 13px;
+    --text-sm: 15px;
+    --text-base: 17px;
+    --text-lg: 21px;
+    --text-xl: 28px;
+    --text-2xl: 40px;
   }
 }
 
@@ -245,7 +256,7 @@ button {
 }
 
 /* Mobile typography and layout adjustments */
-@media (max-width: 767px) {
+@media (max-width: 639px) {
   /* Briefing horizontal padding */
   .briefing-container {
     padding-left: 20px !important;
@@ -262,38 +273,23 @@ button {
   .staff-forecast-card {
     padding: 24px !important;
   }
-  .staff-forecast-card .staff-current-value {
-    font-size: var(--text-2xl) !important;
-  }
-  .staff-forecast-card .staff-forecast-values {
-    font-size: var(--text-lg) !important;
-  }
-
-  /* Data Releases */
-  .data-release-name {
-    font-size: var(--text-lg) !important;
-  }
-  .data-release-prev,
-  .data-release-exp {
-    font-size: var(--text-base) !important;
-  }
-  .data-release-actual {
-    font-size: var(--text-lg) !important;
-  }
-
-  /* Market Pricing probability bars */
-  .prob-label {
-    font-size: var(--text-base) !important;
-    width: 65px !important;
-  }
-  .prob-pct {
-    font-size: var(--text-base) !important;
-    width: 44px !important;
-  }
 
   /* Statement builder category labels */
   .statement-category-label {
     font-size: var(--text-sm) !important;
+  }
+
+  /* Market values — prevent crowding on small screens */
+  .market-value {
+    font-size: 18px !important;
+  }
+}
+
+/* Tablet typography adjustments */
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Market values — prevent crowding on tablet */
+  .market-value {
+    font-size: 20px !important;
   }
 }
 

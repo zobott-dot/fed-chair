@@ -73,10 +73,10 @@ window.FedChair.Components.Dashboard = function({
         }}>
           <div style={{ flex: 1 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-              <span style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>
+              <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1px' }}>
                 MEETING {meetingNumber} OF {totalMeetings}
               </span>
-              <span style={{ fontSize: '11px', color: '#60a5fa' }}>
+              <span style={{ fontSize: 'var(--text-sm)', color: '#60a5fa' }}>
                 {economicData.nextMeeting}
               </span>
             </div>
@@ -101,9 +101,9 @@ window.FedChair.Components.Dashboard = function({
             borderRadius: '6px',
             textAlign: 'center'
           }}>
-            <div style={{ fontSize: '9px', color: '#8b95a5', marginBottom: '2px' }}>CREDIBILITY</div>
+            <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '1px' }}>CREDIBILITY</div>
             <div style={{
-              fontSize: '16px',
+              fontSize: 'clamp(18px, 2.5vw, 26px)',
               fontFamily: '"IBM Plex Mono", monospace',
               color: getCredibilityColor(credibility)
             }}>
@@ -121,7 +121,7 @@ window.FedChair.Components.Dashboard = function({
           background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(17, 24, 39, 0.8) 100%)'
         }}>
           <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
-            <span style={{ fontSize: '11px', color: '#60a5fa', letterSpacing: '1px' }}>
+            <span style={{ fontSize: 'var(--text-sm)', color: '#60a5fa', letterSpacing: '1.5px', fontWeight: '600' }}>
               📰 SINCE LAST MEETING
             </span>
           </div>
@@ -140,10 +140,10 @@ window.FedChair.Components.Dashboard = function({
                     background: isGood ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
                     border: `1px solid ${isGood ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
                     borderRadius: '4px',
-                    fontSize: '11px'
+                    fontSize: 'var(--text-sm)'
                   }}>
                     <span style={{ color: '#9ca3af' }}>{item.label}: </span>
-                    <span style={{ color: isGood ? '#22c55e' : '#ef4444' }}>
+                    <span style={{ color: isGood ? '#22c55e' : '#ef4444', fontFamily: '"IBM Plex Mono", monospace' }}>
                       {item.change >= 0 ? '+' : ''}{item.change.toFixed(2)}%
                     </span>
                   </div>
@@ -159,7 +159,7 @@ window.FedChair.Components.Dashboard = function({
                     background: 'rgba(234, 179, 8, 0.1)',
                     border: '1px solid rgba(234, 179, 8, 0.3)',
                     borderRadius: '4px',
-                    fontSize: '11px',
+                    fontSize: 'var(--text-sm)',
                     color: '#eab308',
                     marginBottom: '4px'
                   }}>
@@ -181,12 +181,12 @@ window.FedChair.Components.Dashboard = function({
         marginBottom: '16px',
         textAlign: 'center'
       }}>
-        <div style={{ fontSize: '11px', color: '#8b95a5', marginBottom: '8px', letterSpacing: '1px' }}>
+        <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginBottom: '8px', letterSpacing: '1.5px' }}>
           FEDERAL FUNDS RATE
         </div>
         <div style={{
           fontFamily: '"IBM Plex Mono", monospace',
-          fontSize: 'clamp(28px, 8vw, 36px)',
+          fontSize: 'clamp(32px, 8vw, 48px)',
           color: '#60a5fa',
           marginBottom: '12px'
         }}>
@@ -194,12 +194,13 @@ window.FedChair.Components.Dashboard = function({
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
           <span style={{
-            padding: '6px 12px',
+            padding: '8px 14px',
             background: 'rgba(59, 130, 246, 0.1)',
             border: '1px solid rgba(59, 130, 246, 0.3)',
             borderRadius: '6px',
-            fontSize: '12px',
-            color: '#60a5fa'
+            fontSize: 'var(--text-sm)',
+            color: '#60a5fa',
+            fontFamily: '"IBM Plex Mono", monospace'
           }}>
             {economicData.fedFundsRate.change}
           </span>
@@ -207,13 +208,14 @@ window.FedChair.Components.Dashboard = function({
             onClick={() => setActiveView('briefing')}
             style={{
               padding: '10px 20px',
-              fontSize: '12px',
+              fontSize: 'var(--text-sm)',
               fontWeight: '500',
               background: 'rgba(234, 179, 8, 0.12)',
               border: '1px solid rgba(234, 179, 8, 0.3)',
               color: '#eab308',
               borderRadius: '6px',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              minHeight: 'auto'
             }}
           >
             📋 REVIEW BRIEFING
@@ -222,13 +224,14 @@ window.FedChair.Components.Dashboard = function({
             onClick={() => setActiveView('decision')}
             style={{
               padding: '10px 20px',
-              fontSize: '12px',
+              fontSize: 'var(--text-sm)',
               fontWeight: '500',
               background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
               border: 'none',
               color: '#fff',
               borderRadius: '6px',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              minHeight: 'auto'
             }}
           >
             ⚡ MAKE DECISION
@@ -240,20 +243,20 @@ window.FedChair.Components.Dashboard = function({
         {/* Inflation */}
         <div style={panelStyle}>
           <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
-            <span style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>INFLATION</span>
+            <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}>INFLATION</span>
           </div>
           <div style={{ padding: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
             {Object.entries(economicData.inflation).map(([key, data]) => (
-              <div key={key} style={{ padding: '10px', background: 'rgba(17, 24, 39, 0.5)', borderRadius: '6px' }}>
+              <div key={key} style={{ padding: '12px', background: 'rgba(17, 24, 39, 0.5)', borderRadius: '6px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '18px', color: '#f9fafb' }}>
+                  <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: 'clamp(22px, 3vw, 32px)', color: '#f9fafb' }}>
                     {data.value}
                   </div>
-                  <span style={{ fontSize: '12px', color: getTrendColor(data.trend, true) }}>
+                  <span style={{ fontSize: 'var(--text-base)', color: getTrendColor(data.trend, true) }}>
                     {getTrendIcon(data.trend)}
                   </span>
                 </div>
-                <div style={{ fontSize: '10px', color: '#8b95a5' }}>{data.label}</div>
+                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '4px' }}>{data.label}</div>
               </div>
             ))}
           </div>
@@ -262,20 +265,20 @@ window.FedChair.Components.Dashboard = function({
         {/* Employment */}
         <div style={panelStyle}>
           <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
-            <span style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>EMPLOYMENT</span>
+            <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}>EMPLOYMENT</span>
           </div>
           <div style={{ padding: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
             {Object.entries(economicData.employment).map(([key, data]) => (
-              <div key={key} style={{ padding: '10px', background: 'rgba(17, 24, 39, 0.5)', borderRadius: '6px' }}>
+              <div key={key} style={{ padding: '12px', background: 'rgba(17, 24, 39, 0.5)', borderRadius: '6px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '18px', color: '#f9fafb' }}>
+                  <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: 'clamp(22px, 3vw, 32px)', color: '#f9fafb' }}>
                     {data.value}
                   </div>
-                  <span style={{ fontSize: '12px', color: getTrendColor(data.trend, key.includes('unemployment')) }}>
+                  <span style={{ fontSize: 'var(--text-base)', color: getTrendColor(data.trend, key.includes('unemployment')) }}>
                     {getTrendIcon(data.trend)}
                   </span>
                 </div>
-                <div style={{ fontSize: '10px', color: '#8b95a5' }}>{data.label}</div>
+                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '4px' }}>{data.label}</div>
               </div>
             ))}
           </div>
@@ -290,13 +293,13 @@ window.FedChair.Components.Dashboard = function({
             justifyContent: 'space-between',
             alignItems: 'center'
           }}>
-            <span style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>FOMC</span>
+            <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}>FOMC</span>
             <div style={{ display: 'flex', gap: '4px' }}>
               <button
                 onClick={() => setActivePanel('governors')}
                 style={{
-                  padding: '4px 8px',
-                  fontSize: '10px',
+                  padding: '5px 10px',
+                  fontSize: 'var(--text-xs)',
                   background: activePanel === 'governors' ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
                   border: 'none',
                   color: activePanel === 'governors' ? '#60a5fa' : '#8b95a5',
@@ -310,8 +313,8 @@ window.FedChair.Components.Dashboard = function({
               <button
                 onClick={() => setActivePanel('presidents')}
                 style={{
-                  padding: '4px 8px',
-                  fontSize: '10px',
+                  padding: '5px 10px',
+                  fontSize: 'var(--text-xs)',
                   background: activePanel === 'presidents' ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
                   border: 'none',
                   color: activePanel === 'presidents' ? '#60a5fa' : '#8b95a5',
@@ -324,7 +327,7 @@ window.FedChair.Components.Dashboard = function({
               </button>
             </div>
           </div>
-          <div style={{ maxHeight: '220px', overflowY: 'auto' }}>
+          <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
             {(activePanel === 'governors' ? boardOfGovernors : regionalPresidents).map((person, i) => (
               <div
                 key={i}
@@ -337,13 +340,13 @@ window.FedChair.Components.Dashboard = function({
                 }}
               >
                 <div>
-                  <div style={{ fontSize: '12px', color: '#f9fafb' }}>{person.name}</div>
-                  <div style={{ fontSize: '10px', color: '#8b95a5' }}>{person.role || person.bank}</div>
+                  <div style={{ fontSize: 'var(--text-base)', color: '#f9fafb' }}>{person.name}</div>
+                  <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5' }}>{person.role || person.bank}</div>
                 </div>
                 <span style={{
-                  padding: '2px 6px',
+                  padding: '3px 8px',
                   borderRadius: '3px',
-                  fontSize: '9px',
+                  fontSize: 'var(--text-xs)',
                   background: `${getStanceColor(person.stance)}20`,
                   color: getStanceColor(person.stance)
                 }}>
@@ -357,9 +360,9 @@ window.FedChair.Components.Dashboard = function({
         {/* News */}
         <div style={panelStyle}>
           <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
-            <span style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>NEWS</span>
+            <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}>NEWS</span>
           </div>
-          <div style={{ maxHeight: '220px', overflowY: 'auto' }}>
+          <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
             {newsHeadlines.map((item, i) => (
               <div
                 key={i}
@@ -368,7 +371,7 @@ window.FedChair.Components.Dashboard = function({
                 <div style={{ fontSize: 'var(--text-base)', fontFamily: 'var(--font-prose)', color: '#f9fafb', lineHeight: 'var(--leading-normal)', marginBottom: '4px' }}>
                   {item.headline}
                 </div>
-                <div style={{ fontSize: '10px', color: '#8b95a5' }}>{item.source}</div>
+                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5' }}>{item.source}</div>
               </div>
             ))}
           </div>
@@ -378,7 +381,7 @@ window.FedChair.Components.Dashboard = function({
       {/* Markets */}
       <div style={{ ...panelStyle, marginTop: '16px' }}>
         <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
-          <span style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1px' }}>MARKETS</span>
+          <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}>MARKETS</span>
         </div>
         <div style={{ padding: '12px' }}>
           <div className="grid-markets">
@@ -386,16 +389,16 @@ window.FedChair.Components.Dashboard = function({
               <div
                 key={key}
                 style={{
-                  padding: '10px',
+                  padding: '12px 10px',
                   background: 'rgba(17, 24, 39, 0.5)',
                   borderRadius: '6px',
                   textAlign: 'center'
                 }}
               >
-                <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '16px', color: '#f9fafb' }}>
+                <div className="market-value" style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: 'clamp(18px, 2.2vw, 26px)', color: '#f9fafb' }}>
                   {data.display || data.value}
                 </div>
-                <div style={{ fontSize: '10px', color: '#8b95a5' }}>{data.label}</div>
+                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '4px' }}>{data.label}</div>
               </div>
             ))}
           </div>
