@@ -284,66 +284,81 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
         }}>
           {releases.map((release, i) => (
             <div key={release.id} style={{
-              padding: '14px 16px',
-              borderBottom: i < releases.length - 1 ? '1px solid rgba(75, 85, 99, 0.2)' : 'none',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              gap: '8px'
+              borderBottom: i < releases.length - 1 ? '1px solid rgba(75, 85, 99, 0.2)' : 'none'
             }}>
-              {/* Left: Name & Source */}
-              <div style={{ flex: '1 1 200px' }}>
-                <div className="data-release-name" style={{ fontSize: 'var(--text-base)', color: '#e5e7eb', fontWeight: '500' }}>
-                  {release.name}
+              <div style={{
+                padding: '14px 16px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '8px'
+              }}>
+                {/* Left: Name & Source */}
+                <div style={{ flex: '1 1 200px' }}>
+                  <div className="data-release-name" style={{ fontSize: 'var(--text-base)', color: '#e5e7eb', fontWeight: '500' }}>
+                    {release.name}
+                  </div>
+                  <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '2px' }}>
+                    {release.source}
+                  </div>
                 </div>
-                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '2px' }}>
-                  {release.source}
+
+                {/* Right: Values */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+                  {/* Previous */}
+                  <div style={{ textAlign: 'center', minWidth: '60px' }}>
+                    <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '0.5px' }}>PREV</div>
+                    <div className="data-release-prev" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'var(--text-sm)', color: '#8b95a5' }}>
+                      {release.previous}
+                    </div>
+                  </div>
+
+                  {/* Expected */}
+                  <div style={{ textAlign: 'center', minWidth: '60px' }}>
+                    <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '0.5px' }}>EXP</div>
+                    <div className="data-release-exp" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'var(--text-sm)', color: '#9ca3af' }}>
+                      {release.expected}
+                    </div>
+                  </div>
+
+                  {/* Actual */}
+                  <div style={{ textAlign: 'center', minWidth: '60px' }}>
+                    <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '0.5px' }}>ACTUAL</div>
+                    <div className="data-release-actual" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'var(--text-base)', color: '#f9fafb', fontWeight: '500' }}>
+                      {release.actual}
+                    </div>
+                  </div>
+
+                  {/* Surprise badge */}
+                  <div style={{
+                    padding: '4px 10px',
+                    borderRadius: '4px',
+                    fontSize: 'var(--text-xs)',
+                    fontWeight: '600',
+                    letterSpacing: '0.5px',
+                    background: 'rgba(' + (release.surprise === 'beat' ? '34,197,94' : release.surprise === 'miss' ? '239,68,68' : '156,163,175') + ', 0.15)',
+                    color: surpriseColors[release.surprise],
+                    border: '1px solid rgba(' + (release.surprise === 'beat' ? '34,197,94' : release.surprise === 'miss' ? '239,68,68' : '156,163,175') + ', 0.3)',
+                    minWidth: '54px',
+                    textAlign: 'center'
+                  }}>
+                    {surpriseLabels[release.surprise]}
+                  </div>
                 </div>
               </div>
-
-              {/* Right: Values */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-                {/* Previous */}
-                <div style={{ textAlign: 'center', minWidth: '60px' }}>
-                  <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '0.5px' }}>PREV</div>
-                  <div className="data-release-prev" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'var(--text-sm)', color: '#8b95a5' }}>
-                    {release.previous}
-                  </div>
-                </div>
-
-                {/* Expected */}
-                <div style={{ textAlign: 'center', minWidth: '60px' }}>
-                  <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '0.5px' }}>EXP</div>
-                  <div className="data-release-exp" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'var(--text-sm)', color: '#9ca3af' }}>
-                    {release.expected}
-                  </div>
-                </div>
-
-                {/* Actual */}
-                <div style={{ textAlign: 'center', minWidth: '60px' }}>
-                  <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '0.5px' }}>ACTUAL</div>
-                  <div className="data-release-actual" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'var(--text-base)', color: '#f9fafb', fontWeight: '500' }}>
-                    {release.actual}
-                  </div>
-                </div>
-
-                {/* Surprise badge */}
+              {release.note && (
                 <div style={{
-                  padding: '4px 10px',
-                  borderRadius: '4px',
-                  fontSize: 'var(--text-xs)',
-                  fontWeight: '600',
-                  letterSpacing: '0.5px',
-                  background: 'rgba(' + (release.surprise === 'beat' ? '34,197,94' : release.surprise === 'miss' ? '239,68,68' : '156,163,175') + ', 0.15)',
-                  color: surpriseColors[release.surprise],
-                  border: '1px solid rgba(' + (release.surprise === 'beat' ? '34,197,94' : release.surprise === 'miss' ? '239,68,68' : '156,163,175') + ', 0.3)',
-                  minWidth: '54px',
-                  textAlign: 'center'
+                  padding: '0 16px 14px 16px',
+                  fontSize: 'var(--text-sm)',
+                  fontFamily: 'var(--font-prose)',
+                  color: '#8b95a5',
+                  lineHeight: 'var(--leading-relaxed)',
+                  fontStyle: 'italic'
                 }}>
-                  {surpriseLabels[release.surprise]}
+                  {release.note}
                 </div>
-              </div>
+              )}
             </div>
           ))}
         </div>
@@ -486,6 +501,72 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
           </div>
         </div>
 
+        {/* Market Sentiment (live mode) */}
+        {mp.marketSentiment && (
+          <div style={{
+            ...briefingPanelStyle,
+            padding: '16px',
+            marginBottom: '16px',
+            borderLeft: '3px solid #a78bfa'
+          }}>
+            <div style={labelStyle}>MARKET SENTIMENT</div>
+            <div style={{ fontSize: 'var(--text-base)', fontFamily: 'var(--font-prose)', color: '#d1d5db', lineHeight: 'var(--leading-relaxed)' }}>
+              {mp.marketSentiment}
+            </div>
+          </div>
+        )}
+
+        {/* Rate Path Expectations (live mode) */}
+        {mp.ratePathExpectations && mp.ratePathExpectations.length > 0 && (
+          <div style={{
+            ...briefingPanelStyle,
+            padding: '16px',
+            marginBottom: '16px'
+          }}>
+            <div style={labelStyle}>RATE PATH EXPECTATIONS</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px' }}>
+              {mp.ratePathExpectations.map((rp, i) => (
+                <div key={i} style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '8px 12px',
+                  background: 'rgba(17, 24, 39, 0.4)',
+                  borderRadius: '6px'
+                }}>
+                  <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af' }}>{rp.meeting}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span style={{
+                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontSize: 'var(--text-base)',
+                      color: rp.action === 'HOLD' ? '#60a5fa' : rp.action.startsWith('-') ? '#22c55e' : '#f97316',
+                      fontWeight: '500'
+                    }}>
+                      {rp.action}
+                    </span>
+                    <span style={{
+                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontSize: 'var(--text-sm)',
+                      color: '#8b95a5'
+                    }}>
+                      {rp.expectedRate.toFixed(2)}%
+                    </span>
+                    <span style={{
+                      fontSize: 'var(--text-xs)',
+                      color: '#8b95a5',
+                      padding: '2px 6px',
+                      background: 'rgba(75, 85, 99, 0.2)',
+                      borderRadius: '3px'
+                    }}>
+                      {rp.probability}%
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Your Previous Projections (Phase 4) */}
         {(() => {
           const dots = gameState?.dotProjections || [];
@@ -552,8 +633,178 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
   // ========================================
   // CONFLICTING SIGNALS SECTION
   // ========================================
+
+  const stanceColors = {
+    'Very Hawkish': '#ef4444',
+    'Hawkish': '#f97316',
+    'Centrist': '#60a5fa',
+    'Dovish': '#22c55e',
+    'Very Dovish': '#15803d'
+  };
+
+  const renderLiveSignals = (signals) => {
+    const sevColors = {
+      high: { bg: 'rgba(239, 68, 68, 0.1)', border: 'rgba(239, 68, 68, 0.3)', text: '#ef4444' },
+      medium: { bg: 'rgba(234, 179, 8, 0.1)', border: 'rgba(234, 179, 8, 0.3)', text: '#eab308' },
+      low: { bg: 'rgba(156, 163, 175, 0.1)', border: 'rgba(156, 163, 175, 0.3)', text: '#9ca3af' }
+    };
+
+    return (
+      <div className="animate-slideIn">
+        {/* Committee Sentiment */}
+        <div style={{ ...briefingPanelStyle, padding: '16px', marginBottom: '16px', borderLeft: '3px solid #60a5fa' }}>
+          <div style={labelStyle}>COMMITTEE SENTIMENT</div>
+          <div style={{ fontSize: 'var(--text-base)', fontFamily: 'var(--font-prose)', color: '#d1d5db', lineHeight: 'var(--leading-relaxed)', marginBottom: '16px' }}>
+            {signals.committeeSentiment.summary}
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+            <div>
+              <div style={{ fontSize: 'var(--text-xs)', letterSpacing: '1.5px', color: '#f97316', marginBottom: '8px', fontWeight: '600' }}>
+                HAWKS ({signals.committeeSentiment.hawks.length})
+              </div>
+              {signals.committeeSentiment.hawks.map(m => (
+                <div key={m.name} style={{ fontSize: 'var(--text-sm)', color: '#e5e7eb', marginBottom: '6px', lineHeight: '1.3' }}>
+                  <div style={{ fontWeight: '500' }}>{m.name.split(' ').pop()}</div>
+                  <div style={{ color: '#8b95a5', fontSize: 'var(--text-xs)' }}>{m.role}</div>
+                </div>
+              ))}
+            </div>
+            <div>
+              <div style={{ fontSize: 'var(--text-xs)', letterSpacing: '1.5px', color: '#60a5fa', marginBottom: '8px', fontWeight: '600' }}>
+                CENTRISTS ({signals.committeeSentiment.centrists.length})
+              </div>
+              {signals.committeeSentiment.centrists.map(m => (
+                <div key={m.name} style={{ fontSize: 'var(--text-sm)', color: '#e5e7eb', marginBottom: '6px', lineHeight: '1.3' }}>
+                  <div style={{ fontWeight: '500' }}>{m.name.split(' ').pop()}</div>
+                  <div style={{ color: '#8b95a5', fontSize: 'var(--text-xs)' }}>{m.role}</div>
+                </div>
+              ))}
+            </div>
+            <div>
+              <div style={{ fontSize: 'var(--text-xs)', letterSpacing: '1.5px', color: '#22c55e', marginBottom: '8px', fontWeight: '600' }}>
+                DOVES ({signals.committeeSentiment.doves.length})
+              </div>
+              {signals.committeeSentiment.doves.map(m => (
+                <div key={m.name} style={{ fontSize: 'var(--text-sm)', color: '#e5e7eb', marginBottom: '6px', lineHeight: '1.3' }}>
+                  <div style={{ fontWeight: '500' }}>{m.name.split(' ').pop()}</div>
+                  <div style={{ color: '#8b95a5', fontSize: 'var(--text-xs)' }}>{m.role}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Key Voices */}
+        <div style={labelStyle}>KEY VOICES</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
+          {signals.keyVoices.map((voice, i) => {
+            const voiceColor = stanceColors[voice.stance] || '#60a5fa';
+            const isHawk = voice.stance.includes('Hawkish');
+            const isDove = voice.stance.includes('Dovish');
+            const rgbStr = isHawk ? '239,68,68' : isDove ? '34,197,94' : '96,165,250';
+            return (
+              <div key={i} style={{
+                ...briefingPanelStyle,
+                padding: '16px',
+                borderLeft: '3px solid ' + voiceColor
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', gap: '8px', flexWrap: 'wrap' }}>
+                  <div>
+                    <span style={{ fontSize: 'var(--text-base)', color: '#f9fafb', fontWeight: '500' }}>{voice.member}</span>
+                    <span style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginLeft: '8px' }}>{voice.role}</span>
+                  </div>
+                  <div style={{
+                    padding: '3px 10px',
+                    borderRadius: '4px',
+                    fontSize: 'var(--text-xs)',
+                    fontWeight: '600',
+                    letterSpacing: '0.5px',
+                    background: 'rgba(' + rgbStr + ', 0.15)',
+                    border: '1px solid rgba(' + rgbStr + ', 0.3)',
+                    color: voiceColor
+                  }}>
+                    {voice.stance.toUpperCase()}
+                  </div>
+                </div>
+                <div style={{ fontSize: 'var(--text-base)', fontFamily: 'var(--font-prose)', color: '#d1d5db', lineHeight: 'var(--leading-relaxed)', fontStyle: 'italic', marginBottom: '8px' }}>
+                  &ldquo;{voice.quote}&rdquo;
+                </div>
+                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5' }}>
+                  — {voice.context}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Leadership Transition */}
+        <div style={{ ...briefingPanelStyle, padding: '16px', marginBottom: '16px', borderLeft: '3px solid #a855f7' }}>
+          <div style={labelStyle}>{signals.leadershipTransition.headline.toUpperCase()}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {signals.leadershipTransition.details.map((detail, i) => (
+              <div key={i}>
+                <div style={{ fontSize: 'var(--text-base)', color: '#e5e7eb', fontWeight: '500', marginBottom: '4px' }}>{detail.title}</div>
+                <div style={{ fontSize: 'var(--text-sm)', fontFamily: 'var(--font-prose)', color: '#9ca3af', lineHeight: 'var(--leading-relaxed)' }}>
+                  {detail.description}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* External Pressures */}
+        <div style={labelStyle}>EXTERNAL PRESSURES</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {signals.externalPressures.map((pressure, i) => {
+            const colors = sevColors[pressure.severity] || sevColors.medium;
+            return (
+              <div key={i} style={{
+                ...briefingPanelStyle,
+                padding: '16px',
+                borderLeft: '3px solid ' + colors.text
+              }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  marginBottom: '10px',
+                  gap: '12px'
+                }}>
+                  <div style={{ fontSize: 'var(--text-lg)', color: '#f9fafb', fontWeight: '500' }}>
+                    {pressure.title}
+                  </div>
+                  <div style={{
+                    padding: '3px 10px',
+                    borderRadius: '4px',
+                    fontSize: 'var(--text-xs)',
+                    fontWeight: '600',
+                    letterSpacing: '0.5px',
+                    background: colors.bg,
+                    border: '1px solid ' + colors.border,
+                    color: colors.text,
+                    flexShrink: 0
+                  }}>
+                    {pressure.severity.toUpperCase()}
+                  </div>
+                </div>
+                <div style={{ fontSize: 'var(--text-base)', fontFamily: 'var(--font-prose)', color: '#d1d5db', lineHeight: 'var(--leading-relaxed)' }}>
+                  {pressure.description}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   const renderConflictingSignals = () => {
     const signals = briefingData.conflictingSignals;
+
+    // Detect live signals format
+    if (signals && signals.type === 'live') {
+      return renderLiveSignals(signals);
+    }
 
     const implColors = {
       hawkish: { bg: 'rgba(239, 68, 68, 0.1)', border: 'rgba(239, 68, 68, 0.3)', text: '#ef4444' },

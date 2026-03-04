@@ -681,9 +681,15 @@ window.FedChair.Engine = window.FedChair.Engine || {};
       staffProjections: (useLive && window.FedChair.Engine.generateLiveStaffProjections)
         ? window.FedChair.Engine.generateLiveStaffProjections(gameState)
         : generateStaffProjections(gameState),
-      dataReleases: generateDataReleases(gameState),
-      marketPositioning: generateMarketPositioning(gameState),
-      conflictingSignals: generateConflictingSignals(gameState)
+      dataReleases: (useLive && window.FedChair.Engine.generateLiveDataReleases)
+        ? window.FedChair.Engine.generateLiveDataReleases(gameState)
+        : generateDataReleases(gameState),
+      marketPositioning: (useLive && window.FedChair.Engine.generateLiveMarketPricing)
+        ? window.FedChair.Engine.generateLiveMarketPricing(gameState)
+        : generateMarketPositioning(gameState),
+      conflictingSignals: (useLive && window.FedChair.Engine.generateLiveSignals)
+        ? window.FedChair.Engine.generateLiveSignals(gameState)
+        : generateConflictingSignals(gameState)
     };
   };
 
