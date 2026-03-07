@@ -54,7 +54,7 @@ window.FedChair.Components.Header = function({
             key={shimmerKey || 0}
             className="title-shimmer"
             style={{
-              fontSize: 'clamp(24px, 5vw, 36px)',
+              fontSize: 'clamp(36px, 8vw, 72px)',
               fontWeight: '700',
               letterSpacing: '6px',
               margin: 0
