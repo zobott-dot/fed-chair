@@ -325,9 +325,9 @@ button {
     90deg,
     #e8d5b0 0%,
     #e8d5b0 35%,
-    #fffbe6 45%,
-    #ffd700 50%,
-    #fffbe6 55%,
+    #fff9d6 43%,
+    #ffdf20 50%,
+    #fff9d6 57%,
     #e8d5b0 65%,
     #e8d5b0 100%
   );
@@ -336,7 +336,7 @@ button {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: titleShimmer 2s ease-in-out forwards;
+  animation: titleShimmer 4s ease-in-out forwards;
 }
 
 /* Mode Select grid */
