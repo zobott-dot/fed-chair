@@ -237,6 +237,69 @@ window.FedChair.Engine = window.FedChair.Engine || {};
       }
     ],
 
+    accountability: [
+      {
+        id: 'acc_dot_inconsistency',
+        condition: (gs) => {
+          // Check if player's dot projections have shifted dramatically between meetings
+          const dh = gs.dotHistory || [];
+          if (dh.length < 4) return false;
+          const recent = dh.filter(d => d.placedAtMeeting >= gs.meetingNumber - 2);
+          const older = dh.filter(d => d.placedAtMeeting < gs.meetingNumber - 2);
+          if (recent.length === 0 || older.length === 0) return false;
+          const recentAvg = recent.reduce((s, d) => s + d.projectedRate, 0) / recent.length;
+          const olderAvg = older.reduce((s, d) => s + d.projectedRate, 0) / older.length;
+          return Math.abs(recentAvg - olderAvg) > 0.4;
+        },
+        question: 'Your dot plot has shifted significantly from meeting to meeting. How should markets interpret that inconsistency?',
+        responses: [
+          { label: 'Measured', text: 'The dots reflect evolving assessments as new data arrives. Consistency for its own sake would be a mistake when the economy is changing.', hawkShift: 0, credibilityEffect: 2 },
+          { label: 'Hawkish lean', text: 'The outlook has shifted, and our projections should reflect that honestly. I\'d rather be right than consistent.', hawkShift: 1, credibilityEffect: 0 },
+          { label: 'Dovish lean', text: 'I hear the concern. We\'re working to provide more stable forward guidance as the outlook clarifies.', hawkShift: -1, credibilityEffect: 1 }
+        ]
+      },
+      {
+        id: 'acc_dot_followthrough',
+        condition: (gs) => {
+          // Player has been consistent with dots
+          const dh = gs.dotHistory || [];
+          if (dh.length < 2) return false;
+          let matches = 0;
+          for (const dot of dh) {
+            const rateEntry = gs.rateHistory.find(r => r.meeting === dot.meeting);
+            if (rateEntry && Math.abs(rateEntry.rate - dot.projectedRate) < 0.2) matches++;
+          }
+          return matches >= 2;
+        },
+        question: 'Markets have noted that your projections have been remarkably consistent. Is that a deliberate communication strategy?',
+        responses: [
+          { label: 'Measured', text: 'We aim for transparency. When the data confirms our outlook, follow-through is the natural result.', hawkShift: 0, credibilityEffect: 3 },
+          { label: 'Hawkish lean', text: 'Discipline and predictability are essential to effective monetary policy. Markets should expect us to mean what we say.', hawkShift: 1, credibilityEffect: 2 },
+          { label: 'Dovish lean', text: 'Consistency builds trust. That said, we\'ll always adjust if conditions warrant — being data-dependent remains paramount.', hawkShift: -0.5, credibilityEffect: 2 }
+        ]
+      },
+      {
+        id: 'acc_credibility_low',
+        condition: (gs) => gs.credibility < 45,
+        question: 'Chair, multiple analysts have described Fed communication as "incoherent." How do you respond to the growing credibility concerns?',
+        responses: [
+          { label: 'Measured', text: 'We hear the criticism and we take it seriously. Our actions going forward will speak louder than any single statement.', hawkShift: 0, credibilityEffect: 2 },
+          { label: 'Defensive', text: 'The economy presents genuinely difficult tradeoffs. Armchair quarterbacks don\'t have to make these decisions in real time.', hawkShift: 0, credibilityEffect: -3 },
+          { label: 'Humble', text: 'Communication is something we can improve on. I\'m committed to being clearer and more consistent going forward.', hawkShift: 0, credibilityEffect: 4 }
+        ]
+      },
+      {
+        id: 'acc_predecessor',
+        condition: (gs) => gs.meetingNumber >= 3 && gs.meetingNumber <= 5,
+        question: 'How does your approach differ from your predecessor\'s? Are you charting a new course for the Fed?',
+        responses: [
+          { label: 'Measured', text: 'The institution provides continuity. My job is to apply the same rigorous, data-driven approach to whatever conditions we face.', hawkShift: 0, credibilityEffect: 3 },
+          { label: 'Hawkish lean', text: 'I bring my own perspective to the role. Price stability is the foundation of everything else, and I intend to deliver it.', hawkShift: 1.5, credibilityEffect: 1 },
+          { label: 'Dovish lean', text: 'Every chair inherits unique challenges. I\'m focused on the economy we have, not relitigating past decisions.', hawkShift: -0.5, credibilityEffect: 2 }
+        ]
+      }
+    ],
+
     communication: [
       {
         id: 'com_plain_language',
@@ -320,7 +383,7 @@ window.FedChair.Engine = window.FedChair.Engine || {};
     // Must include: 1 data_challenge, 1 forward_guidance, 1 political
     const required = ['data_challenge', 'forward_guidance', 'political'];
     for (const cat of required) {
-      const pool = shuffle(eligible[cat]);
+      const pool = shuffle(eligible[cat] || []);
       if (pool.length > 0) {
         const tmpl = pool[0];
         usedIds.add(tmpl.id);
@@ -336,14 +399,32 @@ window.FedChair.Engine = window.FedChair.Engine || {};
       }
     }
 
+    // Low credibility: guarantee an accountability question (Phase 7)
+    const credibility = gameState.credibility || 100;
+    const accountabilityPool = shuffle(eligible.accountability || []);
+    if (credibility < 60 && accountabilityPool.length > 0) {
+      const tmpl = accountabilityPool[0];
+      usedIds.add(tmpl.id);
+      const reporter = pickReporter(usedReporters);
+      usedReporters.add(reporter.name);
+      questions.push({
+        ...tmpl,
+        category: 'accountability',
+        reporter: reporter.name,
+        outlet: reporter.outlet,
+        question: fillTemplate(tmpl.question, gameState, marketReaction)
+      });
+    }
+
     // Fill remaining 1-2 slots from most newsworthy unused questions
-    const remainingSlots = (Math.random() < 0.5 ? 5 : 4) - questions.length;
+    const totalTarget = credibility < 50 ? 5 : (Math.random() < 0.5 ? 5 : 4);
+    const remainingSlots = totalTarget - questions.length;
     const allRemaining = [];
     for (const [cat, templates] of Object.entries(eligible)) {
       for (const t of templates) {
         if (!usedIds.has(t.id)) {
-          // Newsworthy priority: market_impact > communication > others
-          const priority = cat === 'market_impact' ? 3 : cat === 'communication' ? 2 : 1;
+          // Newsworthy priority: accountability > market_impact > communication > others
+          const priority = cat === 'accountability' ? 4 : cat === 'market_impact' ? 3 : cat === 'communication' ? 2 : 1;
           allRemaining.push({ ...t, category: cat, priority });
         }
       }

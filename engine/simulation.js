@@ -245,7 +245,12 @@ window.FedChair.Engine.createGameState = function(startingData, mode) {
     committeeDots: {},
 
     // Game mode (Phase 5)
-    mode: mode || 'live'
+    mode: mode || 'live',
+
+    // Phase 7: Narrative arc
+    cumulativePolicyStance: 0,  // negative = dovish, positive = hawkish
+    meetingHistory: [],          // detailed record of each meeting
+    chairName: 'Powell'          // changes to 'Warsh' at meeting 3
   };
 };
 
@@ -323,12 +328,19 @@ window.FedChair.Engine.evolveEconomy = function(gameState) {
   const changes = {};
   const difficulty = getMeetingDifficulty(gameState.meetingNumber);
   const credFactor = gameState.credibility / 100; // 0 to 1
+  const stance = gameState.cumulativePolicyStance || 0;
+
+  // Policy stance drift: cumulative stance affects economic trajectory
+  // Positive stance (hawkish) = tighter conditions, negative (dovish) = looser
+  const stanceIntensity = Math.max(-1, Math.min(1, stance / 6)); // normalize to -1..1
 
   // GDP: Mean reversion toward 2.0% with noise, weakens in late game
+  // Dovish stance boosts GDP slightly, hawkish drags it
   const gdpTarget = 2.0;
   const gdpReversion = (gdpTarget - economy.gdpGrowth) * 0.1 * difficulty.meanReversionStrength;
+  const gdpStanceDrift = -stanceIntensity * 0.08; // hawkish slows growth
   const gdpNoise = (Math.random() - 0.5) * 0.2 * difficulty.noiseAmplitude;
-  changes.gdpGrowth = gdpReversion + gdpNoise;
+  changes.gdpGrowth = gdpReversion + gdpStanceDrift + gdpNoise;
   economy.gdpGrowth += changes.gdpGrowth;
 
   // Phillips curve tension: tight labor market pushes inflation up
@@ -341,11 +353,12 @@ window.FedChair.Engine.evolveEconomy = function(gameState) {
     phillipsCurvePressure = (5.0 - economy.unemploymentRate) * 0.06;
   }
 
-  // Inflation: Sticky with momentum, affected by Phillips curve and credibility
+  // Inflation: Sticky with momentum, affected by Phillips curve, credibility, and policy stance
   const inflationTarget = 2.0;
   // Low credibility = un-anchored expectations, weaker reversion
   const credReversionFactor = 0.4 + 0.6 * credFactor; // 0.4 at cred 0, 1.0 at cred 100
-  const inflationReversion = (inflationTarget - economy.cpiInflation) * 0.05 * difficulty.meanReversionStrength * credReversionFactor;
+  const inflationStanceDrift = -stanceIntensity * 0.06; // hawkish dampens inflation, dovish adds pressure
+  const inflationReversion = (inflationTarget - economy.cpiInflation) * 0.05 * difficulty.meanReversionStrength * credReversionFactor + inflationStanceDrift;
 
   // Low credibility = stronger momentum (market doesn't believe you'll fight it)
   const momentumPersistence = 0.7 + 0.2 * (1 - credFactor); // 0.7 at cred 100, 0.9 at cred 0
@@ -364,9 +377,11 @@ window.FedChair.Engine.evolveEconomy = function(gameState) {
   economy.coreInflation += changes.coreInflation;
 
   // Unemployment: Inverse relationship with GDP, floors at 3.5%
+  // Hawkish stance pushes unemployment up slightly
   const unemploymentFromGDP = -economy.gdpGrowth * 0.15;
+  const unemploymentStanceDrift = stanceIntensity * 0.04; // hawkish = more unemployment
   const unemploymentNoise = (Math.random() - 0.5) * 0.15 * difficulty.noiseAmplitude;
-  changes.unemploymentRate = unemploymentFromGDP + unemploymentNoise;
+  changes.unemploymentRate = unemploymentFromGDP + unemploymentStanceDrift + unemploymentNoise;
   economy.unemploymentRate = Math.max(3.5, economy.unemploymentRate + changes.unemploymentRate);
 
   // Payrolls: Correlated with GDP
@@ -388,14 +403,18 @@ window.FedChair.Engine.evolveMarkets = function(gameState) {
   const economy = gameState.economy;
   const changes = {};
   const credFactor = gameState.credibility / 100;
+  const stance = gameState.cumulativePolicyStance || 0;
+  const stanceIntensity = Math.max(-1, Math.min(1, stance / 6));
   // Low credibility = noisier markets
   const noiseMultiplier = 1 + 0.5 * (1 - credFactor); // 1.0 at cred 100, 1.5 at cred 0
 
   // S&P 500: Responds to GDP and inflation expectations
+  // Dovish stance = stocks trend up, hawkish = flat/down
   const earningsEffect = economy.gdpGrowth * 0.5;
   const inflationDrag = (economy.cpiInflation - 2.0) * -0.3;
+  const stanceEquityEffect = -stanceIntensity * 0.2; // hawkish = equity headwind
   const marketNoise = (Math.random() - 0.5) * 1.5 * noiseMultiplier;
-  changes.sp500 = earningsEffect + inflationDrag + marketNoise;
+  changes.sp500 = earningsEffect + inflationDrag + stanceEquityEffect + marketNoise;
   markets.sp500 = Math.round(markets.sp500 * (1 + changes.sp500 / 100));
 
   // VIX: Higher when uncertainty/stress; low credibility raises baseline
@@ -405,8 +424,9 @@ window.FedChair.Engine.evolveMarkets = function(gameState) {
   changes.vix = (vixBase - markets.vix) * 0.3 + vixNoise;
   markets.vix = Math.max(12, Math.min(45, markets.vix + changes.vix));
 
-  // 10Y Treasury: Inflation expectations + growth
-  const yield10yBase = 2.5 + economy.cpiInflation * 0.5 + economy.gdpGrowth * 0.2;
+  // 10Y Treasury: Inflation expectations + growth + stance
+  // Hawkish stance = yields trend up, dovish = down
+  const yield10yBase = 2.5 + economy.cpiInflation * 0.5 + economy.gdpGrowth * 0.2 + stanceIntensity * 0.1;
   const yield10yNoise = (Math.random() - 0.5) * 0.1 * noiseMultiplier;
   changes.treasury10y = (yield10yBase - markets.treasury10y) * 0.2 + yield10yNoise;
   markets.treasury10y = Math.max(2.0, Math.min(6.0, markets.treasury10y + changes.treasury10y));
@@ -764,7 +784,7 @@ window.FedChair.Engine.updateCredibility = function(gameState, decision, hawkSco
     credibilityChange -= 4; // Hiking into weakness
   }
 
-  // === Dot plot consistency (Phase 4) ===
+  // === Dot plot consistency (Phase 4 + Phase 7 accountability) ===
   const relevantDots = (gameState.dotProjections || []).filter(
     d => d.meeting === gameState.meetingNumber
   );
@@ -774,13 +794,27 @@ window.FedChair.Engine.updateCredibility = function(gameState, decision, hawkSco
     const dotDeviation = Math.abs(actualRate - latestDot.projectedRate);
 
     if (dotDeviation < 0.01) {
-      credibilityChange += 4;
+      credibilityChange += 4;  // Perfect follow-through
     } else if (dotDeviation <= 0.25) {
       credibilityChange += 1;
     } else if (dotDeviation <= 0.50) {
       credibilityChange -= 5;
     } else {
       credibilityChange -= 12;
+    }
+  }
+
+  // Shifting projections dramatically between meetings (Phase 7)
+  const dotHistory = gameState.dotHistory || [];
+  if (dotHistory.length >= 4) {
+    const currentMeetingDots = dotHistory.filter(d => d.placedAtMeeting === gameState.meetingNumber);
+    const prevMeetingDots = dotHistory.filter(d => d.placedAtMeeting === gameState.meetingNumber - 1);
+    if (currentMeetingDots.length > 0 && prevMeetingDots.length > 0) {
+      const currAvg = currentMeetingDots.reduce((s, d) => s + d.projectedRate, 0) / currentMeetingDots.length;
+      const prevAvg = prevMeetingDots.reduce((s, d) => s + d.projectedRate, 0) / prevMeetingDots.length;
+      if (Math.abs(currAvg - prevAvg) > 0.4) {
+        credibilityChange -= 2; // Suggests uncertainty to markets
+      }
     }
   }
 
@@ -867,10 +901,11 @@ window.FedChair.Engine.checkWinLoseConditions = function(gameState) {
  * @returns {Object} Updated state and transition info
  */
 window.FedChair.Engine.advanceToNextMeeting = function(gameState, decision, hawkScore, marketReaction, meetingScore, selectedStatements) {
-  // Snapshot economy for history (used by data revisions)
+  // Snapshot economy for history (used by data revisions and end-game assessment)
   gameState.economyHistory.push({
     meeting: gameState.meetingNumber,
-    ...JSON.parse(JSON.stringify(gameState.economy))
+    ...JSON.parse(JSON.stringify(gameState.economy)),
+    sp500: gameState.markets.sp500
   });
 
   // Store current state for comparison
@@ -894,6 +929,38 @@ window.FedChair.Engine.advanceToNextMeeting = function(gameState, decision, hawk
 
   // Update credibility (uses lastGuidanceIds from PREVIOUS meeting)
   window.FedChair.Engine.updateCredibility(gameState, decision, hawkScore, marketReaction);
+
+  // Update cumulative policy stance (Phase 7)
+  // Hikes add hawkish points, cuts add dovish points, statement tone contributes
+  let stanceChange = 0;
+  if (decision > 0) stanceChange += decision / 25;       // +1 per 25bp hike
+  else if (decision < 0) stanceChange += decision / 25;  // -1 per 25bp cut
+  stanceChange += hawkScore * 0.3;                        // statement tone contribution
+  gameState.cumulativePolicyStance = (gameState.cumulativePolicyStance || 0) + stanceChange;
+
+  // Record meeting history (Phase 7)
+  gameState.meetingHistory = gameState.meetingHistory || [];
+  gameState.meetingHistory.push({
+    meeting: gameState.meetingNumber,
+    date: gameState.meetingDate,
+    decision: decision,
+    hawkScore: hawkScore,
+    rate: gameState.currentRate + decision / 100,
+    pceInflation: gameState.economy.pceInflation,
+    gdpGrowth: gameState.economy.gdpGrowth,
+    unemploymentRate: gameState.economy.unemploymentRate,
+    credibility: gameState.credibility,
+    spChange: marketReaction.sp500?.change || 0,
+    vix: gameState.markets.vix,
+    pressCredibilityChange: 0,  // updated after press conference in App.js
+    dissents: 0,                 // populated by committee dynamics
+    cumulativeStance: gameState.cumulativePolicyStance
+  });
+
+  // Leadership transition: Powell -> Warsh at meeting 3
+  if (gameState.meetingNumber === 2) {
+    gameState.chairName = 'Warsh';
+  }
 
   // Track guidance for NEXT meeting's consistency check
   gameState.lastHawkScore = hawkScore;
@@ -979,8 +1046,24 @@ window.FedChair.Engine.advanceToNextMeeting = function(gameState, decision, hawk
   });
   gameState.economyChanges = economyChanges;
 
-  // Generate headlines (now includes data revisions)
+  // Generate headlines (now includes data revisions and narrative)
   gameState.recentHeadlines = window.FedChair.Engine.generateHeadlines(gameState, economyChanges, newShocks, dataRevision);
+
+  // Add narrative headlines (Phase 7, starting meeting 3)
+  if (window.FedChair.Engine.generateNarrativeHeadlines) {
+    const narrativeHeadlines = window.FedChair.Engine.generateNarrativeHeadlines(gameState);
+    if (narrativeHeadlines.length > 0) {
+      // Insert narrative headlines after shock/revision headlines but before data headlines
+      const insertIdx = gameState.recentHeadlines.findIndex(h => h.type === 'data');
+      if (insertIdx >= 0) {
+        gameState.recentHeadlines.splice(insertIdx, 0, ...narrativeHeadlines);
+      } else {
+        gameState.recentHeadlines.push(...narrativeHeadlines);
+      }
+      // Keep max 6 headlines (increased from 5 to accommodate narrative)
+      gameState.recentHeadlines = gameState.recentHeadlines.slice(0, 6);
+    }
+  }
 
   // Store latest revision for briefing display
   gameState.latestRevision = dataRevision;
@@ -1094,12 +1177,19 @@ window.FedChair.Engine.generateCommitteeDots = function(gameState) {
   const currentMeeting = gameState.meetingNumber;
   const totalMeetings = gameState.totalMeetings;
 
+  // Low credibility = more dissent/dispersion in dots
+  const credFactor = (gameState.credibility || 100) / 100;
+  const dissensionNoise = 0.30 + (1 - credFactor) * 0.25; // 0.30 at cred 100, 0.55 at cred 0
+
+  // Warsh era (meeting 3+): committee leans slightly more hawkish
+  const warshBias = currentMeeting >= 3 ? 0.015 : 0;
+
   for (let m = currentMeeting + 1; m <= totalMeetings; m++) {
     const meetingsAhead = m - currentMeeting;
     const meetingDots = participants.map(participant => {
       const bias = stanceBiases[participant.stance] || 0;
-      const noise = (Math.random() - 0.5) * 0.30; // ±15bp
-      const projectedRate = gameState.currentRate + (bias + econAdjustment) * meetingsAhead + noise;
+      const noise = (Math.random() - 0.5) * dissensionNoise;
+      const projectedRate = gameState.currentRate + (bias + econAdjustment + warshBias) * meetingsAhead + noise;
       // Round to nearest 12.5bp (0.125)
       return Math.round(projectedRate / 0.125) * 0.125;
     });

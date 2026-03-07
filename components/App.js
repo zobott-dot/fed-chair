@@ -5,11 +5,11 @@ window.FedChair = window.FedChair || {};
 window.FedChair.Components = window.FedChair.Components || {};
 
 const { useState, useEffect, useCallback } = React;
-const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, PressConference, Aftermath } = window.FedChair.Components;
+const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, PressConference, Aftermath, Transition, EndGame } = window.FedChair.Components;
 const { calculateMarketReaction } = window.FedChair.Engine;
 const { calculateScore, calculateHawkScore, getHawkLabel } = window.FedChair.Engine;
 const { createGameState, advanceToNextMeeting, gameStateToEconomicData, generateBriefing, generateCommitteeDots } = window.FedChair.Engine;
-const { applyPressConferenceToMarketReaction } = window.FedChair.Engine;
+const { applyPressConferenceToMarketReaction, calculateEndOfCampaignAssessment } = window.FedChair.Engine;
 
 window.FedChair.Components.App = function() {
   // Game state (persistent across rounds)
@@ -43,6 +43,8 @@ window.FedChair.Components.App = function() {
   const [dotSelections, setDotSelections] = useState({});
   const [pressConferenceImpact, setPressConferenceImpact] = useState(null);
   const [shimmerKey, setShimmerKey] = useState(0);
+  const [showTransition, setShowTransition] = useState(false);
+  const [endGameAssessment, setEndGameAssessment] = useState(null);
 
   // Load data on mount (do NOT create gameState yet — wait for mode selection)
   useEffect(() => {
@@ -155,6 +157,12 @@ window.FedChair.Components.App = function() {
     const meetingScore = calculateScore({ reaction: modifiedReaction, rateDecision, hawkScore });
     setScore(meetingScore);
 
+    // Record press conference credibility in meeting history (Phase 7)
+    if (gameState && gameState.meetingHistory && gameState.meetingHistory.length > 0) {
+      const lastEntry = gameState.meetingHistory[gameState.meetingHistory.length - 1];
+      lastEntry.pressCredibilityChange = impact.totalCredibilityChange;
+    }
+
     // Transition to aftermath
     setShowReaction(true);
     setActiveView('aftermath');
@@ -200,8 +208,15 @@ window.FedChair.Components.App = function() {
     setTimeout(() => {
       setTransitioning(false);
       if (result.ended) {
-        setActiveView('aftermath');
+        // Calculate end-of-campaign assessment (Phase 7)
+        if (calculateEndOfCampaignAssessment) {
+          setEndGameAssessment(calculateEndOfCampaignAssessment(result.gameState));
+        }
+        setActiveView('endgame');
         setShowReaction(true);
+      } else if (result.gameState.meetingNumber === 3 && result.gameState.chairName === 'Warsh') {
+        // Show leadership transition interstitial (Phase 7)
+        setShowTransition(true);
       } else {
         setActiveView('dashboard');
       }
@@ -232,6 +247,8 @@ window.FedChair.Components.App = function() {
     setPressConferenceImpact(null);
     setActiveView('dashboard');
     setShimmerKey(k => k + 1);
+    setShowTransition(false);
+    setEndGameAssessment(null);
   };
 
   // Show loading screen until data is ready
@@ -280,6 +297,16 @@ window.FedChair.Components.App = function() {
     );
   }
 
+  // Show leadership transition interstitial (Phase 7)
+  if (showTransition) {
+    return (
+      <Transition onContinue={() => {
+        setShowTransition(false);
+        setActiveView('dashboard');
+      }} />
+    );
+  }
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -316,6 +343,14 @@ window.FedChair.Components.App = function() {
           marketReaction={marketReaction}
           selectedStatements={selectedStatements}
           onComplete={handlePressConferenceComplete}
+        />
+      )}
+
+      {activeView === 'endgame' && endGameAssessment && (
+        <EndGame
+          gameState={gameState}
+          assessment={endGameAssessment}
+          onNewGame={handleNewGame}
         />
       )}
 
