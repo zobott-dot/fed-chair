@@ -310,6 +310,35 @@ button {
   animation: barFill 0.6s ease-out forwards;
 }
 
+/* Title shimmer animation */
+@keyframes titleShimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.title-shimmer {
+  background: linear-gradient(
+    90deg,
+    #e8d5b0 0%,
+    #e8d5b0 35%,
+    #fffbe6 45%,
+    #ffd700 50%,
+    #fffbe6 55%,
+    #e8d5b0 65%,
+    #e8d5b0 100%
+  );
+  background-size: 200% 100%;
+  background-position: -200% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleShimmer 2s ease-in-out forwards;
+}
+
 /* Mode Select grid */
 .grid-mode-select {
   display: grid;

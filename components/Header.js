@@ -12,7 +12,8 @@ window.FedChair.Components.Header = function({
   totalMeetings,
   gameEnded,
   onNewGame,
-  gameMode
+  gameMode,
+  shimmerKey
 }) {
   const [showConfirm, setShowConfirm] = React.useState(false);
   const views = ['dashboard', 'briefing', 'decision', ...(showReaction ? ['aftermath'] : [])];
@@ -49,13 +50,16 @@ window.FedChair.Components.Header = function({
         margin: '0 auto'
       }}>
         <div>
-          <h1 style={{
-            fontSize: 'clamp(18px, 5vw, 24px)',
-            fontWeight: '200',
-            letterSpacing: '3px',
-            margin: 0,
-            color: '#60a5fa'
-          }}>
+          <h1
+            key={shimmerKey || 0}
+            className="title-shimmer"
+            style={{
+              fontSize: 'clamp(24px, 5vw, 36px)',
+              fontWeight: '700',
+              letterSpacing: '6px',
+              margin: 0
+            }}
+          >
             FED CHAIR
           </h1>
         </div>

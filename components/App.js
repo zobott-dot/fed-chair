@@ -42,6 +42,7 @@ window.FedChair.Components.App = function() {
   const [score, setScore] = useState(null);
   const [dotSelections, setDotSelections] = useState({});
   const [pressConferenceImpact, setPressConferenceImpact] = useState(null);
+  const [shimmerKey, setShimmerKey] = useState(0);
 
   // Load data on mount (do NOT create gameState yet — wait for mode selection)
   useEffect(() => {
@@ -230,6 +231,7 @@ window.FedChair.Components.App = function() {
     setDotSelections({});
     setPressConferenceImpact(null);
     setActiveView('dashboard');
+    setShimmerKey(k => k + 1);
   };
 
   // Show loading screen until data is ready
@@ -294,6 +296,7 @@ window.FedChair.Components.App = function() {
         gameEnded={gameState.gamePhase === 'ended'}
         onNewGame={handleNewGame}
         gameMode={gameState.mode}
+        shimmerKey={shimmerKey}
       />
 
       <MeetingBanner
