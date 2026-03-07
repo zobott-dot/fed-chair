@@ -313,10 +313,10 @@ button {
 /* Title shimmer animation */
 @keyframes titleShimmer {
   0% {
-    background-position: -200% center;
+    background-position: 0% center;
   }
   100% {
-    background-position: 200% center;
+    background-position: 100% center;
   }
 }
 
@@ -332,10 +332,11 @@ button {
     #c9a84c 100%
   );
   background-size: 200% 100%;
-  background-position: -200% center;
+  background-position: 0% center;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: #c9a84c;
   animation: titleShimmer 4s ease-in-out forwards;
 }
 
