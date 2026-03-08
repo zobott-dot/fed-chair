@@ -359,8 +359,6 @@ button {
 
 /* Tooltip rendered via portal with position: fixed — positioning handled inline */
 .learn-tooltip {
-  z-index: 9999;
-  width: 280px;
   background: #1a1f2e;
   border: 1px solid var(--color-gold, #D97706);
   border-radius: 6px;
