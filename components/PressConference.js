@@ -10,6 +10,88 @@ const pcPanelStyle = {
   overflow: 'hidden'
 };
 
+// ─── New Pool-Based Question Selection ─────────────────────────────────────
+
+function substituteVariables(text, gameState, rateDecision) {
+  return text
+    .replace('{corePCE}', gameState.economy.pceInflation.toFixed(1))
+    .replace('{unemployment}', gameState.economy.unemploymentRate.toFixed(1))
+    .replace('{moveSize}', Math.abs(rateDecision))
+    .replace('{dotImplied}', '2')
+    .replace('{remainingMeetings}', 8 - gameState.meetingNumber);
+}
+
+const CREDIBILITY_MAP = { positive: 4, neutral: 0, negative: -3 };
+
+function selectPressConferenceQuestions(gameState, rateDecision) {
+  const pool = window.FedChair.Data.pressConferenceQuestions;
+  if (!pool) return null;
+
+  const selected = [];
+
+  const isHike = rateDecision > 0;
+  const isCut = rateDecision < 0;
+  const isHold = rateDecision === 0;
+  const isLargeMove = Math.abs(rateDecision) >= 50;
+  const lowCredibility = gameState.credibility < 50;
+  const highCredibility = gameState.credibility >= 80;
+  const inflationHigh = gameState.economy.pceInflation >= 2.8;
+  const unemploymentHigh = gameState.economy.unemploymentRate >= 4.5;
+  const isTransition = gameState.meetingNumber === 3;
+  const isLate = gameState.meetingNumber >= 6;
+  const isEarly = gameState.meetingNumber <= 2;
+
+  for (const [catKey, category] of Object.entries(pool)) {
+    let bestQuestion = null;
+    let bestScore = -1;
+
+    for (const variant of category.variants) {
+      let score = 0;
+      const c = variant.conditions || {};
+
+      if (c.onHike && isHike) score += 3;
+      if (c.onCut && isCut) score += 3;
+      if (c.onHold && isHold) score += 3;
+      if (c.onLargeMove && isLargeMove) score += 2;
+      if (c.onLowCredibility && lowCredibility) score += 2;
+      if (c.onHighCredibility && highCredibility) score += 1;
+      if (c.onHighInflation && inflationHigh) score += 2;
+      if (c.onHighUnemployment && unemploymentHigh) score += 2;
+      if (c.onTransition && isTransition) score += 3;
+      if (c.onLate && isLate) score += 1;
+      if (c.onEarly && isEarly) score += 1;
+      if (c.default) score += 0.5;
+
+      score += Math.random() * 0.4;
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestQuestion = variant;
+      }
+    }
+
+    if (bestQuestion) {
+      const transformedResponses = bestQuestion.responses.map(r => ({
+        ...r,
+        hawkShift: 0,
+        credibilityEffect: CREDIBILITY_MAP[r.credibilityImpact] || 0
+      }));
+
+      selected.push({
+        ...bestQuestion,
+        categoryLabel: category.label,
+        responses: transformedResponses,
+        question: substituteVariables(bestQuestion.question, gameState, rateDecision),
+        isNewFormat: true
+      });
+    }
+  }
+
+  return selected;
+}
+
+// ─── Component ─────────────────────────────────────────────────────────────
+
 window.FedChair.Components.PressConference = function({
   gameState,
   rateDecision,
@@ -22,7 +104,12 @@ window.FedChair.Components.PressConference = function({
   const { useState, useEffect, useMemo } = React;
   const { generatePressConferenceQuestions, scoreResponse, calculatePressConferenceImpact } = window.FedChair.Engine;
 
-  const [questions, setQuestions] = useState(null);
+  const [questions] = useState(() => {
+    const newQuestions = selectPressConferenceQuestions(gameState, rateDecision);
+    if (newQuestions && newQuestions.length > 0) return newQuestions;
+    return generatePressConferenceQuestions(gameState, rateDecision, hawkScore, marketReaction, selectedStatements);
+  });
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [scoredResponses, setScoredResponses] = useState([]);
   const [currentSelection, setCurrentSelection] = useState(null);
@@ -30,12 +117,6 @@ window.FedChair.Components.PressConference = function({
   const [phase, setPhase] = useState('questions'); // 'questions' | 'summary'
   const [cumulativeMood, setCumulativeMood] = useState(0);
   const [cumulativeCredibility, setCumulativeCredibility] = useState(0);
-
-  // Generate questions once on mount
-  useEffect(() => {
-    const qs = generatePressConferenceQuestions(gameState, rateDecision, hawkScore, marketReaction, selectedStatements);
-    setQuestions(qs);
-  }, []);
 
   if (!questions) return null;
 
@@ -192,6 +273,8 @@ window.FedChair.Components.PressConference = function({
 
   // ─── Questions Phase ────────────────────────────────────────────────
 
+  const isNewFormat = currentQuestion.isNewFormat;
+
   return (
     <main style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
 
@@ -294,18 +377,54 @@ window.FedChair.Components.PressConference = function({
         marginBottom: '16px',
         animation: showFeedback ? 'none' : 'slideIn 0.3s ease-out'
       }}>
+        {/* Category Badge (new format) */}
+        {isNewFormat && currentQuestion.categoryLabel && (
+          <div style={{
+            padding: '8px 16px',
+            borderBottom: '1px solid rgba(75, 85, 99, 0.2)',
+            background: 'rgba(17, 24, 39, 0.4)'
+          }}>
+            <span style={{
+              fontSize: '10px',
+              fontFamily: '"IBM Plex Mono", monospace',
+              letterSpacing: '1.5px',
+              color: '#6B7280',
+              border: '1px solid #6B7280',
+              padding: '1px 6px',
+              borderRadius: '3px'
+            }}>
+              {currentQuestion.categoryLabel}
+            </span>
+          </div>
+        )}
+
         <div style={{
           padding: '14px 16px',
           borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
           background: 'rgba(59, 130, 246, 0.08)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '11px', fontWeight: '600', color: '#60a5fa' }}>
-              {currentQuestion.reporter}
-            </span>
-            <span style={{ fontSize: '10px', color: '#6b7280' }}>
-              {currentQuestion.outlet}
-            </span>
+            {isNewFormat ? (
+              <span style={{
+                fontSize: '11px',
+                fontWeight: '600',
+                color: '#60a5fa',
+                fontFamily: '"IBM Plex Mono", monospace',
+                letterSpacing: '0.5px',
+                textTransform: 'uppercase'
+              }}>
+                {currentQuestion.journalist}
+              </span>
+            ) : (
+              <>
+                <span style={{ fontSize: '11px', fontWeight: '600', color: '#60a5fa' }}>
+                  {currentQuestion.reporter}
+                </span>
+                <span style={{ fontSize: '10px', color: '#6b7280' }}>
+                  {currentQuestion.outlet}
+                </span>
+              </>
+            )}
           </div>
         </div>
         <div style={{ padding: '16px 18px' }}>
@@ -326,15 +445,16 @@ window.FedChair.Components.PressConference = function({
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
           {currentQuestion.responses.map((resp, i) => {
             const isSelected = currentSelection === i;
-            const strategyColor =
-              resp.label === 'Hawkish lean' ? '#ef4444' :
-              resp.label === 'Dovish lean' ? '#22c55e' :
-              resp.label === 'Deflect' ? '#f97316' :
-              resp.label === 'Direct engagement' ? '#8b5cf6' :
-              resp.label === 'Substantive redirect' ? '#0ea5e9' :
-              resp.label === 'Empathetic' ? '#ec4899' :
-              resp.label === 'Technical' ? '#6366f1' :
-              '#60a5fa';
+            const strategyColor = isNewFormat
+              ? '#60a5fa'
+              : (resp.label === 'Hawkish lean' ? '#ef4444' :
+                 resp.label === 'Dovish lean' ? '#22c55e' :
+                 resp.label === 'Deflect' ? '#f97316' :
+                 resp.label === 'Direct engagement' ? '#8b5cf6' :
+                 resp.label === 'Substantive redirect' ? '#0ea5e9' :
+                 resp.label === 'Empathetic' ? '#ec4899' :
+                 resp.label === 'Technical' ? '#6366f1' :
+                 '#60a5fa');
 
             return (
               <button
@@ -354,7 +474,8 @@ window.FedChair.Components.PressConference = function({
                   borderRadius: '10px',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
-                  color: '#e5e7eb'
+                  color: '#e5e7eb',
+                  minHeight: '48px'
                 }}
               >
                 <div style={{ marginBottom: '6px' }}>
@@ -435,14 +556,80 @@ window.FedChair.Components.PressConference = function({
             </div>
           </div>
 
-          {/* Feedback */}
+          {/* Credibility Impact & Feedback */}
           {(() => {
             const latest = scoredResponses[scoredResponses.length - 1];
             if (!latest) return null;
 
-            const moodIcon = latest.hawkShift > 0 ? '>' : latest.hawkShift < 0 ? '<' : '=';
+            const selectedResponse = currentQuestion.responses[currentSelection];
+
+            // Credibility impact indicator for new format
+            if (isNewFormat) {
+              const impactType = selectedResponse.credibilityImpact;
+              const credIndicator = impactType === 'positive'
+                ? { symbol: '\u25B2', label: 'Credibility', color: '#10B981' }
+                : impactType === 'negative'
+                ? { symbol: '\u25BC', label: 'Credibility', color: '#EF4444' }
+                : { symbol: '\u2014', label: 'No Change', color: '#6B7280' };
+
+              return (
+                <>
+                  {/* Credibility Indicator */}
+                  <div style={{
+                    padding: '12px 16px',
+                    background: 'rgba(17, 24, 39, 0.5)',
+                    borderRadius: '10px',
+                    border: '1px solid rgba(75, 85, 99, 0.3)',
+                    marginBottom: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}>
+                    <span style={{
+                      fontFamily: '"IBM Plex Mono", monospace',
+                      fontSize: 'var(--text-base)',
+                      fontWeight: '600',
+                      color: credIndicator.color
+                    }}>
+                      {credIndicator.symbol} {credIndicator.label}
+                    </span>
+                  </div>
+
+                  {/* Educational Note */}
+                  {selectedResponse.educationalNote && (
+                    <div style={{
+                      padding: '14px 16px',
+                      background: 'rgba(17, 24, 39, 0.5)',
+                      borderRadius: '10px',
+                      borderLeft: '3px solid #D97706',
+                      marginBottom: '12px'
+                    }}>
+                      <div style={{
+                        fontSize: '10px',
+                        letterSpacing: '2px',
+                        color: '#D97706',
+                        marginBottom: '6px',
+                        fontWeight: '600',
+                        fontFamily: '"IBM Plex Mono", monospace'
+                      }}>
+                        COMMUNICATION NOTE
+                      </div>
+                      <div style={{
+                        fontSize: 'var(--text-sm)',
+                        fontFamily: 'var(--font-prose)',
+                        color: '#9ca3af',
+                        lineHeight: 'var(--leading-relaxed)'
+                      }}>
+                        {selectedResponse.educationalNote}
+                      </div>
+                    </div>
+                  )}
+                </>
+              );
+            }
+
+            // Old format feedback
             const moodLabel = latest.hawkShift > 0 ? 'Hawkish shift' : latest.hawkShift < 0 ? 'Dovish shift' : 'Neutral';
-            const credIcon = latest.credibilityEffect > 0 ? '+' : latest.credibilityEffect < 0 ? '-' : '=';
             const credColor = latest.credibilityEffect >= 0 ? '#22c55e' : '#ef4444';
 
             return (

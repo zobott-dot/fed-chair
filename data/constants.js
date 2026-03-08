@@ -271,6 +271,461 @@ window.FedChair.Data.statementPhrasesExpanded = {
 
 };
 
+window.FedChair.Data.pressConferenceQuestions = {
+
+  // ─── CATEGORY 1: DATA CHALLENGE ───────────────────────────────────────────
+  dataChallenge: {
+    label: 'DATA CHALLENGE',
+    variants: [
+      {
+        id: 'dc-hold-high-inflation',
+        conditions: { onHold: true, onHighInflation: true },
+        journalist: 'Reuters financial correspondent',
+        question: 'Chair, core PCE is running at {corePCE}% — well above your 2% target — and yet the committee chose to hold today. Aren\'t you falling behind the curve?',
+        responses: [
+          {
+            id: 'dc1r1', label: 'Stand Firm',
+            text: 'The committee\'s assessment is that the current stance of policy is sufficiently restrictive to return inflation to 2% over time. We are not behind the curve — we are exercising the patience that durable disinflation requires.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Confident, measured pushback signals the committee has a clear framework. Markets interpret this as policy credibility — the Fed knows what it\'s doing and won\'t be pressured.'
+          },
+          {
+            id: 'dc1r2', label: 'Acknowledge Tension',
+            text: 'That is a fair characterization of the tension the committee is navigating. We are balancing the risk of easing prematurely against the risk of unnecessary damage to employment. Today\'s decision reflects that balance.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Acknowledging a difficult tradeoff is honest, but it can signal uncertainty. Markets may read this as the committee lacking conviction in its own framework.'
+          },
+          {
+            id: 'dc1r3', label: 'Open the Door',
+            text: 'The committee is watching the inflation data very carefully, and I would not want to prejudge what future meetings may require. We are prepared to act if the data warrant.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Vague forward guidance after a hold while inflation is high can unsettle markets. It suggests the committee may not have a firm view — which erodes the credibility of the hold itself.'
+          }
+        ]
+      },
+      {
+        id: 'dc-hike-weak-jobs',
+        conditions: { onHike: true, onHighUnemployment: true },
+        journalist: 'Wall Street Journal economics reporter',
+        question: 'Chair, unemployment has risen to {unemployment}% and payrolls have been softening. Given those conditions, how does the committee justify raising rates today?',
+        responses: [
+          {
+            id: 'dc2r1', label: 'Inflation Mandate First',
+            text: 'The committee\'s primary concern at this time is restoring price stability. Experience teaches us that allowing inflation to become entrenched ultimately causes greater damage to employment than the temporary restraint we are applying today.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Invoking the long-run cost of inflation is the classic Volcker defense. It signals the committee has a theory of the case and is willing to accept short-term pain for long-term stability.'
+          },
+          {
+            id: 'dc2r2', label: 'Labor Market Still Healthy',
+            text: 'While we have seen some moderation in labor market conditions, the committee judges that the labor market remains solid overall. The level of unemployment, in our view, remains consistent with our maximum employment objective.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Reframing softer data as "moderation from tight conditions" is technically accurate but can seem dismissive. The market will watch future payroll data closely to test this assertion.'
+          },
+          {
+            id: 'dc2r3', label: 'Express Concern',
+            text: 'The committee is attentive to the softening in labor market conditions, and I want to be clear that we take the employment side of our mandate seriously. Today\'s decision was not made lightly.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Expressing concern about the very thing your policy is arguably worsening undercuts the case for the hike. It can signal that the committee is conflicted — which is worse than being wrong.'
+          }
+        ]
+      },
+      {
+        id: 'dc-cut-inflation-sticky',
+        conditions: { onCut: true, onHighInflation: true },
+        journalist: 'Bloomberg News Fed watcher',
+        question: 'Chair, you\'ve cut rates today but core PCE is still at {corePCE}%. Some economists are calling this a policy mistake. What do you say to them?',
+        responses: [
+          {
+            id: 'dc3r1', label: 'Confident in the Call',
+            text: 'The committee\'s judgment is that inflation is on a sustainable path to 2%, and that the balance of risks now warrants a modest recalibration of policy. We are not declaring victory — we are making a careful adjustment.',
+            credibilityImpact: 'positive',
+            educationalNote: '"Recalibration" rather than "easing" is deliberate Fed communication strategy — it signals a small, conditional adjustment rather than the start of a cutting cycle.'
+          },
+          {
+            id: 'dc3r2', label: 'Point to the Trend',
+            text: 'The level of inflation is higher than we would like, but the direction is what matters most to the committee. The trend in core PCE has been consistently downward, and our models suggest this will continue.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Emphasizing trend over level is a legitimate argument but leaves the Fed exposed if inflation reaccelerates. Markets will mark this call carefully.'
+          },
+          {
+            id: 'dc3r3', label: 'Hedge Extensively',
+            text: 'The committee recognizes the risk inherent in today\'s decision, and I want to be clear that we remain highly attentive to inflation. If we see evidence that today\'s adjustment was premature, we will not hesitate to reverse course.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Preemptively talking about reversing a decision you just made is a significant credibility cost. It signals the committee lacks confidence in its own call.'
+          }
+        ]
+      },
+      {
+        id: 'dc-large-move',
+        conditions: { onLargeMove: true },
+        journalist: 'Financial Times US economics editor',
+        question: 'Chair, a {moveSize} basis point move is well outside the committee\'s typical cadence of 25 basis points. What drove the decision to act so aggressively, and what does it say about the committee\'s assessment of conditions?',
+        responses: [
+          {
+            id: 'dc4r1', label: 'Decisive Action',
+            text: 'The committee determined that economic conditions warranted a more decisive response than a standard adjustment would provide. We did not make this decision lightly, but we are prepared to act with appropriate force when circumstances demand it.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Large moves can project decisiveness if framed as a response to exceptional conditions. The risk is that they can also signal panic — the framing here matters enormously.'
+          },
+          {
+            id: 'dc4r2', label: 'Data Driven',
+            text: 'The size of today\'s adjustment reflects the committee\'s assessment of the data, which has evolved materially since our last meeting. We follow the data — and today the data argued for a larger response.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Attributing a large move to data evolution is defensible but invites follow-up questions about why the committee was surprised. Good if the data genuinely shifted; weak if the move looks reactive.'
+          },
+          {
+            id: 'dc4r3', label: 'Minimize the Move',
+            text: 'I would caution against reading too much into the size of today\'s adjustment. The committee evaluates each meeting on its own merits, and today\'s decision should not be taken as a signal about the pace of future moves.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Trying to downplay a large move after the fact rarely works. Markets have already priced the signal — walking it back creates confusion rather than calm.'
+          }
+        ]
+      },
+      {
+        id: 'dc-hold-default',
+        conditions: { default: true, onHold: true },
+        journalist: 'Associated Press economics correspondent',
+        question: 'Chair, markets had priced in roughly even odds of a move today. The committee held. What would it take for the committee to act at the next meeting?',
+        responses: [
+          {
+            id: 'dc5r1', label: 'Set Clear Conditions',
+            text: 'The committee will be looking for continued progress on inflation, stability in labor market conditions, and confirmation that the economic outlook is evolving as anticipated. We are not in a rush, but we are not passive either.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Articulating conditions for action — without committing to a timeline — is the ideal form of data-dependent communication. It guides expectations without binding the committee.'
+          },
+          {
+            id: 'dc5r2', label: 'Remain Vague',
+            text: 'The committee will continue to assess the totality of incoming data and will act when the time is right. I don\'t want to get ahead of that assessment today.',
+            credibilityImpact: 'neutral',
+            educationalNote: '"Totality of data" is the Fed\'s favorite hedge. It\'s honest but can frustrate markets looking for guidance — and overuse of this phrase reduces its signaling power.'
+          },
+          {
+            id: 'dc5r3', label: 'Signal Urgency',
+            text: 'The committee is very close to the conditions it needs to see. A few more months of data in the same direction could well be sufficient.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Signaling urgency while holding can create whipsaw expectations. If conditions don\'t cooperate and you don\'t move at the next meeting, credibility suffers significantly.'
+          }
+        ]
+      }
+    ]
+  },
+
+  // ─── CATEGORY 2: FORWARD GUIDANCE ─────────────────────────────────────────
+  forwardGuidance: {
+    label: 'FORWARD GUIDANCE',
+    variants: [
+      {
+        id: 'fg-dot-plot',
+        conditions: { default: true },
+        journalist: 'CNBC anchor',
+        question: 'Chair, your dot plot suggests the committee sees {dotImplied} cuts by year end, but market pricing implies a more aggressive path. Who\'s right — the committee or the market?',
+        responses: [
+          {
+            id: 'fg1r1', label: 'Defend the Dots',
+            text: 'The committee\'s projections reflect our best assessment of the likely path of policy given our economic outlook. Markets may have a different view of how conditions will evolve, and time will tell whose forecast is more accurate.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Defending the dot plot without being dismissive of markets is exactly right — it asserts the committee\'s independence while acknowledging legitimate uncertainty.'
+          },
+          {
+            id: 'fg1r2', label: 'Acknowledge Divergence',
+            text: 'There is clearly a difference in views between the committee and market participants at this time. We take market pricing seriously as one input into our assessment, but our projections are based on our own economic models and judgment.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'When the Fed and market pricing diverge sharply, one of them will be wrong. This response hedges without resolving the tension — which may be honest, but can prolong uncertainty.'
+          },
+          {
+            id: 'fg1r3', label: 'Defer to Markets',
+            text: 'Markets have a great deal of information embedded in their pricing, and the committee takes that signal seriously. I wouldn\'t dismiss the market\'s view.',
+            credibilityImpact: 'negative',
+            educationalNote: 'A Fed Chair should never appear to be taking cues from markets — it inverts the relationship. The Fed leads financial conditions; it does not follow them.'
+          }
+        ]
+      },
+      {
+        id: 'fg-higher-longer',
+        conditions: { onHold: true, onHighInflation: true },
+        journalist: 'New York Times economics reporter',
+        question: 'Chair, how long is the committee prepared to hold rates at current levels? Is "higher for longer" still the operating framework?',
+        responses: [
+          {
+            id: 'fg2r1', label: 'Affirm the Framework',
+            text: 'The committee\'s view is that policy needs to remain restrictive until we have gained sufficient confidence that inflation is on a durable path to 2%. That timeline will be determined by the data, not by the calendar.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Tying duration to data rather than calendar time is the correct formulation — it makes the commitment credible without creating a hostage to fortune.'
+          },
+          {
+            id: 'fg2r2', label: 'Leave Options Open',
+            text: 'The committee doesn\'t think in terms of labels like "higher for longer." We think in terms of what the data require. Our posture at any given meeting will reflect the economic conditions prevailing at that time.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Refusing the "higher for longer" framing can seem evasive. It\'s technically accurate but may be read as the committee creating wiggle room to pivot sooner than expected.'
+          },
+          {
+            id: 'fg2r3', label: 'Hint at Cuts',
+            text: 'The committee is certainly aware that maintaining a restrictive stance for longer than necessary carries its own risks. We will be watching for the right moment to begin adjusting policy.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Hinting at cuts while inflation is still elevated is a significant credibility risk. It can cause financial conditions to ease prematurely, potentially re-igniting inflation.'
+          }
+        ]
+      },
+      {
+        id: 'fg-late-game',
+        conditions: { onLate: true },
+        journalist: 'Politico economics correspondent',
+        question: 'Chair, with only {remainingMeetings} meetings left in this campaign, how does the committee\'s sense of urgency change as the end of the term approaches?',
+        responses: [
+          {
+            id: 'fg3r1', label: 'Each Meeting Stands Alone',
+            text: 'The committee\'s decisions are made on the merits of the economic data at each meeting. The number of meetings remaining in any given period does not factor into our policy calculus.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Rejecting time-horizon framing is correct — the Fed shouldn\'t be rushing to complete an agenda. This response reinforces the committee\'s data-dependence and independence.'
+          },
+          {
+            id: 'fg3r2', label: 'Acknowledge the Timeline',
+            text: 'We are aware that the economic cycle has its own dynamics, and the committee is committed to making as much progress as possible toward our goals while conditions permit.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Vaguely acknowledging the timeline without committing to action is a soft hedge. It neither reassures nor alarms — a low-impact response.'
+          },
+          {
+            id: 'fg3r3', label: 'Signal Urgency',
+            text: 'The committee is keenly aware of where we are in the cycle, and there is a shared sense that we should make the most of the current environment to complete the work of bringing inflation durably to 2%.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Expressing urgency tied to a timeline rather than the data can look like the committee is trying to rush to a conclusion — which undermines the credibility of any actions taken.'
+          }
+        ]
+      }
+    ]
+  },
+
+  // ─── CATEGORY 3: POLITICAL / INDEPENDENCE ─────────────────────────────────
+  political: {
+    label: 'POLITICAL',
+    variants: [
+      {
+        id: 'pol-transition',
+        conditions: { onTransition: true },
+        journalist: 'Washington Post political reporter',
+        question: 'Chair Warsh, you are taking over at a moment of significant political pressure on the Fed. How do you intend to preserve the institution\'s independence?',
+        responses: [
+          {
+            id: 'pol1r1', label: 'Assert Independence',
+            text: 'The Federal Reserve\'s independence is not a courtesy extended by any administration — it is a statutory reality rooted in the Federal Reserve Act. The committee will make every decision based solely on our mandate and the data. Full stop.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Citing statutory independence rather than just asserting it is a stronger move — it grounds the claim in law rather than personality. This response projects institutional confidence.'
+          },
+          {
+            id: 'pol1r2', label: 'Acknowledge and Deflect',
+            text: 'The committee is always aware of the political environment, but I can assure you that it does not influence our deliberations. Our focus is on price stability and maximum employment.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Acknowledging political pressure while deflecting it is honest but creates ambiguity. Markets wonder why you acknowledged it at all if it truly doesn\'t matter.'
+          },
+          {
+            id: 'pol1r3', label: 'Too Conciliatory',
+            text: 'The committee values its constructive relationship with the administration and believes that open dialogue serves the public interest. We will always act within our mandate while being mindful of the broader policy context.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Emphasizing a "constructive relationship" with the administration is the worst answer to an independence question. It suggests the Fed is at least partially deferential to political priorities.'
+          }
+        ]
+      },
+      {
+        id: 'pol-pressure-default',
+        conditions: { default: true },
+        journalist: 'NPR economics correspondent',
+        question: 'Chair, there has been significant public commentary from political figures about what the Fed should do. Does that commentary influence the committee\'s deliberations in any way?',
+        responses: [
+          {
+            id: 'pol2r1', label: 'Firm Rejection',
+            text: 'It does not. The committee\'s deliberations are grounded entirely in the economic data and our assessment of how best to achieve our statutory mandate. External commentary — whatever its source — is not a factor in those deliberations.',
+            credibilityImpact: 'positive',
+            educationalNote: 'A clear, unambiguous rejection of political influence is the only acceptable answer. Any hedging here destroys the credibility of the response — and of the institution.'
+          },
+          {
+            id: 'pol2r2', label: 'Soften the Rejection',
+            text: 'The committee is always listening to a wide range of perspectives on the economy, including from policymakers. But our decisions are made independently based on our assessment of the data.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Framing political commentary as just "one of many perspectives" is a subtle mistake — it puts elected officials on the same footing as economists and market participants. Avoid the equivalence.'
+          },
+          {
+            id: 'pol2r3', label: 'Engage the Substance',
+            text: 'The committee takes seriously the concerns that have been raised about the impact of monetary policy on the broader economy. We believe our current approach appropriately balances those concerns.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Engaging with the substance of political criticism implicitly validates it. The Fed Chair should never appear to be adjusting policy in response to political pressure — even obliquely.'
+          }
+        ]
+      },
+      {
+        id: 'pol-low-credibility',
+        conditions: { onLowCredibility: true },
+        journalist: 'Fox Business Network anchor',
+        question: 'Chair, critics argue the Fed has been inconsistent — changing course repeatedly and surprising markets. Has the committee lost credibility, and how do you plan to rebuild it?',
+        responses: [
+          {
+            id: 'pol3r1', label: 'Own the Difficulty',
+            text: 'Monetary policy is conducted in real time with imperfect information, and the committee has had to adjust its views as the data evolved. That is not inconsistency — that is the appropriate response to an uncertain and rapidly changing environment.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Reframing pivots as "data responsiveness" rather than inconsistency is the right move. Acknowledging difficulty while defending the process is more credible than denying any missteps.'
+          },
+          {
+            id: 'pol3r2', label: 'Deflect the Premise',
+            text: 'I would push back on the characterization. The committee has consistently pursued its mandate, even as the economic landscape has shifted significantly. Markets may not always agree with our decisions, but that does not mean we lack a framework.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Pushing back on the question is legitimate but can seem defensive. Works best if the criticism is actually unfair; looks evasive if the committee genuinely has been inconsistent.'
+          },
+          {
+            id: 'pol3r3', label: 'Concede the Point',
+            text: 'The committee acknowledges that our communication could have been clearer at certain junctures, and we are committed to improving the predictability and transparency of our policy process going forward.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Conceding a credibility loss in a press conference setting is dangerous — it becomes the headline. Better to defend the process while acknowledging the difficulty of the environment.'
+          }
+        ]
+      }
+    ]
+  },
+
+  // ─── CATEGORY 4: MARKET IMPACT ────────────────────────────────────────────
+  marketImpact: {
+    label: 'MARKET IMPACT',
+    variants: [
+      {
+        id: 'mi-market-surprise',
+        conditions: { default: true },
+        journalist: 'CNBC markets correspondent',
+        question: 'Chair, equities sold off sharply following your decision today. Does the market reaction concern the committee, and does it factor into your policy thinking?',
+        responses: [
+          {
+            id: 'mi1r1', label: 'Markets Follow Policy',
+            text: 'The committee sets monetary policy to achieve price stability and maximum employment — not to target any particular level of asset prices. Market volatility in response to policy decisions is a normal feature of how monetary transmission works.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Asserting that asset prices are a byproduct of policy — not a target — is correct and important. A Fed Chair who appears to be managing markets rather than the economy loses credibility fast.'
+          },
+          {
+            id: 'mi1r2', label: 'Monitor Conditions',
+            text: 'The committee monitors financial conditions broadly, and significant market moves are one input into our assessment of how policy is transmitting to the economy. We will watch the data carefully in the days ahead.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Saying you "monitor" markets is acceptable — the Fed genuinely does. But it can be read as leaving the door open to a policy reversal if markets fall hard enough. Use with care.'
+          },
+          {
+            id: 'mi1r3', label: 'Express Concern',
+            text: 'The committee is certainly aware of the market reaction, and we take it seriously as a signal about how today\'s decision was received. We will factor that into our assessment going forward.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Saying you\'ll factor a market selloff into future assessments is tantamount to admitting the market has a veto over your policy. This is a significant credibility error.'
+          }
+        ]
+      },
+      {
+        id: 'mi-financial-conditions',
+        conditions: { onCut: true },
+        journalist: 'Barron\'s senior editor',
+        question: 'Chair, financial conditions have eased substantially since you began this rate cutting cycle. Aren\'t you at risk of re-igniting the very inflation you worked so hard to suppress?',
+        responses: [
+          {
+            id: 'mi2r1', label: 'Distinguish Real from Nominal',
+            text: 'The committee monitors financial conditions carefully, but I would note that even with today\'s adjustment, the real federal funds rate remains meaningfully positive. Policy is still restraining aggregate demand — just somewhat less than before.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Real vs. nominal rate framing is the correct technical argument. If the real rate is still positive after a cut, policy is still restrictive — which defuses the re-ignition concern.'
+          },
+          {
+            id: 'mi2r2', label: 'Acknowledge the Risk',
+            text: 'The committee is attentive to the risk of easing financial conditions prematurely, which is why we are proceeding carefully and remain data-dependent at each step.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Acknowledging the risk while citing data-dependence is a standard hedge. It doesn\'t resolve the tension but signals the committee is watching the right things.'
+          },
+          {
+            id: 'mi2r3', label: 'Minimize the Risk',
+            text: 'I don\'t believe the easing in financial conditions we have seen poses a material inflation risk at this time. The economy is in a different place than it was when inflation was at its peak.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Dismissing an inflation risk while cutting rates is bold — and leaves you exposed if inflation reaccelerates. The phrase "at this time" is an implicit hedge, but it may not be enough.'
+          }
+        ]
+      }
+    ]
+  },
+
+  // ─── CATEGORY 5: COMMUNICATION / CONSISTENCY ──────────────────────────────
+  communication: {
+    label: 'COMMUNICATION',
+    variants: [
+      {
+        id: 'comm-dot-deviation',
+        conditions: { default: true },
+        journalist: 'The Economist US bureau chief',
+        question: 'Chair, at your last meeting your dot plot projected a different path than what the committee delivered today. How do you explain the deviation, and what should markets take from that about the reliability of dot plot guidance?',
+        responses: [
+          {
+            id: 'comm1r1', label: 'Data Changed the Calculus',
+            text: 'The dot plot reflects the committee\'s best assessment of the likely policy path given the outlook at a point in time. The data we received between meetings changed that outlook materially, and the committee responded accordingly. That is data dependence working as intended.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Explaining dot plot deviations as responses to new data is the cleanest defense — and it reinforces the correct message that the dot plot is a forecast, not a commitment.'
+          },
+          {
+            id: 'comm1r2', label: 'Reframe the Dot Plot',
+            text: 'I want to caution against treating the dot plot as a promise. It is a snapshot of individual committee members\' views at a particular time, not a commitment to any particular course of action. The committee always reserves the right to respond to new information.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'This framing is technically correct but can backfire — if markets can\'t trust the dot plot as a signal, they lose a valuable communication tool. Overuse of this disclaimer reduces the dot plot\'s value.'
+          },
+          {
+            id: 'comm1r3', label: 'Apologize for Confusion',
+            text: 'The committee acknowledges that the deviation between our projected path and today\'s decision may have caused confusion, and we are committed to improving the clarity of our forward guidance going forward.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Apologizing for a policy decision in a press conference is almost never right. It frames the deviation as a mistake rather than a rational response to new information — and invites more criticism.'
+          }
+        ]
+      },
+      {
+        id: 'comm-statement-language',
+        conditions: { onEarly: true },
+        journalist: 'Axios markets reporter',
+        question: 'Chair, the committee\'s statement today changed the language around inflation from "elevated" to "somewhat elevated." Is that a deliberate signal, or just editing?',
+        responses: [
+          {
+            id: 'comm2r1', label: 'Every Word Is Deliberate',
+            text: 'Every word in the FOMC statement is deliberate and carefully considered by the full committee. Changes in language between meetings are intended to reflect the committee\'s evolving assessment of conditions. I would encourage close reading of the statement.',
+            credibilityImpact: 'positive',
+            educationalNote: 'This answer teaches the player — and the market — to read the statement carefully. It confirms that language changes are meaningful signals, which enhances the Fed\'s communication toolkit.'
+          },
+          {
+            id: 'comm2r2', label: 'Downplay the Change',
+            text: 'I wouldn\'t read too much into specific word choices. The committee is trying to describe conditions accurately, and the language will naturally evolve as conditions evolve.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Downplaying a language change after confirming that every word is deliberate creates a contradiction. Markets will draw their own conclusions — and they\'ll probably read the change as significant regardless.'
+          },
+          {
+            id: 'comm2r3', label: 'Confirm the Signal',
+            text: 'Yes, that change is intentional and does reflect the committee\'s view that inflation has moderated from where it was. We felt it was important to update the language to reflect current conditions.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Confirming a dovish language change too explicitly can trigger an outsized market rally in risk assets — easing financial conditions more than intended. Fed Chairs often let the language speak for itself.'
+          }
+        ]
+      },
+      {
+        id: 'comm-high-credibility',
+        conditions: { onHighCredibility: true },
+        journalist: 'Harvard economics professor turned commentator',
+        question: 'Chair, you\'ve managed to maintain strong credibility through a difficult cycle. What has the committee done right, and what lessons do you draw from this period?',
+        responses: [
+          {
+            id: 'comm3r1', label: 'Credit the Framework',
+            text: 'I would attribute whatever success we\'ve had to the committee\'s commitment to its framework — clear objectives, transparent communication, and a willingness to act decisively when the data required. The framework works when you trust it.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Crediting the framework rather than individual judgment is the right institutional answer. It reinforces the Fed\'s commitment to rule-based policymaking over discretionary decisions.'
+          },
+          {
+            id: 'comm3r2', label: 'Stay Humble',
+            text: 'I\'m cautious about drawing too many lessons while we\'re still in the middle of the process. I would rather wait until we can assess the full arc of this period with the benefit of hindsight.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Epistemic humility is generally good — but in this context, declining to claim credit might seem like false modesty. A brief acknowledgment of what went right is appropriate.'
+          },
+          {
+            id: 'comm3r3', label: 'Take Personal Credit',
+            text: 'I think the committee has benefited from strong, consistent leadership and a clear vision for what needed to be done. There were moments when the path forward was not obvious, and having a firm hand at the wheel made a difference.',
+            credibilityImpact: 'negative',
+            educationalNote: 'A Fed Chair who takes personal credit for outcomes is violating the collegial norms of the institution. The committee speaks collectively — and individual hubris is remembered when things go wrong.'
+          }
+        ]
+      }
+    ]
+  }
+
+};
+
 window.FedChair.Data.newsHeadlines = [
   { headline: 'Core PCE Spikes to 3.0% in December — Highest Since April 2024', source: 'BEA' },
   { headline: 'BLS Benchmark Revision Slashes 2025 Job Gains by 911K — Avg Monthly Only 15K', source: 'BLS' },
