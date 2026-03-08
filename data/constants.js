@@ -726,6 +726,202 @@ window.FedChair.Data.pressConferenceQuestions = {
 
 };
 
+window.FedChair.Data.learnTerms = {
+
+  'Federal Funds Rate': {
+    title: 'Federal Funds Rate',
+    plain: 'The interest rate at which banks lend money to each other overnight. It\'s the Fed\'s primary policy tool — raising it makes borrowing more expensive throughout the economy; lowering it makes borrowing cheaper.',
+    context: 'When you set this rate, you\'re essentially setting the price of money. Every other interest rate — mortgages, car loans, credit cards — tends to move in the same direction.'
+  },
+
+  'Basis Points': {
+    title: 'Basis Points (bps)',
+    plain: 'A unit of measurement for interest rates. One basis point equals 0.01% (one hundredth of a percent). 25 basis points = 0.25%. The Fed typically moves in 25 basis point increments.',
+    context: 'A 25 bps hike might sound small, but across trillions of dollars in loans and mortgages, even tiny rate changes have enormous real-world effects.'
+  },
+
+  'Real Interest Rate': {
+    title: 'Real Interest Rate',
+    plain: 'The interest rate after adjusting for inflation. If the Fed Funds Rate is 4% and inflation is 3%, the real rate is roughly 1%. Real rates matter more than nominal rates for economic behavior.',
+    context: 'A "high" nominal rate can actually be stimulative if inflation is even higher. That\'s why the committee watches real rates closely — they reveal how tight policy actually is.'
+  },
+
+  'Neutral Rate': {
+    title: 'Neutral Rate (r*)',
+    plain: 'The theoretical interest rate that neither stimulates nor restrains the economy. Rates above neutral are restrictive; rates below neutral are accommodative. Nobody knows exactly where it is.',
+    context: 'Much of the debate about whether to hold or move rates comes down to where the committee thinks the neutral rate is — and that\'s genuinely uncertain.'
+  },
+
+  'Restrictive': {
+    title: 'Restrictive Policy',
+    plain: 'When interest rates are set above the neutral rate, policy is "restrictive" — it is actively slowing economic activity to bring inflation down. The opposite is "accommodative."',
+    context: 'The committee uses this word deliberately. Calling policy "sufficiently restrictive" signals confidence that rates are high enough. Dropping that word signals a pivot may be coming.'
+  },
+
+  'Core PCE': {
+    title: 'Core PCE Inflation',
+    plain: 'The Fed\'s preferred inflation measure. It tracks prices paid by consumers, excluding food and energy (which are volatile). PCE stands for Personal Consumption Expenditures.',
+    context: 'The Fed targets 2% Core PCE — not CPI. When this number is above 2%, the committee feels pressure to hold or hike. Below 2% sustained, it creates room to cut.'
+  },
+
+  'CPI': {
+    title: 'Consumer Price Index (CPI)',
+    plain: 'A widely reported measure of inflation that tracks a basket of consumer goods and services. The Fed watches CPI but officially targets PCE, which weights spending differently.',
+    context: 'CPI tends to run slightly higher than PCE. When both are elevated, the inflation signal is unambiguous. When they diverge, it tells the committee something about which sectors are driving prices.'
+  },
+
+  'Inflation Expectations': {
+    title: 'Inflation Expectations',
+    plain: 'What households, businesses, and markets believe inflation will be in the future. If people expect high inflation, they demand higher wages and raise prices preemptively — which causes the very inflation they expect.',
+    context: 'Keeping expectations "anchored" at 2% is one of the Fed\'s most important tasks. Once expectations become unanchored, fighting inflation becomes much harder and more painful.'
+  },
+
+  'Disinflation': {
+    title: 'Disinflation',
+    plain: 'When inflation is still positive but falling. Prices are still rising — just more slowly. This is different from deflation, where prices actually fall.',
+    context: 'The committee uses "disinflation" carefully. Saying it signals progress without declaring victory. The risk is that disinflation stalls — prices stabilize at a level still above 2%.'
+  },
+
+  'Transitory': {
+    title: 'Transitory',
+    plain: 'A word the Fed used (and later regretted) to describe inflation it expected to be temporary and self-correcting. It became infamous when 2021\'s "transitory" inflation turned out to be persistent.',
+    context: 'This word carries enormous historical baggage. Using it in your statement is a high-risk communication choice — it signals confidence that inflation will fade, but it makes you look bad if it doesn\'t.'
+  },
+
+  'Maximum Employment': {
+    title: 'Maximum Employment',
+    plain: 'One half of the Fed\'s dual mandate. It doesn\'t mean zero unemployment — it means the highest level of employment consistent with stable prices. The Fed estimates this but can\'t know it precisely.',
+    context: 'When unemployment is very low, the committee worries the labor market is "overheating" — putting upward pressure on wages and inflation. When unemployment rises, the employment mandate gets more weight.'
+  },
+
+  'Dual Mandate': {
+    title: 'The Dual Mandate',
+    plain: 'The Fed\'s two legally assigned goals: maximum employment AND stable prices (2% inflation). Most central banks only target inflation. The Fed\'s dual mandate means it must balance both — which creates genuine tension.',
+    context: 'Every rate decision involves a tradeoff between the two mandates. Hiking fights inflation but risks employment. Cutting protects jobs but risks inflation. That tension is the game.'
+  },
+
+  'Non-Farm Payrolls': {
+    title: 'Non-Farm Payrolls',
+    plain: 'The monthly jobs report — how many jobs the US economy added (or lost), excluding farm workers. Released the first Friday of each month. One of the most market-moving data releases.',
+    context: 'A strong payrolls number (above ~150K) signals a healthy labor market. A weak number raises recession fears. The committee reads this data carefully before every meeting.'
+  },
+
+  'Labor Force Participation': {
+    title: 'Labor Force Participation Rate',
+    plain: 'The percentage of working-age Americans who are either employed or actively looking for work. A low participation rate can mask unemployment — people may have stopped looking.',
+    context: 'When interpreting unemployment numbers, the committee also checks participation. A falling unemployment rate with falling participation may not reflect true labor market strength.'
+  },
+
+  'Yield Curve': {
+    title: 'Yield Curve',
+    plain: 'A chart showing interest rates on government bonds across different time horizons (2-year, 10-year, 30-year). Normally, longer-term bonds pay higher rates. When the curve "inverts" (short-term rates exceed long-term), it often signals recession.',
+    context: 'An inverted yield curve is one of the most reliable recession predictors. The committee watches the 2-year/10-year spread closely — if it inverts, growth concerns rise fast.'
+  },
+
+  'Financial Conditions': {
+    title: 'Financial Conditions',
+    plain: 'A broad measure of how easy or tight it is to borrow money across the economy — combining interest rates, stock prices, credit spreads, and the dollar\'s value. The Fed influences but doesn\'t fully control financial conditions.',
+    context: 'Sometimes financial conditions ease even when the Fed holds rates — if stock markets rally or credit spreads tighten. This can complicate the Fed\'s work, as looser conditions can re-ignite inflation.'
+  },
+
+  'Credit Spreads': {
+    title: 'Credit Spreads',
+    plain: 'The difference in interest rates between US Treasury bonds (risk-free) and corporate bonds (riskier). Wide spreads signal market stress — investors demanding a higher premium for taking on risk.',
+    context: 'When spreads widen suddenly, it\'s a warning sign that the credit markets are tightening beyond what the Fed intended. The committee watches spreads as a real-time gauge of financial stress.'
+  },
+
+  'Market Expectations': {
+    title: 'Market Expectations',
+    plain: 'What financial markets are pricing in for future Fed policy, derived from futures contracts. If markets price in a 90% chance of a hold, a surprise move creates a large, disruptive reaction.',
+    context: 'Managing market expectations is a core Fed communication skill. Surprising markets isn\'t inherently bad — but doing it without explanation erodes credibility and creates volatility.'
+  },
+
+  'Forward Guidance': {
+    title: 'Forward Guidance',
+    plain: 'When the Fed signals its likely future policy path to help businesses and markets plan ahead. It\'s a powerful communication tool — words can move markets without changing rates.',
+    context: 'The language you choose in your statement IS forward guidance. Phrases like "data dependent" or "prepared to hold for as long as necessary" carry enormous weight in how markets interpret your intentions.'
+  },
+
+  'Dot Plot': {
+    title: 'The Dot Plot',
+    plain: 'A chart showing each FOMC member\'s anonymous projection for where the federal funds rate will be at the end of each year. The median of the dots becomes the committee\'s "signal" to markets.',
+    context: 'When your dot projections differ from your actual decisions, credibility suffers. Markets treat dots as implicit commitments even though the Fed insists they\'re just forecasts.'
+  },
+
+  'FOMC': {
+    title: 'Federal Open Market Committee (FOMC)',
+    plain: 'The committee within the Federal Reserve that sets monetary policy. It has 12 voting members: 7 Fed governors plus 5 of the 12 regional bank presidents (on a rotating basis). Meets 8 times per year.',
+    context: 'As Chair, you lead the committee but don\'t dictate it. Building consensus matters. A dissenting vote signals internal disagreement — which markets watch closely.'
+  },
+
+  'Beige Book': {
+    title: 'The Beige Book',
+    plain: 'A report published by the Fed 8 times per year gathering anecdotal economic intelligence from businesses across all 12 Federal Reserve districts. Named for its beige cover.',
+    context: 'The Beige Book captures what\'s happening on the ground before the official data catches up. If districts are reporting slowing activity, it\'s an early warning the committee takes seriously.'
+  },
+
+  'Credibility': {
+    title: 'Fed Credibility',
+    plain: 'The degree to which businesses, households, and markets believe the Fed will follow through on its stated commitments. High credibility means your words move markets. Low credibility means nobody believes you.',
+    context: 'Credibility is earned slowly and lost quickly. Inconsistency between your dot plot projections and your actual decisions, or shifting your stated rationale without explanation, erodes it fast.'
+  },
+
+  'Quantitative Easing': {
+    title: 'Quantitative Easing (QE)',
+    plain: 'When the Fed creates new money to buy Treasury bonds and mortgage-backed securities, injecting liquidity into the financial system and pushing long-term interest rates down. Used when rate cuts alone aren\'t enough.',
+    context: 'QE expands the Fed\'s balance sheet. It\'s a powerful but blunt tool — once started, stopping it requires careful management to avoid disrupting markets. The 2013 "Taper Tantrum" showed how sensitive markets are to this.'
+  },
+
+  'Quantitative Tightening': {
+    title: 'Quantitative Tightening (QT)',
+    plain: 'The opposite of QE. The Fed shrinks its balance sheet by allowing bonds to mature without reinvesting the proceeds (passive QT) or by actively selling assets. It tightens financial conditions beyond what rate hikes alone achieve.',
+    context: 'QT is a second tightening lever operating alongside rate hikes. The combination of both — as seen in 2022-2024 — creates significant cumulative pressure on borrowing costs throughout the economy.'
+  },
+
+  'Balance Sheet': {
+    title: 'The Fed\'s Balance Sheet',
+    plain: 'The total assets held by the Federal Reserve — primarily US Treasury bonds and mortgage-backed securities (MBS). Grew from ~$900 billion before 2008 to nearly $9 trillion at its 2022 peak.',
+    context: 'The size and composition of the balance sheet is itself a policy tool. A larger balance sheet means more liquidity in the system; a smaller one means tighter conditions — independent of what the Fed Funds Rate is doing.'
+  },
+
+  'GDP': {
+    title: 'Gross Domestic Product (GDP)',
+    plain: 'The total value of all goods and services produced in the US economy. The broadest measure of economic output. Two consecutive quarters of negative GDP growth is the informal definition of a recession.',
+    context: 'Strong GDP growth is generally good, but if it\'s running too hot, it can fuel inflation. The Fed tries to achieve growth near its "potential" — the pace sustainable without generating price pressure.'
+  },
+
+  'Recession': {
+    title: 'Recession',
+    plain: 'A significant decline in economic activity across the economy, typically defined as two consecutive quarters of negative GDP growth. Characterized by rising unemployment, falling output, and declining consumer spending.',
+    context: 'Avoiding recession while fighting inflation is the "soft landing" — the Fed\'s holy grail. Hiking too fast risks causing a recession; hiking too slowly risks entrenching inflation. The committee walks this line every meeting.'
+  },
+
+  'Soft Landing': {
+    title: 'Soft Landing',
+    plain: 'The ideal outcome of a rate-hiking cycle: inflation returns to 2% without triggering a recession. Historically rare — most tightening cycles end in recession. The 1994-95 cycle is the canonical example of success.',
+    context: 'Whether you achieve a soft landing depends on your decisions across all 8 meetings. Too aggressive and you may tip into recession; too cautious and inflation stays elevated. Your score reflects this balance.'
+  },
+
+  'Stagflation': {
+    title: 'Stagflation',
+    plain: 'The toxic combination of high inflation AND high unemployment (stagnation). Normally, inflation and unemployment move in opposite directions — stagflation breaks that relationship, making both policy tools less effective.',
+    context: 'Stagflation is the Fed\'s nightmare scenario because raising rates fights inflation but worsens unemployment — and cutting rates helps unemployment but worsens inflation. There\'s no clean solution.'
+  },
+
+  'Hawkish': {
+    title: 'Hawkish',
+    plain: 'A policy stance favoring higher interest rates to fight inflation, even at the cost of slower growth. Hawks prioritize price stability over employment in the dual mandate tradeoff.',
+    context: 'Hawkish language in your statement — like emphasizing inflation risks or signaling future hikes — tightens financial conditions even before you actually move rates. Markets react to tone as much as action.'
+  },
+
+  'Dovish': {
+    title: 'Dovish',
+    plain: 'A policy stance favoring lower interest rates to support economic growth and employment, accepting some inflation risk. Doves prioritize the employment side of the dual mandate.',
+    context: 'Dovish language — like emphasizing downside risks to growth or signaling potential cuts — loosens financial conditions. If markets interpret you as dovish while inflation is elevated, credibility can suffer.'
+  }
+
+};
+
 window.FedChair.Data.newsHeadlines = [
   { headline: 'Core PCE Spikes to 3.0% in December — Highest Since April 2024', source: 'BEA' },
   { headline: 'BLS Benchmark Revision Slashes 2025 Job Gains by 911K — Avg Monthly Only 15K', source: 'BLS' },

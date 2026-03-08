@@ -99,8 +99,10 @@ window.FedChair.Components.PressConference = function({
   hawkLabel,
   marketReaction,
   selectedStatements,
-  onComplete
+  onComplete,
+  learnMode
 }) {
+  const LearnTerm = window.FedChair.Components.LearnTerm;
   const { useState, useEffect, useMemo } = React;
   const { generatePressConferenceQuestions, scoreResponse, calculatePressConferenceImpact } = window.FedChair.Engine;
 
@@ -195,7 +197,7 @@ window.FedChair.Components.PressConference = function({
             marginBottom: '20px'
           }}>
             <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#8b95a5', marginBottom: '8px' }}>
-              CREDIBILITY IMPACT
+              <LearnTerm term="Credibility" learnMode={learnMode}>CREDIBILITY IMPACT</LearnTerm>
             </div>
             <div style={{
               fontFamily: '"IBM Plex Mono", monospace',
@@ -345,9 +347,9 @@ window.FedChair.Components.PressConference = function({
         border: '1px solid rgba(75, 85, 99, 0.2)'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-          <span style={{ fontSize: '10px', color: '#22c55e', letterSpacing: '1px' }}>DOVISH</span>
+          <span style={{ fontSize: '10px', color: '#22c55e', letterSpacing: '1px' }}><LearnTerm term="Dovish" learnMode={learnMode}>DOVISH</LearnTerm></span>
           <span style={{ fontSize: '10px', color: '#6b7280', letterSpacing: '1px' }}>MARKET MOOD</span>
-          <span style={{ fontSize: '10px', color: '#ef4444', letterSpacing: '1px' }}>HAWKISH</span>
+          <span style={{ fontSize: '10px', color: '#ef4444', letterSpacing: '1px' }}><LearnTerm term="Hawkish" learnMode={learnMode}>HAWKISH</LearnTerm></span>
         </div>
         <div style={{
           height: '6px',

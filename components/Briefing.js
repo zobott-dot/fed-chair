@@ -10,13 +10,14 @@ const briefingPanelStyle = {
   overflow: 'hidden'
 };
 
-window.FedChair.Components.Briefing = function({ briefingData, gameState, setActiveView }) {
+window.FedChair.Components.Briefing = function({ briefingData, gameState, setActiveView, learnMode }) {
+  const LearnTerm = window.FedChair.Components.LearnTerm;
   const [activeSection, setActiveSection] = React.useState('beigeBook');
 
   if (!briefingData) return null;
 
   const sections = [
-    { id: 'beigeBook', label: 'BEIGE BOOK' },
+    { id: 'beigeBook', label: 'BEIGE BOOK', term: 'Beige Book' },
     { id: 'staffProjections', label: 'STAFF FORECAST' },
     { id: 'dataReleases', label: 'DATA RELEASES' },
     { id: 'marketPositioning', label: 'MARKET PRICING' },
@@ -99,10 +100,10 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
     const sp = briefingData.staffProjections;
 
     const metrics = [
-      { key: 'gdp', label: 'GDP Growth', unit: '%', color: '#60a5fa' },
-      { key: 'inflation', label: 'PCE Inflation', unit: '%', color: '#f97316' },
-      { key: 'unemployment', label: 'Unemployment', unit: '%', color: '#a78bfa' },
-      { key: 'fedFunds', label: 'Fed Funds Rate', unit: '%', color: '#22c55e' }
+      { key: 'gdp', label: 'GDP Growth', unit: '%', color: '#60a5fa', term: 'GDP' },
+      { key: 'inflation', label: 'PCE Inflation', unit: '%', color: '#f97316', term: 'Core PCE' },
+      { key: 'unemployment', label: 'Unemployment', unit: '%', color: '#a78bfa', term: 'Maximum Employment' },
+      { key: 'fedFunds', label: 'Fed Funds Rate', unit: '%', color: '#22c55e', term: 'Federal Funds Rate' }
     ];
 
     const renderRangeBar = (metric) => {
@@ -214,7 +215,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
                 ...briefingPanelStyle,
                 padding: '20px'
               }}>
-                <div style={{ ...labelStyle, fontSize: 'var(--text-sm)' }}>{metric.label}</div>
+                <div style={{ ...labelStyle, fontSize: 'var(--text-sm)' }}>{metric.term ? <LearnTerm term={metric.term} learnMode={learnMode}>{metric.label}</LearnTerm> : metric.label}</div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
                   <div>
                     <span className="staff-current-value" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'var(--text-xl)', color: '#f9fafb' }}>
@@ -411,7 +412,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
           textAlign: 'center',
           marginBottom: '16px'
         }}>
-          <div style={labelStyle}>FED FUNDS FUTURES PRICING</div>
+          <div style={labelStyle}><LearnTerm term="Market Expectations" learnMode={learnMode}>FED FUNDS FUTURES PRICING</LearnTerm></div>
           <div style={{
             fontFamily: "'IBM Plex Mono', monospace",
             fontSize: 'clamp(28px, 5vw, 42px)',
@@ -621,7 +622,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
           padding: '16px',
           borderLeft: '3px solid #eab308'
         }}>
-          <div style={labelStyle}>FORWARD RATE EXPECTATIONS</div>
+          <div style={labelStyle}><LearnTerm term="Forward Guidance" learnMode={learnMode}>FORWARD RATE EXPECTATIONS</LearnTerm></div>
           <div style={{ fontSize: 'var(--text-base)', fontFamily: 'var(--font-prose)', color: '#d1d5db', lineHeight: 'var(--leading-relaxed)', fontStyle: 'italic' }}>
             {mp.futureGuidance}
           </div>
@@ -945,7 +946,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
               minHeight: 'auto'
             }}
           >
-            {section.label}
+            {section.term ? <LearnTerm term={section.term} learnMode={learnMode}>{section.label}</LearnTerm> : section.label}
           </button>
         ))}
       </div>

@@ -13,7 +13,9 @@ window.FedChair.Components.Header = function({
   gameEnded,
   onNewGame,
   gameMode,
-  shimmerKey
+  shimmerKey,
+  learnMode,
+  setLearnMode
 }) {
   const [showConfirm, setShowConfirm] = React.useState(false);
   const views = ['dashboard', 'briefing', 'decision', ...(showReaction ? ['aftermath'] : [])];
@@ -112,6 +114,15 @@ window.FedChair.Components.Header = function({
             }}
           >
             🔄 NEW
+          </button>
+
+          {/* Learn Mode Toggle */}
+          <button
+            className={`learn-toggle${learnMode ? ' active' : ''}`}
+            onClick={() => setLearnMode && setLearnMode(!learnMode)}
+            style={{ minHeight: 'auto' }}
+          >
+            LEARN
           </button>
 
           <div style={{

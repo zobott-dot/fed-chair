@@ -219,8 +219,10 @@ window.FedChair.Components.DecisionPanel = function({
   gameState,
   dotSelections,
   setDotSelections,
-  onStatementPhrasesChange
+  onStatementPhrasesChange,
+  learnMode
 }) {
+  const LearnTerm = window.FedChair.Components.LearnTerm;
   const expandedPhrases = window.FedChair.Data.statementPhrasesExpanded;
   const useAccordion = !!expandedPhrases;
 
@@ -359,7 +361,7 @@ window.FedChair.Components.DecisionPanel = function({
           </div>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '1px' }}>Credibility</div>
+          <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '1px' }}><LearnTerm term="Credibility" learnMode={learnMode}>Credibility</LearnTerm></div>
           <div style={{ fontSize: 'var(--text-lg)', fontFamily: '"IBM Plex Mono", monospace', color: getCredibilityColor(credibility) }}>
             {credibility}/100
           </div>
@@ -384,7 +386,7 @@ window.FedChair.Components.DecisionPanel = function({
           {/* Current Rate */}
           <div style={{ textAlign: 'center', marginBottom: '24px' }}>
             <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginBottom: '8px', letterSpacing: '1.5px' }}>
-              CURRENT RATE
+              <LearnTerm term="Federal Funds Rate" learnMode={learnMode}>CURRENT RATE</LearnTerm>
             </div>
             <div style={{
               fontFamily: '"IBM Plex Mono", monospace',
@@ -819,7 +821,7 @@ window.FedChair.Components.DecisionPanel = function({
             return (
               <div style={{ marginTop: '24px' }}>
                 <div style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', marginBottom: '10px', textAlign: 'center', fontWeight: '600' }}>
-                  FORWARD GUIDANCE DOT PLOT
+                  <LearnTerm term="Dot Plot" learnMode={learnMode}>FORWARD GUIDANCE DOT PLOT</LearnTerm>
                 </div>
 
                 {/* Legend */}

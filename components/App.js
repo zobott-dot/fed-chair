@@ -5,7 +5,7 @@ window.FedChair = window.FedChair || {};
 window.FedChair.Components = window.FedChair.Components || {};
 
 const { useState, useEffect, useCallback } = React;
-const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, PressConference, Aftermath, Transition, EndGame } = window.FedChair.Components;
+const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, PressConference, Aftermath, Transition, EndGame, LearnTerm } = window.FedChair.Components;
 const { calculateMarketReaction } = window.FedChair.Engine;
 const { calculateScore, calculateHawkScore, getHawkLabel } = window.FedChair.Engine;
 const { createGameState, advanceToNextMeeting, gameStateToEconomicData, generateBriefing, generateCommitteeDots } = window.FedChair.Engine;
@@ -46,6 +46,7 @@ window.FedChair.Components.App = function() {
   const [showTransition, setShowTransition] = useState(false);
   const [endGameAssessment, setEndGameAssessment] = useState(null);
   const [activeStatementPhrases, setActiveStatementPhrases] = useState(null);
+  const [learnMode, setLearnMode] = useState(false);
 
   // Load data on mount (do NOT create gameState yet — wait for mode selection)
   useEffect(() => {
@@ -333,6 +334,8 @@ window.FedChair.Components.App = function() {
         onNewGame={handleNewGame}
         gameMode={gameState.mode}
         shimmerKey={shimmerKey}
+        learnMode={learnMode}
+        setLearnMode={setLearnMode}
       />
 
       <MeetingBanner
@@ -352,6 +355,7 @@ window.FedChair.Components.App = function() {
           marketReaction={marketReaction}
           selectedStatements={selectedStatements}
           onComplete={handlePressConferenceComplete}
+          learnMode={learnMode}
         />
       )}
 
@@ -385,6 +389,7 @@ window.FedChair.Components.App = function() {
           briefingData={briefingData}
           gameState={gameState}
           setActiveView={setActiveView}
+          learnMode={learnMode}
         />
       )}
 
@@ -408,6 +413,7 @@ window.FedChair.Components.App = function() {
           dotSelections={dotSelections}
           setDotSelections={setDotSelections}
           onStatementPhrasesChange={setActiveStatementPhrases}
+          learnMode={learnMode}
         />
       )}
 
@@ -419,6 +425,7 @@ window.FedChair.Components.App = function() {
           newsHeadlines={newsHeadlines}
           setActiveView={setActiveView}
           gameState={gameState}
+          learnMode={learnMode}
         />
       )}
 

@@ -47,8 +47,10 @@ window.FedChair.Components.Dashboard = function({
   regionalPresidents,
   newsHeadlines,
   setActiveView,
-  gameState
+  gameState,
+  learnMode
 }) {
+  const LearnTerm = window.FedChair.Components.LearnTerm;
   const [activePanel, setActivePanel] = React.useState('governors');
 
   const meetingNumber = gameState?.meetingNumber || 1;
@@ -101,7 +103,7 @@ window.FedChair.Components.Dashboard = function({
             borderRadius: '6px',
             textAlign: 'center'
           }}>
-            <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '1px' }}>CREDIBILITY</div>
+            <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '1px' }}><LearnTerm term="Credibility" learnMode={learnMode}>CREDIBILITY</LearnTerm></div>
             <div style={{
               fontSize: 'clamp(18px, 2.5vw, 26px)',
               fontFamily: '"IBM Plex Mono", monospace',
@@ -182,7 +184,7 @@ window.FedChair.Components.Dashboard = function({
         textAlign: 'center'
       }}>
         <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginBottom: '8px', letterSpacing: '1.5px' }}>
-          FEDERAL FUNDS RATE
+          <LearnTerm term="Federal Funds Rate" learnMode={learnMode}>FEDERAL FUNDS RATE</LearnTerm>
         </div>
         <div style={{
           fontFamily: '"IBM Plex Mono", monospace',
@@ -243,7 +245,7 @@ window.FedChair.Components.Dashboard = function({
         {/* Inflation */}
         <div style={panelStyle}>
           <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
-            <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}>INFLATION</span>
+            <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}><LearnTerm term="Inflation Expectations" learnMode={learnMode}>INFLATION</LearnTerm></span>
           </div>
           <div style={{ padding: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
             {Object.entries(economicData.inflation).map(([key, data]) => (
@@ -293,7 +295,7 @@ window.FedChair.Components.Dashboard = function({
             justifyContent: 'space-between',
             alignItems: 'center'
           }}>
-            <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}>FOMC</span>
+            <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}><LearnTerm term="FOMC" learnMode={learnMode}>FOMC</LearnTerm></span>
             <div style={{ display: 'flex', gap: '4px' }}>
               <button
                 onClick={() => setActivePanel('governors')}
@@ -381,7 +383,7 @@ window.FedChair.Components.Dashboard = function({
       {/* Markets */}
       <div style={{ ...panelStyle, marginTop: '16px' }}>
         <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
-          <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}>MARKETS</span>
+          <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}><LearnTerm term="Financial Conditions" learnMode={learnMode}>MARKETS</LearnTerm></span>
         </div>
         <div style={{ padding: '12px' }}>
           <div className="grid-markets">
