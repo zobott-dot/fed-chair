@@ -47,6 +47,14 @@ const STANCE_SCORES = {
   riskBalance:        { hawkish: 1, neutral: 0, dovish: -1 }
 };
 
+const EXPANDED_STANCE_SCORES = {
+  economy:   { hawkish: 1, neutral: 0, dovish: -1 },
+  labor:     { hawkish: 1, neutral: 0, dovish: -1 },
+  inflation: { hawkish: 2, neutral: 0, dovish: -1 },
+  guidance:  { hawkish: 2, neutral: 0, dovish: -2 },
+  risks:     { hawkish: 1, neutral: 0, dovish: -1 }
+};
+
 const CATEGORY_LABELS = {
   economic: '📈 Economy', labor: '👥 Labor', inflation: '📊 Inflation', guidance: '🎯 Guidance',
   economicAssessment: '📈 Economy', inflationFraming: '📊 Inflation',
@@ -58,6 +66,32 @@ const STANCE_BADGE = {
   neutral: { label: 'BALANCED', bg: 'rgba(156, 163, 175, 0.15)', color: '#9ca3af', border: 'rgba(156, 163, 175, 0.3)' },
   dovish:  { label: 'DOVISH', bg: 'rgba(34, 197, 94, 0.15)', color: '#22c55e', border: 'rgba(34, 197, 94, 0.3)' }
 };
+
+const SUBCATEGORY_STANCE_BADGE = {
+  hawkish: { label: 'HAWKISH', color: '#D97706', border: '1px solid #D97706', padding: '1px 6px', fontSize: '10px', borderRadius: '3px', fontFamily: 'monospace' },
+  neutral: { label: 'NEUTRAL', color: '#6B7280', border: '1px solid #6B7280', padding: '1px 6px', fontSize: '10px', borderRadius: '3px', fontFamily: 'monospace' },
+  dovish:  { label: 'DOVISH', color: '#3B82F6', border: '1px solid #3B82F6', padding: '1px 6px', fontSize: '10px', borderRadius: '3px', fontFamily: 'monospace' }
+};
+
+function flattenExpandedPhrases(expanded) {
+  const flat = {};
+  for (const [catKey, cat] of Object.entries(expanded)) {
+    const phrases = [];
+    const scores = EXPANDED_STANCE_SCORES[catKey] || { hawkish: 1, neutral: 0, dovish: -1 };
+    for (const sub of cat.subcategories) {
+      for (const phrase of sub.phrases) {
+        phrases.push({
+          id: phrase.id,
+          text: phrase.text,
+          hawkScore: scores[sub.stance] || 0,
+          stance: sub.stance
+        });
+      }
+    }
+    flat[catKey] = phrases;
+  }
+  return flat;
+}
 
 function transformAiOptions(aiResponse) {
   const transformed = {};
@@ -187,10 +221,38 @@ window.FedChair.Components.DecisionPanel = function({
   setDotSelections,
   onStatementPhrasesChange
 }) {
+  const expandedPhrases = window.FedChair.Data.statementPhrasesExpanded;
+  const useAccordion = !!expandedPhrases;
+
+  // Build lookup: phraseId → categoryKey for one-per-category selection
+  const phraseCategoryMap = React.useMemo(() => {
+    if (!expandedPhrases) return {};
+    const map = {};
+    for (const [catKey, cat] of Object.entries(expandedPhrases)) {
+      for (const sub of cat.subcategories) {
+        for (const phrase of sub.phrases) {
+          map[phrase.id] = catKey;
+        }
+      }
+    }
+    return map;
+  }, []);
+
   const toggleStatement = (id) => {
-    setSelectedStatements(prev =>
-      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
-    );
+    if (useAccordion) {
+      const categoryKey = phraseCategoryMap[id];
+      setSelectedStatements(prev => {
+        if (prev.includes(id)) return prev.filter(s => s !== id);
+        // Get all phrase IDs in this category
+        const categoryPhraseIds = expandedPhrases[categoryKey].subcategories
+          .flatMap(sub => sub.phrases.map(p => p.id));
+        return [...prev.filter(s => !categoryPhraseIds.includes(s)), id];
+      });
+    } else {
+      setSelectedStatements(prev =>
+        prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
+      );
+    }
   };
 
   const meetingNumber = gameState?.meetingNumber || 1;
@@ -198,11 +260,30 @@ window.FedChair.Components.DecisionPanel = function({
   const credibility = gameState?.credibility || 100;
   const marketExpects = gameState?.marketExpects || 0;
 
-  // AI-generated statement options
+  // Accordion state
+  const [openCategories, setOpenCategories] = React.useState({});
+  const [openSubcategories, setOpenSubcategories] = React.useState({});
+
+  function toggleCategory(categoryId) {
+    setOpenCategories(prev => ({ ...prev, [categoryId]: !prev[categoryId] }));
+  }
+
+  function toggleSubcategory(subcategoryId) {
+    setOpenSubcategories(prev => ({ ...prev, [subcategoryId]: !prev[subcategoryId] }));
+  }
+
+  // AI-generated statement options (only used when accordion is not available)
   const [aiStatementOptions, setAiStatementOptions] = React.useState(null);
   const [aiLoading, setAiLoading] = React.useState(false);
 
   React.useEffect(() => {
+    // When accordion is available, flatten expanded phrases for hawk score calculation
+    if (useAccordion) {
+      const flat = flattenExpandedPhrases(expandedPhrases);
+      if (onStatementPhrasesChange) onStatementPhrasesChange(flat);
+      return;
+    }
+
     const meeting = gameState?.meetingNumber;
     if (!meeting) return;
 
@@ -232,7 +313,7 @@ window.FedChair.Components.DecisionPanel = function({
   }, [gameState?.meetingNumber]);
 
   const activePhrases = aiStatementOptions || statementPhrases;
-  const showLoadingIndicator = aiLoading && !aiStatementOptions;
+  const showLoadingIndicator = !useAccordion && aiLoading && !aiStatementOptions;
 
   // Dot plot responsive measurement — render SVG at native pixel size for crisp lines
   const dotPlotContainerRef = React.useRef(null);
@@ -421,7 +502,7 @@ window.FedChair.Components.DecisionPanel = function({
                 </div>
               </div>
 
-              {/* Loading indicator */}
+              {/* Loading indicator (non-accordion fallback) */}
               {showLoadingIndicator && (
                 <div className="statement-loading" style={{
                   padding: '24px',
@@ -434,7 +515,157 @@ window.FedChair.Components.DecisionPanel = function({
                 </div>
               )}
 
-              {!showLoadingIndicator && activePhrases && Object.entries(activePhrases).map(([category, phrases]) => (
+              {/* Accordion Statement Builder */}
+              {useAccordion && expandedPhrases && Object.entries(expandedPhrases).map(([catKey, category]) => {
+                const isCatOpen = openCategories[catKey];
+                const scores = EXPANDED_STANCE_SCORES[catKey] || { hawkish: 1, neutral: 0, dovish: -1 };
+                // Check if this category has a selected phrase
+                const categoryPhraseIds = category.subcategories.flatMap(sub => sub.phrases.map(p => p.id));
+                const hasSelection = categoryPhraseIds.some(id => selectedStatements.includes(id));
+                return (
+                  <div key={catKey} style={{ marginBottom: '8px' }}>
+                    {/* Category Header */}
+                    <button
+                      onClick={() => toggleCategory(catKey)}
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        padding: '14px 16px',
+                        background: hasSelection ? 'rgba(59, 130, 246, 0.1)' : 'rgba(17, 24, 39, 0.6)',
+                        border: hasSelection ? '1px solid rgba(59, 130, 246, 0.3)' : '1px solid rgba(75, 85, 99, 0.3)',
+                        borderRadius: isCatOpen ? '8px 8px 0 0' : '8px',
+                        cursor: 'pointer',
+                        minHeight: '48px'
+                      }}
+                    >
+                      <span style={{
+                        fontSize: 'var(--text-sm)',
+                        color: hasSelection ? '#93c5fd' : '#9ca3af',
+                        letterSpacing: '1.5px',
+                        fontWeight: '600',
+                        fontFamily: '"IBM Plex Mono", monospace'
+                      }}>
+                        {category.label}
+                      </span>
+                      <span style={{ color: '#6B7280', fontSize: '12px' }}>
+                        {isCatOpen ? '\u25BC' : '\u25B6'}
+                      </span>
+                    </button>
+
+                    {/* Subcategories */}
+                    {isCatOpen && category.subcategories.map(sub => {
+                      const isSubOpen = openSubcategories[sub.id];
+                      const badge = SUBCATEGORY_STANCE_BADGE[sub.stance];
+                      const subHasSelection = sub.phrases.some(p => selectedStatements.includes(p.id));
+                      return (
+                        <div key={sub.id}>
+                          {/* Subcategory Header */}
+                          <button
+                            onClick={() => toggleSubcategory(sub.id)}
+                            style={{
+                              width: '100%',
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              padding: '12px 16px 12px 32px',
+                              background: subHasSelection ? 'rgba(59, 130, 246, 0.08)' : 'rgba(17, 24, 39, 0.4)',
+                              border: '1px solid rgba(75, 85, 99, 0.2)',
+                              borderTop: 'none',
+                              cursor: 'pointer',
+                              minHeight: '44px'
+                            }}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                              <span style={{
+                                fontSize: 'var(--text-xs)',
+                                color: subHasSelection ? '#93c5fd' : '#8b95a5',
+                                letterSpacing: '1px',
+                                fontWeight: '500',
+                                fontFamily: '"IBM Plex Mono", monospace'
+                              }}>
+                                {sub.label}
+                              </span>
+                              {badge && (
+                                <span style={{
+                                  color: badge.color,
+                                  border: badge.border,
+                                  padding: badge.padding,
+                                  fontSize: badge.fontSize,
+                                  borderRadius: badge.borderRadius,
+                                  fontFamily: badge.fontFamily,
+                                  whiteSpace: 'nowrap'
+                                }}>
+                                  {badge.label}
+                                </span>
+                              )}
+                            </div>
+                            <span style={{ color: '#6B7280', fontSize: '10px' }}>
+                              {isSubOpen ? '\u25BC' : '\u25B6'}
+                            </span>
+                          </button>
+
+                          {/* Phrase List */}
+                          {isSubOpen && (
+                            <div style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: '4px',
+                              padding: '8px 16px 8px 48px',
+                              background: 'rgba(17, 24, 39, 0.3)',
+                              borderLeft: '1px solid rgba(75, 85, 99, 0.2)',
+                              borderRight: '1px solid rgba(75, 85, 99, 0.2)'
+                            }}>
+                              {sub.phrases.map(phrase => {
+                                const isSelected = selectedStatements.includes(phrase.id);
+                                return (
+                                  <button
+                                    key={phrase.id}
+                                    onClick={() => toggleStatement(phrase.id)}
+                                    style={{
+                                      padding: '12px',
+                                      fontSize: 'var(--text-base)',
+                                      fontFamily: 'var(--font-prose)',
+                                      textAlign: 'left',
+                                      background: isSelected
+                                        ? 'rgba(59, 130, 246, 0.15)'
+                                        : 'rgba(17, 24, 39, 0.4)',
+                                      border: isSelected
+                                        ? '1px solid rgba(59, 130, 246, 0.4)'
+                                        : '1px solid rgba(75, 85, 99, 0.15)',
+                                      color: isSelected ? '#e5e7eb' : '#9ca3af',
+                                      borderRadius: '6px',
+                                      cursor: 'pointer',
+                                      lineHeight: 'var(--leading-normal)',
+                                      minHeight: '48px',
+                                      width: '100%'
+                                    }}
+                                  >
+                                    {phrase.text}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+
+                    {/* Bottom border for open category */}
+                    {isCatOpen && (
+                      <div style={{
+                        height: '1px',
+                        background: 'rgba(75, 85, 99, 0.3)',
+                        borderRadius: '0 0 8px 8px'
+                      }} />
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* Flat list fallback (AI options or old static phrases) */}
+              {!useAccordion && !showLoadingIndicator && activePhrases && Object.entries(activePhrases).map(([category, phrases]) => (
                 <div key={category} style={{ marginBottom: '14px' }}>
                   <div className="statement-category-label" style={{
                     fontSize: 'var(--text-sm)',
