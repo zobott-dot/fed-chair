@@ -16,73 +16,36 @@ window.FedChair.Components.LearnTerm = function({ term, learnMode, children }) {
   const calcPosition = () => {
     if (!termRef.current) return null;
     const rect = termRef.current.getBoundingClientRect();
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const isMobile = vw < 640;
-    const tooltipWidth = isMobile ? 240 : 280;
-    const edgePad = isMobile ? 8 : 12;
+    const tooltipWidth = 280;
+    const tooltipHeight = 160;
     const gap = 8;
+    const pad = 12;
 
-    // --- Horizontal positioning ---
-    // Start centered over the term
-    let left = rect.left + rect.width / 2 - tooltipWidth / 2;
-
-    // Would overflow right edge?
-    if (left + tooltipWidth > vw - edgePad) {
-      // Align tooltip right edge to term right edge (or viewport edge)
-      left = Math.min(rect.right - tooltipWidth, vw - tooltipWidth - edgePad);
-    }
-
-    // Would overflow left edge?
-    if (left < edgePad) {
-      // Align tooltip left edge to term left edge (or viewport edge)
-      left = Math.max(rect.left, edgePad);
-    }
-
-    // --- Vertical positioning ---
-    // Default: above the term
-    // If not enough space above (< 150px), show below
+    // --- Vertical ---
+    const spaceAbove = rect.top;
     let top;
-    const showBelow = rect.top < 150;
-
-    if (showBelow) {
-      top = rect.bottom + gap;
+    if (spaceAbove >= tooltipHeight + pad) {
+      // Place above: bottom edge of tooltip sits gap-px above the term
+      top = rect.top - gap - tooltipHeight;
     } else {
-      // Position above: we don't know exact tooltip height, so use bottom
-      // with fixed positioning. Calculate from viewport bottom.
-      top = null;
+      // Place below: top edge of tooltip sits gap-px below the term
+      top = rect.bottom + gap;
     }
 
-    return {
-      top: top,
-      bottom: showBelow ? null : (vh - rect.top + gap),
-      left: left,
-      width: tooltipWidth
-    };
+    // --- Horizontal ---
+    let left = rect.left + rect.width / 2 - tooltipWidth / 2;
+    if (left < pad) {
+      left = pad;
+    } else if (left + tooltipWidth > window.innerWidth - pad) {
+      left = window.innerWidth - tooltipWidth - pad;
+    }
+
+    return { top, left, width: tooltipWidth };
   };
 
-  const show = () => {
-    setTooltipPos(calcPosition());
-  };
-
-  const hide = () => {
-    setTooltipPos(null);
-  };
-
-  const toggle = () => {
-    setTooltipPos(prev => prev ? null : calcPosition());
-  };
-
-  const tooltipStyle = tooltipPos ? {
-    position: 'fixed',
-    left: tooltipPos.left + 'px',
-    width: tooltipPos.width + 'px',
-    zIndex: 9999,
-    ...(tooltipPos.top !== null
-      ? { top: tooltipPos.top + 'px' }
-      : { bottom: tooltipPos.bottom + 'px' }
-    )
-  } : null;
+  const show = () => setTooltipPos(calcPosition());
+  const hide = () => setTooltipPos(null);
+  const toggle = () => setTooltipPos(prev => prev ? null : calcPosition());
 
   return (
     <span
@@ -94,7 +57,13 @@ window.FedChair.Components.LearnTerm = function({ term, learnMode, children }) {
     >
       {children}
       {tooltipPos && ReactDOM.createPortal(
-        <span className="learn-tooltip" style={tooltipStyle}>
+        <span className="learn-tooltip" style={{
+          position: 'fixed',
+          top: tooltipPos.top + 'px',
+          left: tooltipPos.left + 'px',
+          width: tooltipPos.width + 'px',
+          zIndex: 9999
+        }}>
           <strong className="learn-tooltip-title">{tooltipData.title}</strong>
           <p className="learn-tooltip-plain">{tooltipData.plain}</p>
           <p className="learn-tooltip-context">{tooltipData.context}</p>
