@@ -763,7 +763,9 @@ window.FedChair.Engine = window.FedChair.Engine || {};
   window.FedChair.Engine.generateLiveSignals = function(gameState) {
     var economy = gameState.economy;
     var meeting = gameState.meetingNumber;
-    var members = window.FedChair.Data.boardOfGovernors;
+    var members = (gameState.chairName === 'Warsh' && window.FedChair.Data.boardOfGovernorsWarshEra)
+      ? window.FedChair.Data.boardOfGovernorsWarshEra
+      : window.FedChair.Data.boardOfGovernors;
     var presidents = window.FedChair.Data.regionalPresidents;
 
     // Classify members into hawk/centrist/dove
@@ -796,14 +798,24 @@ window.FedChair.Engine = window.FedChair.Engine || {};
     // Key Voices — threshold-driven quotes from real members
     var keyVoices = [];
 
-    // Powell (Chair, Centrist)
-    keyVoices.push({
-      member: 'Jerome H. Powell', role: 'Chair', stance: 'Centrist',
-      quote: economy.pceInflation >= 2.8
-        ? 'We need to see more evidence that inflation is sustainably moving toward 2 percent. The recent data have not given us that greater confidence. We are prepared to maintain the current stance for as long as appropriate.'
-        : 'The data are moving in the right direction. We will be looking at the totality of the data as we consider the appropriate path for policy.',
-      context: 'Press conference, January 29'
-    });
+    // Chair voice: Powell (meetings 1-2) or Warsh (meetings 3+)
+    if (gameState.chairName === 'Warsh') {
+      keyVoices.push({
+        member: 'Kevin Warsh', role: 'Chair', stance: 'Hawkish',
+        quote: economy.pceInflation >= 2.8
+          ? 'Price stability is non-negotiable. The Committee must be prepared to act decisively if inflation does not return to target in a timely manner. I will not let expectations become unanchored on my watch.'
+          : 'We are making progress on inflation, but the job is not done. I intend to maintain a disciplined approach to policy until the data clearly support a change in stance.',
+        context: 'First press conference as Chair, June 17'
+      });
+    } else {
+      keyVoices.push({
+        member: 'Jerome H. Powell', role: 'Chair', stance: 'Centrist',
+        quote: economy.pceInflation >= 2.8
+          ? 'We need to see more evidence that inflation is sustainably moving toward 2 percent. The recent data have not given us that greater confidence. We are prepared to maintain the current stance for as long as appropriate.'
+          : 'The data are moving in the right direction. We will be looking at the totality of the data as we consider the appropriate path for policy.',
+        context: 'Press conference, January 29'
+      });
+    }
 
     // Bowman (Hawkish)
     keyVoices.push({
@@ -860,7 +872,7 @@ window.FedChair.Engine = window.FedChair.Engine || {};
         title: 'Miran Seat Status',
         description: 'Governor Miran\'s term expired March 1 but he will continue serving until a successor is confirmed. His vote (Very Dovish) remains on the Committee, though his influence may be diminished as a holdover member.'
       });
-    } else {
+    } else if (meeting === 2) {
       leadershipTransition.details.push({
         title: 'Warsh Confirmation Progress',
         description: 'Senate Banking Committee hearings concluded in late March. Warsh signaled continuity on the inflation-fighting mandate while indicating openness to a somewhat lower terminal rate. Full Senate vote is expected in coming weeks.'
@@ -868,6 +880,18 @@ window.FedChair.Engine = window.FedChair.Engine || {};
       leadershipTransition.details.push({
         title: 'Transition Dynamics',
         description: 'The pending leadership change creates a policy-setting twilight zone. Committee members are balancing their independent assessments against the possibility that the policy framework may shift under new leadership. Some view this as a reason to avoid large policy moves in either direction.'
+      });
+    } else if (meeting === 3) {
+      leadershipTransition.headline = 'New Chair: Kevin Warsh';
+      leadershipTransition.details.push({
+        title: 'Warsh Takes the Chair',
+        description: 'Kevin Warsh was confirmed as the 17th Chair of the Federal Reserve, succeeding Jerome Powell whose term expired in May 2026. This is Chair Warsh\'s first meeting leading the Committee. Markets are watching closely for signals about his policy framework.'
+      });
+    } else {
+      leadershipTransition.headline = 'Chair Warsh\'s Leadership';
+      leadershipTransition.details.push({
+        title: 'Warsh Era Policy Direction',
+        description: 'Chair Warsh continues to establish his leadership of the Committee. His approach has been characterized by a hawkish lean on inflation credibility while maintaining data dependence on the timing of any policy adjustments.'
       });
     }
 

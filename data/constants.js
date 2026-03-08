@@ -37,6 +37,17 @@ window.FedChair.Data.boardOfGovernors = [
   { name: 'Christopher J. Waller', role: 'Governor', stance: 'Dovish' }
 ];
 
+// Warsh era (meeting 3+): Powell departs, Warsh takes the chair
+window.FedChair.Data.boardOfGovernorsWarshEra = [
+  { name: 'Kevin Warsh', role: 'Chair', stance: 'Hawkish' },
+  { name: 'Philip N. Jefferson', role: 'Vice Chair', stance: 'Dovish' },
+  { name: 'Michelle W. Bowman', role: 'Governor', stance: 'Hawkish' },
+  { name: 'Michael S. Barr', role: 'Governor', stance: 'Dovish' },
+  { name: 'Lisa D. Cook', role: 'Governor', stance: 'Dovish' },
+  { name: 'Stephen I. Miran', role: 'Governor (term expired Mar 1 — serving until successor confirmed)', stance: 'Very Dovish' },
+  { name: 'Christopher J. Waller', role: 'Governor', stance: 'Dovish' }
+];
+
 window.FedChair.Data.regionalPresidents = [
   { name: 'John C. Williams', bank: 'New York', stance: 'Centrist' },
   { name: 'Beth M. Hammack', bank: 'Cleveland', stance: 'Hawkish' },

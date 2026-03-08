@@ -1150,8 +1150,12 @@ window.FedChair.Engine.gameStateToEconomicData = function(gameState) {
  * @returns {Object} Committee dots keyed by meeting number
  */
 window.FedChair.Engine.generateCommitteeDots = function(gameState) {
+  const isWarshEra = gameState.chairName === 'Warsh';
+  const board = isWarshEra
+    ? (window.FedChair.Data.boardOfGovernorsWarshEra || window.FedChair.Data.boardOfGovernors || [])
+    : (window.FedChair.Data.boardOfGovernors || []);
   const participants = [
-    ...(window.FedChair.Data.boardOfGovernors || []),
+    ...board,
     ...(window.FedChair.Data.regionalPresidents || [])
   ];
 

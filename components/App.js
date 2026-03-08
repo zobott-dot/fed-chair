@@ -90,6 +90,11 @@ window.FedChair.Components.App = function() {
     ? gameState.recentHeadlines
     : window.FedChair.Data.newsHeadlines || [];
 
+  // Dynamic FOMC board: swap to Warsh-era after chair transition
+  const activeBoardOfGovernors = gameState?.chairName === 'Warsh'
+    ? (window.FedChair.Data.boardOfGovernorsWarshEra || boardOfGovernors)
+    : boardOfGovernors;
+
   // Calculate hawk score from selected statements
   const hawkScore = statementPhrases
     ? calculateHawkScore(selectedStatements, statementPhrases)
@@ -404,7 +409,7 @@ window.FedChair.Components.App = function() {
       {activeView === 'dashboard' && (
         <Dashboard
           economicData={economicData}
-          boardOfGovernors={boardOfGovernors}
+          boardOfGovernors={activeBoardOfGovernors}
           regionalPresidents={regionalPresidents}
           newsHeadlines={newsHeadlines}
           setActiveView={setActiveView}
