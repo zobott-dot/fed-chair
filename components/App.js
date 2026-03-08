@@ -45,6 +45,7 @@ window.FedChair.Components.App = function() {
   const [shimmerKey, setShimmerKey] = useState(0);
   const [showTransition, setShowTransition] = useState(false);
   const [endGameAssessment, setEndGameAssessment] = useState(null);
+  const [activeStatementPhrases, setActiveStatementPhrases] = useState(null);
 
   // Load data on mount (do NOT create gameState yet — wait for mode selection)
   useEffect(() => {
@@ -95,9 +96,10 @@ window.FedChair.Components.App = function() {
     ? (window.FedChair.Data.boardOfGovernorsWarshEra || boardOfGovernors)
     : boardOfGovernors;
 
-  // Calculate hawk score from selected statements
-  const hawkScore = statementPhrases
-    ? calculateHawkScore(selectedStatements, statementPhrases)
+  // Calculate hawk score from selected statements (use AI phrases when available)
+  const effectivePhrases = activeStatementPhrases || statementPhrases;
+  const hawkScore = effectivePhrases
+    ? calculateHawkScore(selectedStatements, effectivePhrases)
     : 0;
   const hawkLabel = getHawkLabel(hawkScore);
 
@@ -206,6 +208,7 @@ window.FedChair.Components.App = function() {
     setMarketReaction(null);
     setAftermathPhase(0);
     setScore(null);
+    setActiveStatementPhrases(null);
     setDotSelections({});
     setPressConferenceImpact(null);
 
@@ -254,6 +257,7 @@ window.FedChair.Components.App = function() {
     setShimmerKey(k => k + 1);
     setShowTransition(false);
     setEndGameAssessment(null);
+    setActiveStatementPhrases(null);
   };
 
   // Show loading screen until data is ready
@@ -403,6 +407,7 @@ window.FedChair.Components.App = function() {
           gameState={gameState}
           dotSelections={dotSelections}
           setDotSelections={setDotSelections}
+          onStatementPhrasesChange={setActiveStatementPhrases}
         />
       )}
 

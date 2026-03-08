@@ -35,6 +35,141 @@ const getCredibilityColor = (credibility) => {
   return '#ef4444';
 };
 
+// --- AI Statement Generation ---
+
+const statementOptionsCache = {};
+
+const STANCE_SCORES = {
+  economicAssessment: { hawkish: 1, neutral: 0, dovish: -1 },
+  inflationFraming:   { hawkish: 2, neutral: 0, dovish: -1 },
+  laborMarket:        { hawkish: 1, neutral: 0, dovish: -1 },
+  forwardGuidance:    { hawkish: 2, neutral: 0, dovish: -2 },
+  riskBalance:        { hawkish: 1, neutral: 0, dovish: -1 }
+};
+
+const CATEGORY_LABELS = {
+  economic: '📈 Economy', labor: '👥 Labor', inflation: '📊 Inflation', guidance: '🎯 Guidance',
+  economicAssessment: '📈 Economy', inflationFraming: '📊 Inflation',
+  laborMarket: '👥 Labor', forwardGuidance: '🎯 Guidance', riskBalance: '⚖️ Risk Balance'
+};
+
+const STANCE_BADGE = {
+  hawkish: { label: 'HAWKISH', bg: 'rgba(249, 115, 22, 0.15)', color: '#f97316', border: 'rgba(249, 115, 22, 0.3)' },
+  neutral: { label: 'BALANCED', bg: 'rgba(156, 163, 175, 0.15)', color: '#9ca3af', border: 'rgba(156, 163, 175, 0.3)' },
+  dovish:  { label: 'DOVISH', bg: 'rgba(34, 197, 94, 0.15)', color: '#22c55e', border: 'rgba(34, 197, 94, 0.3)' }
+};
+
+function transformAiOptions(aiResponse) {
+  const transformed = {};
+  for (const [category, options] of Object.entries(aiResponse)) {
+    const scores = STANCE_SCORES[category] || { hawkish: 1, neutral: 0, dovish: -1 };
+    transformed[category] = options.map(opt => ({
+      id: opt.id,
+      text: opt.text,
+      hawkScore: scores[opt.stance] || 0,
+      stance: opt.stance
+    }));
+  }
+  return transformed;
+}
+
+async function generateStatementOptions(gameState, rateDecision) {
+  const economy = gameState.economy;
+  const previousDecisions = (gameState.meetingHistory || []).map(m => m.decision);
+  const chair = gameState.chairName === 'Warsh' ? 'Kevin Warsh' : 'Jerome H. Powell';
+
+  const prompt = `You are generating FOMC statement phrase options for an educational Fed Chair simulation game.
+
+Current economic context:
+- Meeting: ${gameState.meetingNumber} of ${gameState.totalMeetings}
+- Current Fed Funds Rate: ${gameState.currentRate}%
+- Player's rate decision this meeting: ${rateDecision > 0 ? '+' : ''}${rateDecision} bps (${rateDecision === 0 ? 'HOLD' : rateDecision > 0 ? 'HIKE' : 'CUT'})
+- Core PCE Inflation: ${economy.pceInflation.toFixed(1)}%
+- CPI: ${economy.cpiInflation.toFixed(1)}%
+- Unemployment: ${economy.unemploymentRate.toFixed(1)}%
+- GDP Growth: ${economy.gdpGrowth.toFixed(1)}%
+- Nonfarm Payrolls: ${economy.payrollsChange > 0 ? '+' : ''}${Math.round(economy.payrollsChange)}K
+- Fed Chair: ${chair}
+- Player Credibility Score: ${gameState.credibility}/100
+- Previous rate decisions: ${JSON.stringify(previousDecisions)}
+
+Generate exactly 3 options for each of these 5 FOMC statement categories. Each option should:
+1. Reference the specific economic numbers above (not generic language)
+2. Be written in authentic Fed-speak — formal, hedged, institutional tone
+3. Reflect different policy stances (hawkish / neutral / dovish) within each category
+4. Be 1-2 sentences, the length of a real FOMC statement phrase
+5. Teach the player something real about how Fed communication works
+
+Categories:
+1. ECONOMIC ASSESSMENT — How the committee views overall economic activity
+2. INFLATION FRAMING — How the committee characterizes current inflation dynamics
+3. LABOR MARKET — How the committee describes employment conditions
+4. FORWARD GUIDANCE — What signal the committee gives about future rate path
+5. RISK BALANCE — How the committee characterizes risks to the outlook
+
+Respond ONLY with a JSON object in this exact structure, no preamble, no markdown:
+{
+  "economicAssessment": [
+    { "id": "ea1", "text": "...", "stance": "hawkish" },
+    { "id": "ea2", "text": "...", "stance": "neutral" },
+    { "id": "ea3", "text": "...", "stance": "dovish" }
+  ],
+  "inflationFraming": [
+    { "id": "if1", "text": "...", "stance": "hawkish" },
+    { "id": "if2", "text": "...", "stance": "neutral" },
+    { "id": "if3", "text": "...", "stance": "dovish" }
+  ],
+  "laborMarket": [
+    { "id": "lm1", "text": "...", "stance": "hawkish" },
+    { "id": "lm2", "text": "...", "stance": "neutral" },
+    { "id": "lm3", "text": "...", "stance": "dovish" }
+  ],
+  "forwardGuidance": [
+    { "id": "fg1", "text": "...", "stance": "hawkish" },
+    { "id": "fg2", "text": "...", "stance": "neutral" },
+    { "id": "fg3", "text": "...", "stance": "dovish" }
+  ],
+  "riskBalance": [
+    { "id": "rb1", "text": "...", "stance": "hawkish" },
+    { "id": "rb2", "text": "...", "stance": "neutral" },
+    { "id": "rb3", "text": "...", "stance": "dovish" }
+  ]
+}`;
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2048,
+        messages: [{ role: 'user', content: prompt }]
+      }),
+      signal: controller.signal
+    });
+
+    clearTimeout(timeout);
+    if (!response.ok) throw new Error('API error');
+
+    const data = await response.json();
+    const text = data.content[0].text;
+    const clean = text.replace(/```json|```/g, '').trim();
+    return JSON.parse(clean);
+  } catch (e) {
+    clearTimeout(timeout);
+    throw e;
+  }
+}
+
+// --- End AI Statement Generation ---
+
 window.FedChair.Components.DecisionPanel = function({
   economicData,
   statementPhrases,
@@ -49,7 +184,8 @@ window.FedChair.Components.DecisionPanel = function({
   onPublish,
   gameState,
   dotSelections,
-  setDotSelections
+  setDotSelections,
+  onStatementPhrasesChange
 }) {
   const toggleStatement = (id) => {
     setSelectedStatements(prev =>
@@ -61,6 +197,42 @@ window.FedChair.Components.DecisionPanel = function({
   const totalMeetings = gameState?.totalMeetings || 8;
   const credibility = gameState?.credibility || 100;
   const marketExpects = gameState?.marketExpects || 0;
+
+  // AI-generated statement options
+  const [aiStatementOptions, setAiStatementOptions] = React.useState(null);
+  const [aiLoading, setAiLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    const meeting = gameState?.meetingNumber;
+    if (!meeting) return;
+
+    // Check cache first
+    if (statementOptionsCache[meeting]) {
+      const transformed = transformAiOptions(statementOptionsCache[meeting]);
+      setAiStatementOptions(transformed);
+      if (onStatementPhrasesChange) onStatementPhrasesChange(transformed);
+      return;
+    }
+
+    setAiLoading(true);
+    setAiStatementOptions(null);
+
+    generateStatementOptions(gameState, rateDecision)
+      .then(options => {
+        statementOptionsCache[meeting] = options;
+        const transformed = transformAiOptions(options);
+        setAiStatementOptions(transformed);
+        if (onStatementPhrasesChange) onStatementPhrasesChange(transformed);
+        setAiLoading(false);
+      })
+      .catch(() => {
+        // Silent fallback — use static options
+        setAiLoading(false);
+      });
+  }, [gameState?.meetingNumber]);
+
+  const activePhrases = aiStatementOptions || statementPhrases;
+  const showLoadingIndicator = aiLoading && !aiStatementOptions;
 
   // Dot plot responsive measurement — render SVG at native pixel size for crisp lines
   const dotPlotContainerRef = React.useRef(null);
@@ -249,7 +421,20 @@ window.FedChair.Components.DecisionPanel = function({
                 </div>
               </div>
 
-              {statementPhrases && Object.entries(statementPhrases).map(([category, phrases]) => (
+              {/* Loading indicator */}
+              {showLoadingIndicator && (
+                <div className="statement-loading" style={{
+                  padding: '24px',
+                  textAlign: 'center',
+                  color: '#8b95a5',
+                  fontFamily: '"IBM Plex Mono", monospace',
+                  fontSize: 'var(--text-sm)'
+                }}>
+                  Drafting statement options...
+                </div>
+              )}
+
+              {!showLoadingIndicator && activePhrases && Object.entries(activePhrases).map(([category, phrases]) => (
                 <div key={category} style={{ marginBottom: '14px' }}>
                   <div className="statement-category-label" style={{
                     fontSize: 'var(--text-sm)',
@@ -258,37 +443,56 @@ window.FedChair.Components.DecisionPanel = function({
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}>
-                    {category === 'economic' && '📈 Economy'}
-                    {category === 'labor' && '👥 Labor'}
-                    {category === 'inflation' && '📊 Inflation'}
-                    {category === 'guidance' && '🎯 Guidance'}
+                    {CATEGORY_LABELS[category] || category}
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    {phrases.map(phrase => (
-                      <button
-                        key={phrase.id}
-                        onClick={() => toggleStatement(phrase.id)}
-                        style={{
-                          padding: '12px',
-                          fontSize: 'var(--text-base)',
-                          fontFamily: 'var(--font-prose)',
-                          textAlign: 'left',
-                          background: selectedStatements.includes(phrase.id)
-                            ? 'rgba(59, 130, 246, 0.15)'
-                            : 'rgba(17, 24, 39, 0.4)',
-                          border: selectedStatements.includes(phrase.id)
-                            ? '1px solid rgba(59, 130, 246, 0.4)'
-                            : '1px solid rgba(75, 85, 99, 0.2)',
-                          color: selectedStatements.includes(phrase.id) ? '#e5e7eb' : '#9ca3af',
-                          borderRadius: '6px',
-                          cursor: 'pointer',
-                          lineHeight: 'var(--leading-normal)',
-                          minHeight: '48px'
-                        }}
-                      >
-                        {phrase.text}
-                      </button>
-                    ))}
+                    {phrases.map(phrase => {
+                      const badge = phrase.stance ? STANCE_BADGE[phrase.stance] : null;
+                      return (
+                        <button
+                          key={phrase.id}
+                          onClick={() => toggleStatement(phrase.id)}
+                          style={{
+                            padding: '12px',
+                            fontSize: 'var(--text-base)',
+                            fontFamily: 'var(--font-prose)',
+                            textAlign: 'left',
+                            background: selectedStatements.includes(phrase.id)
+                              ? 'rgba(59, 130, 246, 0.15)'
+                              : 'rgba(17, 24, 39, 0.4)',
+                            border: selectedStatements.includes(phrase.id)
+                              ? '1px solid rgba(59, 130, 246, 0.4)'
+                              : '1px solid rgba(75, 85, 99, 0.2)',
+                            color: selectedStatements.includes(phrase.id) ? '#e5e7eb' : '#9ca3af',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            lineHeight: 'var(--leading-normal)',
+                            minHeight: '48px',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-start',
+                            gap: '8px'
+                          }}
+                        >
+                          <span>{phrase.text}</span>
+                          {badge && (
+                            <span style={{
+                              flexShrink: 0,
+                              fontSize: 'var(--text-xs)',
+                              padding: '2px 6px',
+                              borderRadius: '3px',
+                              background: badge.bg,
+                              color: badge.color,
+                              border: `1px solid ${badge.border}`,
+                              whiteSpace: 'nowrap',
+                              lineHeight: '1.4'
+                            }}>
+                              {badge.label}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               ))}
