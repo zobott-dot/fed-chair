@@ -144,7 +144,7 @@ window.FedChair.Components.Dashboard = function({
                     borderRadius: '4px',
                     fontSize: 'var(--text-sm)'
                   }}>
-                    <span style={{ color: '#9ca3af' }}>{item.label}: </span>
+                    <span style={{ color: '#9ca3af' }}><LearnTerm term={item.label} learnMode={learnMode}>{item.label}</LearnTerm>: </span>
                     <span style={{ color: isGood ? '#22c55e' : '#ef4444', fontFamily: '"IBM Plex Mono", monospace' }}>
                       {item.change >= 0 ? '+' : ''}{item.change.toFixed(2)}%
                     </span>
@@ -258,7 +258,9 @@ window.FedChair.Components.Dashboard = function({
                     {getTrendIcon(data.trend)}
                   </span>
                 </div>
-                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '4px' }}>{data.label}</div>
+                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '4px' }}>
+                  <LearnTerm term={data.label} learnMode={learnMode}>{data.label}</LearnTerm>
+                </div>
               </div>
             ))}
           </div>
@@ -310,7 +312,7 @@ window.FedChair.Components.Dashboard = function({
                   minHeight: '28px'
                 }}
               >
-                BOG
+                <LearnTerm term="BOG" learnMode={learnMode}>BOG</LearnTerm>
               </button>
               <button
                 onClick={() => setActivePanel('presidents')}
@@ -325,7 +327,7 @@ window.FedChair.Components.Dashboard = function({
                   minHeight: '28px'
                 }}
               >
-                FRB
+                <LearnTerm term="FRB" learnMode={learnMode}>FRB</LearnTerm>
               </button>
             </div>
           </div>
@@ -342,7 +344,9 @@ window.FedChair.Components.Dashboard = function({
                 }}
               >
                 <div>
-                  <div style={{ fontSize: 'var(--text-base)', color: '#f9fafb' }}>{person.name}</div>
+                  <div style={{ fontSize: 'var(--text-base)', color: '#f9fafb' }}>
+                    <LearnTerm term={person.name} learnMode={learnMode}>{person.name}</LearnTerm>
+                  </div>
                   <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5' }}>{person.role || person.bank}</div>
                 </div>
                 <span style={{
@@ -400,7 +404,9 @@ window.FedChair.Components.Dashboard = function({
                 <div className="market-value" style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: 'clamp(18px, 2.2vw, 26px)', color: '#f9fafb' }}>
                   {data.display || data.value}
                 </div>
-                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '4px' }}>{data.label}</div>
+                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '4px' }}>
+                  <LearnTerm term={data.label} learnMode={learnMode}>{data.label}</LearnTerm>
+                </div>
               </div>
             ))}
           </div>

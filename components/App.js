@@ -393,6 +393,7 @@ window.FedChair.Components.App = function() {
           onAdvance={handleAdvanceToNextMeeting}
           onNewGame={handleNewGame}
           pressConferenceImpact={pressConferenceImpact}
+          learnMode={learnMode}
         />
       )}
 

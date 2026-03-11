@@ -1012,6 +1012,270 @@ window.FedChair.Data.learnTerms = {
     title: 'Dovish',
     plain: 'A policy stance favoring lower interest rates to support economic growth and employment, accepting some inflation risk. Doves prioritize the employment side of the dual mandate.',
     context: 'Dovish language — like emphasizing downside risks to growth or signaling potential cuts — loosens financial conditions. If markets interpret you as dovish while inflation is elevated, credibility can suffer.'
+  },
+
+  // ── ECONOMIC ABBREVIATIONS ──────────────────────────────────────────────
+
+  'PCE': {
+    title: 'PCE \u2014 Personal Consumption Expenditures',
+    plain: 'The Fed\'s preferred inflation measure. Tracks prices paid by consumers across a broader range of spending than CPI, and adjusts for changes in consumer behavior (e.g., switching from beef to chicken when beef gets expensive).',
+    context: 'The Fed officially targets 2% PCE inflation \u2014 not CPI. PCE tends to run slightly lower than CPI. When the two diverge significantly, it signals something interesting about where price pressures are concentrated.'
+  },
+
+  'VIX': {
+    title: 'VIX \u2014 CBOE Volatility Index',
+    plain: 'Nicknamed the "fear gauge," the VIX measures expected volatility in the S&P 500 over the next 30 days, derived from options prices. A high VIX means markets are fearful; a low VIX means markets are calm.',
+    context: 'The Fed watches the VIX as a real-time measure of financial stress. A VIX spike often precedes or accompanies financial crises. When the VIX surges above 30-40, markets are pricing in serious uncertainty \u2014 and the Fed may feel pressure to act.'
+  },
+
+  'DXY': {
+    title: 'DXY \u2014 US Dollar Index',
+    plain: 'A measure of the US dollar\'s value relative to a basket of six major foreign currencies (euro, yen, pound, Canadian dollar, Swedish krona, Swiss franc). A higher DXY means a stronger dollar.',
+    context: 'A strong dollar makes US exports more expensive and imports cheaper \u2014 which can dampen inflation but hurt US manufacturers. The Fed doesn\'t target the dollar, but dollar strength affects trade, capital flows, and global financial conditions.'
+  },
+
+  'MBS': {
+    title: 'MBS \u2014 Mortgage-Backed Securities',
+    plain: 'Bonds backed by pools of home mortgages. When the Fed buys MBS (during QE), it pushes mortgage rates down directly, stimulating the housing market. The Fed accumulated over $2.7 trillion in MBS at its peak.',
+    context: 'MBS purchases are a major channel through which QE reaches ordinary Americans \u2014 lower mortgage rates mean cheaper home loans. When the Fed does QT and stops reinvesting MBS proceeds, mortgage rates tend to rise.'
+  },
+
+  'FFR': {
+    title: 'FFR \u2014 Federal Funds Rate',
+    plain: 'The target interest rate set by the FOMC at which banks lend money to each other overnight. The Fed\'s primary short-term policy tool. All other interest rates in the economy tend to move in relation to the FFR.',
+    context: 'This is the number you set at every meeting. Every basis point move ripples through the entire economy \u2014 affecting mortgages, business loans, credit cards, and savings rates across trillions of dollars in outstanding debt.'
+  },
+
+  'EFFR': {
+    title: 'EFFR \u2014 Effective Federal Funds Rate',
+    plain: 'The actual overnight rate at which banks lend to each other, as opposed to the target rate set by the FOMC. The Fed uses open market operations to keep the EFFR within its target range.',
+    context: 'The target range is what the committee sets (e.g., 3.50-3.75%). The EFFR is where trades actually clear. The Fed uses tools like the Interest on Reserve Balances (IORB) rate to keep the EFFR near the middle of the target range.'
+  },
+
+  'IORB': {
+    title: 'IORB \u2014 Interest on Reserve Balances',
+    plain: 'The interest rate the Federal Reserve pays to banks for the money they hold in reserve accounts at the Fed. Acts as a floor for the federal funds rate \u2014 banks won\'t lend to each other for less than what the Fed pays them to do nothing.',
+    context: 'IORB is one of the technical tools the Fed uses to implement policy. When the FOMC raises the target range, it also raises IORB \u2014 ensuring banks have an incentive to keep the EFFR near the target.'
+  },
+
+  'BOG': {
+    title: 'BOG \u2014 Board of Governors',
+    plain: 'The seven-member governing body of the Federal Reserve System, located in Washington DC. Members are appointed by the President and confirmed by the Senate for 14-year terms. The Chair and Vice Chair serve 4-year terms in those roles.',
+    context: 'All seven BOG members are permanent voting members of the FOMC. The regional bank presidents rotate voting rights (except New York, which always votes). As Chair, you lead the BOG and by extension the entire Federal Reserve System.'
+  },
+
+  'FRB': {
+    title: 'FRB \u2014 Federal Reserve Bank',
+    plain: 'One of the 12 regional Federal Reserve Banks that make up the Federal Reserve System, located in major cities across the US (New York, Chicago, San Francisco, etc.). Each has its own president and research staff.',
+    context: 'The 12 FRB presidents participate in every FOMC meeting, but only 5 vote at any given time (on a rotating basis, except New York which always votes). Their regional perspective and research teams provide the committee with a ground-level view of economic conditions.'
+  },
+
+  'SEP': {
+    title: 'SEP \u2014 Summary of Economic Projections',
+    plain: 'A quarterly report released after select FOMC meetings showing each committee member\'s anonymous forecasts for GDP growth, unemployment, inflation, and the federal funds rate path. The rate path projections are displayed as the "dot plot."',
+    context: 'The SEP is released four times per year (March, June, September, December meetings). When the SEP shows a significant shift in the committee\'s median projections, it can move markets as much as the rate decision itself.'
+  },
+
+  'QE': {
+    title: 'QE \u2014 Quantitative Easing',
+    plain: 'When the Federal Reserve creates new money to purchase Treasury bonds and mortgage-backed securities, expanding its balance sheet. Pushes long-term interest rates down and injects liquidity into the financial system.',
+    context: 'QE was considered unconventional before 2008. After the financial crisis and COVID, it became a standard tool. The Fed\'s balance sheet grew from $900B (2008) to nearly $9 trillion (2022) through successive rounds of QE.'
+  },
+
+  'QT': {
+    title: 'QT \u2014 Quantitative Tightening',
+    plain: 'The reverse of QE. The Fed shrinks its balance sheet by allowing bonds to mature without reinvesting the proceeds (passive QT) or actively selling assets. Removes liquidity from the financial system.',
+    context: 'QT tightens financial conditions beyond what rate hikes alone achieve \u2014 it puts upward pressure on long-term rates. The 2022-2024 QT cycle ran at up to $95B per month, one of the fastest balance sheet reductions in Fed history.'
+  },
+
+  'TIPS': {
+    title: 'TIPS \u2014 Treasury Inflation-Protected Securities',
+    plain: 'US government bonds whose principal adjusts with inflation. The yield on TIPS is a measure of the "real" interest rate \u2014 the return after stripping out inflation expectations.',
+    context: 'The gap between nominal Treasury yields and TIPS yields (the "breakeven rate") tells the Fed what markets expect inflation to be. If breakevens rise sharply, it signals markets are losing confidence in the Fed\'s inflation-fighting credibility.'
+  },
+
+  'BLS': {
+    title: 'BLS \u2014 Bureau of Labor Statistics',
+    plain: 'The federal agency that produces key economic data including the monthly jobs report (non-farm payrolls), the unemployment rate, and the Consumer Price Index (CPI).',
+    context: 'BLS releases are among the most market-moving events in the economic calendar. The jobs report (first Friday of each month) and CPI (mid-month) are the two numbers the committee watches most closely between meetings.'
+  },
+
+  'BEA': {
+    title: 'BEA \u2014 Bureau of Economic Analysis',
+    plain: 'The federal agency that produces GDP data and the Personal Consumption Expenditures (PCE) price index \u2014 the Fed\'s preferred inflation measure.',
+    context: 'The BEA releases PCE data monthly. Because the Fed explicitly targets PCE inflation at 2%, BEA releases directly inform the committee\'s policy deliberations.'
+  },
+
+  'ISM': {
+    title: 'ISM \u2014 Institute for Supply Management',
+    plain: 'A private organization that surveys purchasing managers at US companies and publishes monthly indexes of manufacturing and services sector activity. An ISM reading above 50 indicates expansion; below 50 indicates contraction.',
+    context: 'ISM surveys are forward-looking \u2014 purchasing managers are ordering for future production. When ISM falls sharply, it often signals economic slowdown before it shows up in GDP data. The committee uses ISM as an early warning indicator.'
+  },
+
+  'PMI': {
+    title: 'PMI \u2014 Purchasing Managers\' Index',
+    plain: 'A measure of business activity based on surveys of purchasing managers in manufacturing and services sectors. Like ISM, a reading above 50 = expansion, below 50 = contraction. Published by S&P Global (formerly IHS Markit).',
+    context: 'PMI and ISM cover similar ground but use different methodologies. The committee watches both as real-time pulse checks on business conditions. Divergences between the two can signal which sectors are leading or lagging.'
+  },
+
+  'JOLTS': {
+    title: 'JOLTS \u2014 Job Openings and Labor Turnover Survey',
+    plain: 'A monthly BLS survey tracking job openings, hires, quits, and layoffs across the US economy. The job openings number is a key measure of labor demand; the quits rate measures worker confidence.',
+    context: 'At the peak of labor market tightness in 2022, there were nearly two job openings for every unemployed worker \u2014 an extreme reading the Fed cited as evidence of overheating. Watching JOLTS normalize was part of how the committee gauged the impact of its rate hikes.'
+  },
+
+  'NFP': {
+    title: 'NFP \u2014 Non-Farm Payrolls',
+    plain: 'The monthly count of jobs added or lost in the US economy, excluding farm workers and a few other categories. Released the first Friday of each month by the BLS. One of the most market-moving economic releases.',
+    context: 'A strong NFP print (above ~150K) generally argues against rate cuts. A weak print raises recession fears and argues for easing. Revisions to prior months are often as significant as the new number \u2014 the committee reads the trend, not just the headline.'
+  },
+
+  'NAIRU': {
+    title: 'NAIRU \u2014 Non-Accelerating Inflation Rate of Unemployment',
+    plain: 'The theoretical unemployment rate at which inflation is stable \u2014 neither rising nor falling. Sometimes called the "natural rate" of unemployment. Estimated (not observed) to be around 4-4.5% for the US.',
+    context: 'When unemployment falls significantly below NAIRU, wage pressure tends to build and inflation rises. When it rises above NAIRU, inflation tends to fall but at the cost of economic pain. The committee uses NAIRU as a benchmark \u2014 though nobody knows exactly where it is.'
+  },
+
+  'S&P': {
+    title: 'S&P 500',
+    plain: 'A stock market index tracking the 500 largest US publicly traded companies. The most widely followed measure of US equity market performance.',
+    context: 'The Fed doesn\'t target the stock market \u2014 but equity prices are part of financial conditions. A sharp S&P selloff tightens financial conditions (wealth effect, corporate borrowing costs) in ways that can substitute for rate hikes.'
+  },
+
+  'S&P 500': {
+    title: 'S&P 500',
+    plain: 'A stock market index tracking the 500 largest US publicly traded companies. The most widely followed measure of US equity market performance.',
+    context: 'The Fed doesn\'t target the stock market \u2014 but equity prices are part of financial conditions. A sharp S&P selloff tightens financial conditions (wealth effect, corporate borrowing costs) in ways that can substitute for rate hikes.'
+  },
+
+  '2Y': {
+    title: '2-Year Treasury Yield',
+    plain: 'The interest rate on US government bonds maturing in 2 years. Closely tracks expectations for the federal funds rate over the next two years \u2014 making it the most policy-sensitive point on the yield curve.',
+    context: 'When the 2Y yield rises, it signals markets expect the Fed to hike (or hold higher for longer). When it falls, markets are pricing in cuts. The committee watches the 2Y as a real-time read on how markets are interpreting its guidance.'
+  },
+
+  '10Y': {
+    title: '10-Year Treasury Yield',
+    plain: 'The interest rate on US government bonds maturing in 10 years. The benchmark for long-term US interest rates and a key input into mortgage rates, corporate borrowing costs, and equity valuations.',
+    context: 'The 10Y is influenced by both Fed policy and longer-run growth and inflation expectations. When QT reduces the Fed\'s bond holdings, it can push the 10Y higher \u2014 tightening financial conditions even without rate hikes.'
+  },
+
+  // ── INSTITUTIONAL ABBREVIATIONS ─────────────────────────────────────────
+
+  'Fed': {
+    title: 'The Fed \u2014 Federal Reserve System',
+    plain: 'The central bank of the United States, established by Congress in 1913. Consists of the Board of Governors in Washington DC and 12 regional Federal Reserve Banks. Responsible for monetary policy, bank supervision, and financial stability.',
+    context: 'You are running the Fed. Its dual mandate \u2014 maximum employment and stable prices \u2014 defines the tension at the heart of every decision you make.'
+  },
+
+  'Treasury': {
+    title: 'US Treasury Department',
+    plain: 'The executive branch department responsible for fiscal policy \u2014 government spending, taxation, and debt management. Issues Treasury bonds to finance the federal deficit. Distinct from the Federal Reserve.',
+    context: 'The Fed and Treasury are institutionally separate, and the Fed\'s independence from Treasury (and the broader executive branch) is a cornerstone of its credibility. Perceived coordination between the two can undermine confidence in monetary policy.'
+  },
+
+  'TBAC': {
+    title: 'TBAC \u2014 Treasury Borrowing Advisory Committee',
+    plain: 'A committee of major financial institutions that advises the Treasury on debt management and bond issuance strategy. Its quarterly meetings and reports are closely watched by bond markets.',
+    context: 'When Treasury issues large amounts of debt, it can compete with the Fed\'s bond sales (QT) for market demand \u2014 a dynamic called "quantitative tightening squared" that can push long-term yields higher than the Fed intends.'
+  },
+
+  // ── FOMC MEMBER BIOGRAPHIES ─────────────────────────────────────────────
+
+  'Jerome H. Powell': {
+    title: 'Jerome H. Powell \u2014 Chair (Meetings 1-2)',
+    plain: 'Lawyer and investment banker by background. Served as a Fed Governor before becoming Chair in 2018. Known for pragmatic, data-driven approach. Led the Fed through COVID-era QE and the 2022-2024 inflation-fighting cycle.',
+    context: 'Powell\'s policy approach: cautious incrementalism, strong emphasis on communication, willing to move aggressively when needed (2022 hiking cycle). His legacy is defined by whether the 2022-2024 tightening achieves a soft landing.'
+  },
+
+  'Kevin Warsh': {
+    title: 'Kevin Warsh \u2014 Chair (Meetings 3-8)',
+    plain: 'Former Fed Governor (2006-2011), investment banker, and Hoover Institution fellow. Known as a monetary policy hawk with strong views on Fed independence and balance sheet normalization. Confirmed as Chair in 2026.',
+    context: 'Warsh\'s policy philosophy: skeptical of QE\'s long-term effects, favors rules-based policy over discretion, hawkish on inflation. Markets expect a more assertive approach to balance sheet reduction and a higher bar for rate cuts.'
+  },
+
+  'Philip N. Jefferson': {
+    title: 'Philip N. Jefferson \u2014 Vice Chair',
+    plain: 'Economist and former economics professor. Joined the Board of Governors in 2022, became Vice Chair in 2023. Research focus on labor economics and the distributional effects of monetary policy.',
+    context: 'Jefferson is considered a pragmatic centrist \u2014 data-dependent and measured. His labor economics background means he weighs the employment side of the dual mandate carefully alongside inflation concerns.'
+  },
+
+  'Michelle W. Bowman': {
+    title: 'Michelle W. Bowman \u2014 Governor',
+    plain: 'Former Kansas state bank commissioner and community banker. Appointed to the Board of Governors in 2018 to fill the seat designated for someone with community banking experience.',
+    context: 'Bowman has shown hawkish tendencies, voting to dissent in favor of a larger rate cut in 2024 \u2014 a rare dissent by a Fed Governor. She emphasizes the practical impact of Fed policy on community banks and smaller businesses.'
+  },
+
+  'Michael S. Barr': {
+    title: 'Michael S. Barr \u2014 Governor (Vice Chair for Supervision)',
+    plain: 'Law professor and former Treasury official. Serves as the Fed\'s Vice Chair for Supervision, overseeing bank regulation and stress testing. Nominated in 2022 as part of a push to strengthen bank oversight post-SVB.',
+    context: 'Barr\'s primary role is regulatory rather than monetary policy. His presence on the FOMC reflects the Fed\'s dual role as both central bank and bank supervisor. Financial stability considerations sometimes interact with monetary policy decisions.'
+  },
+
+  'Lisa D. Cook': {
+    title: 'Lisa D. Cook \u2014 Governor',
+    plain: 'Economist and Michigan State University professor. First Black woman to serve on the Federal Reserve Board of Governors, confirmed in 2022. Research focuses on innovation, economic history, and the economics of inequality.',
+    context: 'Cook tends to vote with the consensus but has emphasized the importance of the employment mandate alongside inflation. Her research background in economic inequality informs her attention to how monetary policy affects different communities.'
+  },
+
+  'Christopher J. Waller': {
+    title: 'Christopher J. Waller \u2014 Governor',
+    plain: 'Economist and former research director at the St. Louis Federal Reserve Bank. Joined the Board of Governors in 2020. Known for clear, direct communication of his policy views and willingness to stake out positions publicly.',
+    context: 'Waller is one of the more hawkish voices on the current Board, having argued for aggressive rate hikes during the 2022 inflation surge. He\'s also willing to shift views when the data shifts \u2014 which markets respect as genuine data-dependence.'
+  },
+
+  'John C. Williams': {
+    title: 'John C. Williams \u2014 President, Federal Reserve Bank of New York',
+    plain: 'Economist and career Fed official. President of the NY Fed since 2018, giving him a permanent vote on the FOMC. Previously President of the San Francisco Fed. Known for research on the neutral interest rate (r*).',
+    context: 'The NY Fed president always votes and is considered the most important regional bank president. Williams is a close Powell ally and is seen as a centrist. His r* research directly informs debates about how restrictive current policy actually is.'
+  },
+
+  'Austan Goolsbee': {
+    title: 'Austan Goolsbee \u2014 Former President, Federal Reserve Bank of Chicago',
+    plain: 'Economist and University of Chicago professor. Former chair of President Obama\'s Council of Economic Advisers. Known for accessible public communication about the economy.',
+    context: 'Goolsbee was notably dovish during the 2023-2024 tightening cycle, frequently cautioning about the risks of over-tightening. Departed the Chicago Fed; his successor is Anna Paulson.'
+  },
+
+  'Anna Paulson': {
+    title: 'Anna Paulson \u2014 President, Federal Reserve Bank of Chicago',
+    plain: 'Economist and career Federal Reserve official. Former executive vice president and director of research at the Chicago Fed before becoming president. Research focuses on financial stability and household finance.',
+    context: 'Paulson succeeds Goolsbee as Chicago Fed President. As a career Fed economist, she brings deep institutional knowledge. Her policy stance is still being established \u2014 markets watch her early votes carefully for signals.'
+  },
+
+  'Beth M. Hammack': {
+    title: 'Beth M. Hammack \u2014 President, Federal Reserve Bank of Cleveland',
+    plain: 'Former Goldman Sachs executive who spent decades in financial markets before becoming Cleveland Fed President in 2024. Brings a markets perspective to the FOMC table.',
+    context: 'Hammack dissented at a 2024 FOMC meeting in favor of holding rates rather than cutting \u2014 a hawkish signal early in her tenure. Her financial markets background means she pays close attention to how Fed communication lands with investors.'
+  },
+
+  'Stephen I. Miran': {
+    title: 'Stephen I. Miran \u2014 Governor (serving until successor confirmed)',
+    plain: 'Economist and former senior advisor at the Treasury Department. Nominated to the Board of Governors as part of the current administration\'s appointments. Research interests include international economics and monetary policy.',
+    context: 'Miran\'s appointment reflects the administration\'s priorities in Fed governance. His Treasury background means he has perspective on the fiscal-monetary policy interface \u2014 a relationship the Fed carefully manages to preserve its independence.'
+  },
+
+  'Susan M. Collins': {
+    title: 'Susan M. Collins \u2014 President, Federal Reserve Bank of Boston',
+    plain: 'Economist and former provost of the University of Michigan. Boston Fed President since 2022. Research background in international economics and labor markets.',
+    context: 'Collins is considered a centrist on the FOMC, emphasizing data-dependence and the importance of both sides of the dual mandate. Her international economics background informs her attention to global spillovers from Fed policy.'
+  },
+
+  'Raphael Bostic': {
+    title: 'Raphael Bostic \u2014 President, Federal Reserve Bank of Atlanta',
+    plain: 'Economist and former HUD official. Atlanta Fed President since 2017. Known for emphasizing the distributional effects of monetary policy and how Fed decisions affect low-income communities.',
+    context: 'Bostic\'s policy stance has evolved \u2014 early hawkishness on inflation has given way to more cautious advocacy for cuts as inflation moderated. He is known for candid, accessible public communication about Fed thinking.'
+  },
+
+  'Neel Kashkari': {
+    title: 'Neel Kashkari \u2014 President, Federal Reserve Bank of Minneapolis',
+    plain: 'Former Goldman Sachs executive and US Treasury official who oversaw the 2008 TARP bank bailout program. Minneapolis Fed President since 2016. Known for blunt, accessible communication.',
+    context: 'Kashkari was famously dovish in his early Fed career but shifted hawkish during the 2021-2022 inflation surge \u2014 becoming one of the most aggressive voices for rate hikes. His public commentary is among the most widely read of any regional president.'
+  },
+
+  'Mary C. Daly': {
+    title: 'Mary C. Daly \u2014 President, Federal Reserve Bank of San Francisco',
+    plain: 'Labor economist who spent her career at the San Francisco Fed before becoming president in 2018. Research focuses on labor markets, wage dynamics, and the economics of disability.',
+    context: 'Daly is a centrist who strongly emphasizes the employment side of the dual mandate. Her labor economics background means she is particularly attentive to how rate decisions affect workers \u2014 especially lower-wage workers who are often first affected by Fed tightening.'
   }
 
 };

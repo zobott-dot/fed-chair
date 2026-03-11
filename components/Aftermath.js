@@ -49,8 +49,10 @@ window.FedChair.Components.Aftermath = function({
   gameState,
   onAdvance,
   onNewGame,
-  pressConferenceImpact
+  pressConferenceImpact,
+  learnMode
 }) {
+  const LearnTerm = window.FedChair.Components.LearnTerm;
   const isGameOver = gameState?.gamePhase === 'ended';
   const endResult = gameState?.endResult;
   const endReason = gameState?.endReason;
@@ -269,7 +271,9 @@ window.FedChair.Components.Aftermath = function({
                         border: `1px solid ${(m.inv ? m.change <= 0 : m.change >= 0) ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'}`
                       }}
                     >
-                      <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}>{m.label}</div>
+                      <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}>
+                        <LearnTerm term={m.label} learnMode={learnMode}>{m.label}</LearnTerm>
+                      </div>
                       <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: 'clamp(16px, 2vw, 22px)', color: '#f9fafb' }}>
                         {m.value}
                       </div>

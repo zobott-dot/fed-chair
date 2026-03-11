@@ -711,7 +711,9 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', gap: '8px', flexWrap: 'wrap' }}>
                   <div>
-                    <span style={{ fontSize: 'var(--text-base)', color: '#f9fafb', fontWeight: '500' }}>{voice.member}</span>
+                    <span style={{ fontSize: 'var(--text-base)', color: '#f9fafb', fontWeight: '500' }}>
+                      <LearnTerm term={voice.member} learnMode={learnMode}>{voice.member}</LearnTerm>
+                    </span>
                     <span style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginLeft: '8px' }}>{voice.role}</span>
                   </div>
                   <div style={{

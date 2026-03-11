@@ -16,8 +16,9 @@ window.FedChair.Components.LearnTerm = function({ term, learnMode, children }) {
   const calcPosition = () => {
     if (!termRef.current) return null;
     const rect = termRef.current.getBoundingClientRect();
-    const tooltipWidth = 280;
-    const tooltipHeight = 160;
+    const isBiography = tooltipData.title && tooltipData.title.includes('\u2014');
+    const tooltipWidth = isBiography ? 320 : 280;
+    const tooltipHeight = isBiography ? 200 : 160;
     const gap = 8;
     const pad = 12;
 
