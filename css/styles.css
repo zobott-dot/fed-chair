@@ -357,6 +357,12 @@ button {
   color: inherit;
 }
 
+/* Inside buttons: remove underline and cursor override so button feels clickable */
+button .learn-term {
+  border-bottom: none;
+  cursor: inherit;
+}
+
 /* Tooltip rendered via portal with position: fixed — positioning handled inline */
 .learn-tooltip {
   background: #1a1f2e;
