@@ -661,7 +661,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
             <div>
               <div style={{ fontSize: 'var(--text-xs)', letterSpacing: '1.5px', color: '#f97316', marginBottom: '8px', fontWeight: '600' }}>
-                HAWKS ({signals.committeeSentiment.hawks.length})
+                <LearnTerm term="Hawkish" learnMode={learnMode}>HAWKS</LearnTerm> ({signals.committeeSentiment.hawks.length})
               </div>
               {signals.committeeSentiment.hawks.map(m => (
                 <div key={m.name} style={{ fontSize: 'var(--text-sm)', color: '#e5e7eb', marginBottom: '6px', lineHeight: '1.3' }}>
@@ -683,7 +683,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
             </div>
             <div>
               <div style={{ fontSize: 'var(--text-xs)', letterSpacing: '1.5px', color: '#22c55e', marginBottom: '8px', fontWeight: '600' }}>
-                DOVES ({signals.committeeSentiment.doves.length})
+                <LearnTerm term="Dovish" learnMode={learnMode}>DOVES</LearnTerm> ({signals.committeeSentiment.doves.length})
               </div>
               {signals.committeeSentiment.doves.map(m => (
                 <div key={m.name} style={{ fontSize: 'var(--text-sm)', color: '#e5e7eb', marginBottom: '6px', lineHeight: '1.3' }}>

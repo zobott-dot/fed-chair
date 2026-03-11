@@ -114,7 +114,7 @@ window.FedChair.Components.Aftermath = function({
                 border: `1px solid ${stat.good ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
                 textAlign: 'center'
               }}>
-                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}>{stat.label}</div>
+                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}><LearnTerm term={stat.label === 'PCE Inflation' ? 'Core PCE' : stat.label === 'GDP Growth' ? 'GDP' : stat.label === 'Unemployment' ? 'Unemployment Rate' : stat.label} learnMode={learnMode}>{stat.label}</LearnTerm></div>
                 <div style={{
                   fontFamily: '"IBM Plex Mono", monospace',
                   fontSize: 'clamp(20px, 3vw, 28px)',
@@ -349,7 +349,7 @@ window.FedChair.Components.Aftermath = function({
                     borderRadius: '8px',
                     textAlign: 'center'
                   }}>
-                    <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}>Credibility</div>
+                    <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}><LearnTerm term="Credibility" learnMode={learnMode}>Credibility</LearnTerm></div>
                     <div style={{
                       fontFamily: '"IBM Plex Mono", monospace',
                       fontSize: 'clamp(16px, 2vw, 22px)',
@@ -460,7 +460,7 @@ window.FedChair.Components.Aftermath = function({
                 marginBottom: '0'
               }}>
                 <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', marginBottom: '12px', fontWeight: '600' }}>
-                  BALANCE SHEET
+                  <LearnTerm term="Balance Sheet" learnMode={learnMode}>BALANCE SHEET</LearnTerm>
                 </div>
                 <div style={{
                   padding: '10px 12px',
@@ -522,7 +522,7 @@ window.FedChair.Components.Aftermath = function({
           {aftermathPhase >= 1 && gameState && (
             <div className="animate-slideIn" style={{ ...panelStyle, padding: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', fontWeight: '600' }}>CREDIBILITY</div>
+                <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', fontWeight: '600' }}><LearnTerm term="Credibility" learnMode={learnMode}>CREDIBILITY</LearnTerm></div>
                 <div style={{
                   fontSize: 'clamp(20px, 3vw, 28px)',
                   fontFamily: '"IBM Plex Mono", monospace',
@@ -605,7 +605,7 @@ window.FedChair.Components.Aftermath = function({
                     <span style={{ fontSize: '14px' }}>{item.icon}</span>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px' }}>
-                        <span style={{ fontSize: 'var(--text-xs)', color: '#9ca3af' }}>{item.label}</span>
+                        <span style={{ fontSize: 'var(--text-xs)', color: '#9ca3af' }}><LearnTerm term={item.label} learnMode={learnMode}>{item.label}</LearnTerm></span>
                         <span style={{ fontSize: 'var(--text-xs)', color: item.data.color, fontWeight: '500' }}>
                           {item.data.grade}
                         </span>

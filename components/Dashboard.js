@@ -269,7 +269,7 @@ window.FedChair.Components.Dashboard = function({
         {/* Employment */}
         <div style={panelStyle}>
           <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
-            <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}>EMPLOYMENT</span>
+            <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}><LearnTerm term="Maximum Employment" learnMode={learnMode}>EMPLOYMENT</LearnTerm></span>
           </div>
           <div style={{ padding: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
             {Object.entries(economicData.employment).map(([key, data]) => (
@@ -282,7 +282,9 @@ window.FedChair.Components.Dashboard = function({
                     {getTrendIcon(data.trend)}
                   </span>
                 </div>
-                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '4px' }}>{data.label}</div>
+                <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '4px' }}>
+                  <LearnTerm term={data.label === 'Unemployment' ? 'Unemployment Rate' : data.label === 'Payrolls' ? 'Non-Farm Payrolls' : data.label === 'Participation' ? 'Labor Force Participation' : data.label} learnMode={learnMode}>{data.label}</LearnTerm>
+                </div>
               </div>
             ))}
           </div>

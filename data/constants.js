@@ -1276,6 +1276,276 @@ window.FedChair.Data.learnTerms = {
     title: 'Mary C. Daly \u2014 President, Federal Reserve Bank of San Francisco',
     plain: 'Labor economist who spent her career at the San Francisco Fed before becoming president in 2018. Research focuses on labor markets, wage dynamics, and the economics of disability.',
     context: 'Daly is a centrist who strongly emphasizes the employment side of the dual mandate. Her labor economics background means she is particularly attentive to how rate decisions affect workers \u2014 especially lower-wage workers who are often first affected by Fed tightening.'
+  },
+
+  // ── MISSING FRB PRESIDENT BIOGRAPHIES ─────────────────────────────────
+
+  'Patrick T. Harker': {
+    title: 'Patrick T. Harker \u2014 President, Federal Reserve Bank of Philadelphia',
+    plain: 'Engineer and former university president (University of Delaware). Philadelphia Fed President since 2015. Brings an academic and management perspective to the FOMC. Known for measured, data-driven analysis.',
+    context: 'Harker is considered a centrist on the committee. He advocated for an early pause in the 2022-2023 hiking cycle and tends to favor a gradual approach to policy changes. His engineering background shows in his emphasis on quantitative analysis.'
+  },
+
+  'Lorie K. Logan': {
+    title: 'Lorie K. Logan \u2014 President, Federal Reserve Bank of Dallas',
+    plain: 'Career Fed official who spent over two decades at the New York Fed managing the System Open Market Account (SOMA) \u2014 the Fed\'s massive portfolio of Treasury and mortgage-backed securities. Dallas Fed President since 2022.',
+    context: 'Logan\'s deep expertise in financial markets and balance sheet operations makes her one of the most technically informed FOMC members. She has been hawkish on inflation and particularly attentive to how QT affects market liquidity and Treasury functioning.'
+  },
+
+  'Tom Barkin': {
+    title: 'Tom Barkin \u2014 President, Federal Reserve Bank of Richmond',
+    plain: 'Former McKinsey senior partner with extensive business consulting experience. Richmond Fed President since 2018. Known for translating complex economic concepts into accessible business language.',
+    context: 'Barkin brings a practitioner\'s perspective to the FOMC, drawing on his consulting experience to interpret how businesses are actually responding to economic conditions. He tends toward centrism, emphasizing the importance of seeing sustained inflation progress before easing.'
+  },
+
+  'Alberto Musalem': {
+    title: 'Alberto Musalem \u2014 President, Federal Reserve Bank of St. Louis',
+    plain: 'Former investment executive and economist. Became St. Louis Fed President in 2024, succeeding James Bullard. Background in fixed income and macroeconomic research at major financial institutions.',
+    context: 'Musalem took over a bank with a strong monetarist tradition. His financial markets background gives him particular insight into how Fed policy transmits through bond markets and credit conditions.'
+  },
+
+  'Jeff Schmid': {
+    title: 'Jeff Schmid \u2014 President, Federal Reserve Bank of Kansas City',
+    plain: 'Career banking executive and regulator. Kansas City Fed President since 2023. Background in community and regional banking, with experience at the FDIC and in bank leadership.',
+    context: 'Schmid\'s banking background gives him a ground-level view of how monetary policy affects lending conditions, especially for smaller banks and businesses in the heartland. He has leaned hawkish in his early tenure.'
+  },
+
+  // ── INFLATION MEASURES ────────────────────────────────────────────────
+
+  'Headline Inflation': {
+    title: 'Headline Inflation',
+    plain: 'The total inflation rate including all items \u2014 food, energy, and everything else. More volatile than "core" measures because food and energy prices swing sharply with supply disruptions, weather, and geopolitics.',
+    context: 'Headline inflation is what consumers feel directly at the grocery store and gas pump. The Fed focuses on core measures for policy, but headline inflation shapes public perception and political pressure on the committee.'
+  },
+
+  'Core Inflation': {
+    title: 'Core Inflation',
+    plain: 'Inflation with food and energy prices stripped out. Because food and energy are volatile and often driven by supply factors the Fed can\'t control, core inflation gives a cleaner signal of underlying price trends.',
+    context: 'When headline and core inflation diverge, it tells the committee something important. If headline is high but core is falling, the price pressure may be temporary. If both are elevated, the inflation problem is broad-based and harder to solve.'
+  },
+
+  'Supercore Inflation': {
+    title: 'Supercore Inflation',
+    plain: 'Core services inflation excluding housing \u2014 sometimes called "supercore." Closely watched because services prices are heavily influenced by labor costs, making this a proxy for wage-driven inflation.',
+    context: 'Fed Chair Powell highlighted supercore as a key metric in 2023. When goods inflation faded but services stayed hot, supercore became the committee\'s preferred gauge of whether inflation was truly coming under control.'
+  },
+
+  'Shelter Inflation': {
+    title: 'Shelter Inflation (OER)',
+    plain: 'The housing component of inflation, measured primarily through Owners\' Equivalent Rent (OER) \u2014 an estimate of what homeowners would pay to rent their own home. Makes up roughly one-third of CPI.',
+    context: 'Shelter inflation is notoriously "sticky" and lags real-time rent data by 12-18 months. The committee knows shelter inflation will eventually fall as new lease data feeds through, but it still dominates the headline numbers while it\'s elevated.'
+  },
+
+  'Breakeven Rate': {
+    title: 'Breakeven Inflation Rate',
+    plain: 'The difference between nominal Treasury yields and TIPS (inflation-protected) yields. Represents the market\'s expectation for average annual inflation over a given period (usually 5 or 10 years).',
+    context: 'Breakevens are the Fed\'s real-time read on whether markets believe it will hit its 2% target. Rising breakevens signal markets losing confidence in the Fed\'s inflation-fighting credibility. Falling breakevens signal confidence \u2014 or recession fears.'
+  },
+
+  'Inflation Target': {
+    title: 'The 2% Inflation Target',
+    plain: 'The Fed\'s official goal: 2% annual inflation as measured by PCE. Adopted formally in 2012 under Chair Bernanke. In 2020, the Fed shifted to "average inflation targeting" \u2014 allowing temporary overshoots to make up for periods of undershooting.',
+    context: 'The 2% target is the anchor of the entire monetary policy framework. It\'s low enough to be manageable but high enough to give the Fed room to cut rates in a downturn (since rates can\'t easily go below zero).'
+  },
+
+  // ── UNEMPLOYMENT & LABOR MEASURES ─────────────────────────────────────
+
+  'Unemployment Rate': {
+    title: 'Unemployment Rate (U-3)',
+    plain: 'The percentage of the labor force that is jobless and actively seeking work. The official (U-3) rate doesn\'t count people who have stopped looking for work or who are underemployed.',
+    context: 'The unemployment rate is one half of what the Fed is trying to optimize. Below ~4% is considered very tight; above ~5% raises concern. But the rate alone doesn\'t tell the full story \u2014 the committee also watches participation, wages, and JOLTS data.'
+  },
+
+  'Initial Claims': {
+    title: 'Initial Jobless Claims',
+    plain: 'The number of Americans filing new unemployment insurance claims each week. One of the most timely labor market indicators available \u2014 released every Thursday with only a one-week lag.',
+    context: 'Claims below ~220K signal a healthy labor market. A sustained rise above 300K can signal recession is underway. Because it\'s weekly, the committee uses claims as an early warning system between the monthly jobs reports.'
+  },
+
+  'Wage Growth': {
+    title: 'Wage Growth',
+    plain: 'The rate at which workers\' earnings are increasing, measured by Average Hourly Earnings (AHE) or the Employment Cost Index (ECI). Important because wages are the largest cost for most businesses.',
+    context: 'The committee watches wages for signs of a "wage-price spiral" \u2014 where higher wages lead to higher prices, which lead to demands for even higher wages. Wage growth of 3-3.5% is roughly consistent with 2% inflation; above 4% raises concerns.'
+  },
+
+  'Quits Rate': {
+    title: 'Quits Rate',
+    plain: 'The percentage of employed workers who voluntarily leave their jobs each month, from the JOLTS survey. A high quits rate signals worker confidence \u2014 people only quit when they believe they can find something better.',
+    context: 'The quits rate peaked at 3% in 2022, reflecting extreme labor market tightness. As it normalizes back toward 2.3-2.5%, it signals the labor market is cooling without a sharp deterioration \u2014 exactly what the committee wants to see in a soft landing.'
+  },
+
+  // ── GROWTH & ACTIVITY MEASURES ────────────────────────────────────────
+
+  'Potential Output': {
+    title: 'Potential Output (Potential GDP)',
+    plain: 'The maximum level of economic output an economy can sustain without generating accelerating inflation. Determined by labor supply, capital stock, and productivity growth \u2014 typically estimated around 1.8-2.0% for the US.',
+    context: 'When actual GDP exceeds potential (a positive "output gap"), the economy is running hot and inflation pressure builds. When actual GDP falls below potential (a negative output gap), there\'s slack in the economy and inflation tends to fall.'
+  },
+
+  'Output Gap': {
+    title: 'Output Gap',
+    plain: 'The difference between actual GDP and potential GDP. A positive output gap means the economy is producing more than it sustainably can; a negative gap means there\'s unused capacity.',
+    context: 'The output gap is central to the Fed\'s framework. A positive gap argues for tighter policy; a negative gap argues for easier policy. The challenge is that potential output is estimated, not observed \u2014 so there\'s always uncertainty about where the gap actually is.'
+  },
+
+  'Consumer Spending': {
+    title: 'Consumer Spending',
+    plain: 'Household expenditures on goods and services. Makes up roughly 70% of US GDP, making it the single most important driver of economic growth. Tracked monthly through retail sales and the PCE report.',
+    context: 'When consumers pull back, recession risk rises sharply. The committee watches consumer spending for signs that rate hikes are having their intended effect \u2014 slowing demand enough to reduce inflation without causing a sharp contraction.'
+  },
+
+  'Industrial Production': {
+    title: 'Industrial Production',
+    plain: 'A measure of output from US factories, mines, and utilities, published monthly by the Federal Reserve. Covers about 16% of GDP but is more cyclically sensitive than services.',
+    context: 'Industrial production is an early indicator of economic turning points. Manufacturing tends to lead the business cycle \u2014 slowing before the broader economy in downturns and recovering first in expansions.'
+  },
+
+  'Housing Starts': {
+    title: 'Housing Starts',
+    plain: 'The number of new residential construction projects begun each month. Highly sensitive to interest rates because most home purchases are financed with mortgages.',
+    context: 'Housing is one of the most interest-rate-sensitive sectors of the economy. When the Fed hikes, housing starts often fall first and fastest. The committee watches housing as a leading indicator of how its rate decisions are transmitting through the economy.'
+  },
+
+  'Retail Sales': {
+    title: 'Retail Sales',
+    plain: 'Monthly measure of total receipts at retail stores, from department stores to online retailers. A key indicator of consumer demand and a major input into GDP estimates.',
+    context: 'Strong retail sales can argue against rate cuts (consumers still spending freely), while weak sales raise concerns about demand destruction from tight policy. The committee reads retail sales alongside consumer confidence surveys for a complete picture.'
+  },
+
+  // ── FINANCIAL MARKET TERMS ────────────────────────────────────────────
+
+  'Term Premium': {
+    title: 'Term Premium',
+    plain: 'The extra yield investors demand for holding longer-term bonds instead of rolling over short-term bonds. Compensates for the risk that interest rates, inflation, or economic conditions could change over the bond\'s life.',
+    context: 'When the term premium rises, long-term rates increase even if the Fed holds short-term rates steady \u2014 tightening financial conditions automatically. QT can push the term premium higher by increasing the supply of long-term bonds that private markets must absorb.'
+  },
+
+  'Risk Premium': {
+    title: 'Risk Premium',
+    plain: 'The additional return investors require above a risk-free rate (like Treasuries) to hold riskier assets like corporate bonds or stocks. Widens during periods of uncertainty and narrows when confidence is high.',
+    context: 'The Fed monitors risk premiums across asset classes as a gauge of financial stress. Sharply widening premiums can signal a "risk-off" episode that tightens financial conditions beyond what the Fed intended.'
+  },
+
+  'Flight to Quality': {
+    title: 'Flight to Quality',
+    plain: 'When investors sell risky assets (stocks, corporate bonds) and buy safe assets (US Treasuries, gold) during periods of fear or uncertainty. Drives Treasury yields down and stock prices lower simultaneously.',
+    context: 'A flight to quality can ease financial conditions for the government (lower borrowing costs) while tightening them for everyone else (wider credit spreads, lower stock prices). The committee watches for these episodes as signs of financial stress.'
+  },
+
+  'Repo Rate': {
+    title: 'Repo Rate (Repurchase Agreement Rate)',
+    plain: 'The interest rate in the repurchase agreement market, where financial institutions borrow short-term by selling securities with an agreement to buy them back. The repo market is a critical source of short-term funding for banks and dealers.',
+    context: 'Repo market stress can signal broader liquidity problems in the financial system. The Fed operates a Standing Repo Facility as a backstop. Repo rate spikes (like September 2019) can force the Fed to intervene to maintain control of short-term interest rates.'
+  },
+
+  'Money Supply': {
+    title: 'Money Supply (M2)',
+    plain: 'The total amount of money circulating in the economy, including cash, checking deposits, savings deposits, and money market funds. M2 grew explosively during COVID-era stimulus and has since contracted.',
+    context: 'Monetarists argue that money supply growth drives inflation. The Fed officially de-emphasized monetary aggregates decades ago, but the sharp M2 growth during 2020-2021 (and its correlation with subsequent inflation) revived the debate.'
+  },
+
+  'Liquidity': {
+    title: 'Liquidity',
+    plain: 'How easily assets can be bought or sold without affecting their price. Also refers to the availability of cash and near-cash in the financial system. The Fed is both a provider and drainer of liquidity through its operations.',
+    context: 'QE floods the system with liquidity; QT drains it. When liquidity becomes scarce, markets can become volatile and fragile. The committee monitors reserve levels and money market conditions to ensure QT doesn\'t drain too much too fast.'
+  },
+
+  // ── POLICY FRAMEWORK TERMS ────────────────────────────────────────────
+
+  'Taylor Rule': {
+    title: 'The Taylor Rule',
+    plain: 'A formula proposed by economist John Taylor that suggests what the Fed Funds Rate should be based on current inflation and the output gap. Provides a mechanical benchmark for whether policy is too tight, too loose, or about right.',
+    context: 'The committee doesn\'t follow the Taylor Rule mechanically, but it\'s a widely cited benchmark. When the actual rate is well below what the Taylor Rule suggests, hawks argue policy is too loose. When it\'s above, doves argue policy is too restrictive.'
+  },
+
+  'Phillips Curve': {
+    title: 'The Phillips Curve',
+    plain: 'The theoretical inverse relationship between unemployment and inflation \u2014 lower unemployment leads to higher inflation, and vice versa. Named after economist A.W. Phillips. The relationship has been unstable in recent decades.',
+    context: 'The Phillips Curve is foundational to the Fed\'s framework, even though it doesn\'t always hold. The 2010s (low unemployment, low inflation) challenged the curve. The 2020s (supply-driven inflation with low unemployment) challenged it again.'
+  },
+
+  'Data Dependent': {
+    title: 'Data Dependent',
+    plain: 'The Fed\'s stated approach of making policy decisions based on incoming economic data rather than following a predetermined path. Essentially means "we\'ll decide at each meeting based on what the numbers show."',
+    context: 'Saying the committee is "data dependent" sounds neutral but carries a specific signal: it means the Fed is NOT committing to a particular path. Markets hear it as "anything could happen next meeting" \u2014 which can increase or decrease uncertainty depending on context.'
+  },
+
+  'Accommodative': {
+    title: 'Accommodative Policy',
+    plain: 'When interest rates are set below the neutral rate, policy is "accommodative" \u2014 it is actively stimulating economic activity. The opposite of "restrictive." The committee uses this word carefully because it signals the direction of policy.',
+    context: 'Describing policy as "accommodative" implies the committee believes rates need to rise to reach neutral. Shifting language from "accommodative" to "neutral" or "restrictive" is a significant communication event that markets track closely.'
+  },
+
+  'Terminal Rate': {
+    title: 'Terminal Rate',
+    plain: 'The expected peak interest rate in a hiking cycle \u2014 the point where the Fed stops raising rates. Not an official Fed term, but widely used by markets and economists to discuss the endpoint of tightening.',
+    context: 'Market expectations for the terminal rate directly affect financial conditions today. If markets think the terminal rate will be 5.5%, long-term rates adjust immediately \u2014 even if the current rate is only 4%. Managing terminal rate expectations is a key part of forward guidance.'
+  },
+
+  'Pivot': {
+    title: 'Fed Pivot',
+    plain: 'A shift in the direction of monetary policy \u2014 from hiking to holding, or from holding to cutting. In market parlance, "the pivot" usually refers to the moment the Fed signals it\'s done tightening.',
+    context: 'Markets are constantly trying to anticipate the pivot. Even a hint that the committee is considering a change in direction can cause large asset price moves. Premature pivot expectations can loosen financial conditions in ways that complicate the Fed\'s work.'
+  },
+
+  'Taper': {
+    title: 'Taper / Tapering',
+    plain: 'Gradually reducing the pace of asset purchases (QE) before stopping them entirely. The term became famous during the 2013 "Taper Tantrum," when Chair Bernanke\'s mention of tapering caused a sharp bond market selloff.',
+    context: 'Tapering is the bridge between full QE and the end of QE. The 2013 experience taught the Fed that even discussing tapering can roil markets \u2014 so modern Fed chairs telegraph tapering intentions well in advance to avoid surprises.'
+  },
+
+  'Moral Hazard': {
+    title: 'Moral Hazard',
+    plain: 'The risk that protecting people or institutions from the consequences of their actions encourages them to take more risk in the future. In Fed context: if markets believe the Fed will always bail them out, they take on excessive risk.',
+    context: 'The "Fed put" \u2014 the belief that the Fed will cut rates or provide liquidity whenever markets fall significantly \u2014 is a form of moral hazard. Critics argue it inflates asset bubbles and encourages reckless risk-taking.'
+  },
+
+  'Lender of Last Resort': {
+    title: 'Lender of Last Resort',
+    plain: 'The Fed\'s role as the ultimate backstop for the financial system. When banks can\'t borrow from anyone else, the Fed can lend to them through the discount window and emergency lending facilities.',
+    context: 'This function exists to prevent bank runs and financial panics. But it creates tension with the moral hazard problem: if banks know the Fed will always rescue them, they may take excessive risks. The committee tries to balance stability with market discipline.'
+  },
+
+  'Open Market Operations': {
+    title: 'Open Market Operations',
+    plain: 'The Fed\'s buying and selling of government securities in the open market to implement monetary policy. This is the primary mechanism through which the Fed controls the federal funds rate and manages the money supply.',
+    context: 'The New York Fed\'s Open Market Desk executes these operations daily. QE and QT are large-scale versions of open market operations. Even routine operations affect liquidity conditions throughout the financial system.'
+  },
+
+  'Soft Landing': {
+    title: 'Soft Landing',
+    plain: 'The ideal outcome of a rate-hiking cycle: inflation returns to 2% without triggering a recession. Historically rare \u2014 most tightening cycles end in recession. The 1994-95 cycle is the canonical example of success.',
+    context: 'Whether you achieve a soft landing depends on your decisions across all 8 meetings. Too aggressive and you may tip into recession; too cautious and inflation stays elevated. Your score reflects this balance.'
+  },
+
+  'Hard Landing': {
+    title: 'Hard Landing',
+    plain: 'When the Fed\'s rate hikes slow the economy so much that it tips into recession. The opposite of a soft landing. Characterized by sharply rising unemployment, falling GDP, and often a financial market crisis.',
+    context: 'Most historical tightening cycles have ended in hard landings. The Volcker era (1980-82) is the most dramatic example: inflation was crushed, but at the cost of severe recession and 10%+ unemployment.'
+  },
+
+  'Dissent': {
+    title: 'FOMC Dissent',
+    plain: 'When an FOMC voting member votes against the majority\'s rate decision. Dissents are public and named in the post-meeting statement. They signal internal disagreement on the committee.',
+    context: 'Dissents are rare and market-moving. A hawkish dissent (wanting to hike more) signals the committee may be too dovish. A dovish dissent (wanting to cut more) signals it may be too hawkish. Multiple dissents can undermine confidence in the committee\'s consensus.'
+  },
+
+  'Dot Plot': {
+    title: 'The Dot Plot',
+    plain: 'A chart showing each FOMC member\'s anonymous projection for where the federal funds rate will be at the end of each year. The median of the dots becomes the committee\'s "signal" to markets.',
+    context: 'When your dot projections differ from your actual decisions, credibility suffers. Markets treat dots as implicit commitments even though the Fed insists they\'re just forecasts.'
+  },
+
+  'Mandate Balance': {
+    title: 'Mandate Balance',
+    plain: 'How well the committee is balancing its two goals: maximum employment and stable prices. A high mandate balance score means you\'re keeping both unemployment and inflation near their targets.',
+    context: 'This is one of your three scoring dimensions. When inflation is high and unemployment is low, the mandates pull in opposite directions. When both are near target, you\'re achieving the rare ideal.'
+  },
+
+  'Market Stability': {
+    title: 'Market Stability',
+    plain: 'How your decisions affect financial market conditions \u2014 avoiding excessive volatility, sharp selloffs, or disorderly moves in stocks, bonds, and credit markets.',
+    context: 'This is one of your three scoring dimensions. Surprising markets with unexpected decisions or sending contradictory signals creates instability that can amplify the real-economy effects of your policy beyond what you intended.'
   }
 
 };
