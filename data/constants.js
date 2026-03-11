@@ -1546,6 +1546,32 @@ window.FedChair.Data.learnTerms = {
     title: 'Market Stability',
     plain: 'How your decisions affect financial market conditions \u2014 avoiding excessive volatility, sharp selloffs, or disorderly moves in stocks, bonds, and credit markets.',
     context: 'This is one of your three scoring dimensions. Surprising markets with unexpected decisions or sending contradictory signals creates instability that can amplify the real-economy effects of your policy beyond what you intended.'
+  },
+
+  // ── MISSING DATA LABEL TERMS ──────────────────────────────────────────
+
+  'LFPR': {
+    title: 'LFPR \u2014 Labor Force Participation Rate',
+    plain: 'The percentage of working-age Americans (16+) who are either employed or actively looking for work. A key complement to the unemployment rate \u2014 it shows how many people are engaged with the labor market at all.',
+    context: 'A falling LFPR can mask true labor market weakness: unemployment may look low, but only because people have stopped looking for work. The committee watches LFPR alongside unemployment to get the full picture of labor market health.'
+  },
+
+  'U-6': {
+    title: 'U-6 \u2014 Broad Unemployment Rate',
+    plain: 'The broadest official measure of unemployment. Includes the standard unemployed (U-3) plus people who are marginally attached to the labor force and those working part-time for economic reasons (they want full-time work but can\'t find it).',
+    context: 'U-6 typically runs 3-4 percentage points above the headline U-3 rate. When the gap between U-3 and U-6 widens, it signals hidden slack in the labor market \u2014 more people are underemployed than the headline number suggests.'
+  },
+
+  'Core CPI': {
+    title: 'Core CPI \u2014 Consumer Price Index (ex. Food & Energy)',
+    plain: 'CPI inflation with food and energy prices removed. Like Core PCE, it strips out volatile components to reveal underlying inflation trends. Core CPI tends to run slightly higher than Core PCE.',
+    context: 'While the Fed officially targets Core PCE, Core CPI gets more media attention and shapes public inflation expectations. When Core CPI diverges significantly from Core PCE, it tells the committee which sectors are driving price pressures.'
+  },
+
+  '2s/10s': {
+    title: '2s/10s \u2014 The 2-Year / 10-Year Treasury Spread',
+    plain: 'The difference between the 10-year Treasury yield and the 2-year Treasury yield. When positive, the yield curve is normal (long rates higher than short rates). When negative, the curve is inverted \u2014 a historically reliable recession signal.',
+    context: 'The 2s/10s spread is the most watched yield curve indicator. It inverted sharply in 2022 as the Fed hiked the short end aggressively while long-term growth expectations stayed anchored. An inversion does not cause recession \u2014 it reflects market expectations that the Fed will eventually cut rates in response to economic weakness.'
   }
 
 };
