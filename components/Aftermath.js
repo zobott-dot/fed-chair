@@ -428,6 +428,92 @@ window.FedChair.Components.Aftermath = function({
             )}
           </div>
 
+          {/* Balance Sheet Impact (Phase 7.6) */}
+          {gameState?.balanceSheet && gameState.balanceSheet.currentPosture !== undefined && (() => {
+            const bs = gameState.balanceSheet;
+            const bsData = window.FedChair.Data.balanceSheetData;
+            const posture = bsData?.postures?.find(p => p.id === bs.currentPosture);
+            const postureLabel = posture
+              ? `${posture.sublabel}${bs.currentPosture === 'reduce' ? ` at ${bsData.paceOptions.find(p => p.value === bs.currentPace)?.label || '$60B / month'}` : ''}`
+              : bs.currentPosture.toUpperCase();
+
+            // Determine combined signal key
+            const rateKey = rateDecision > 0 ? 'hike' : rateDecision < 0 ? 'cut' : 'hold';
+            const bsKey = bs.currentPosture === 'expand' ? 'expand' : bs.currentPosture === 'reduce' ? 'reduce' : 'hold';
+            const signalKey = `${rateKey}-${bsKey}`;
+            const combinedSignal = bsData?.combinedSignals?.[signalKey] || '';
+
+            // Calculate change
+            const prevAssets = bs.history.length >= 2
+              ? bs.history[bs.history.length - 2].assetsLevel
+              : 6800;
+            const assetsChange = bs.totalAssets - prevAssets;
+
+            return (
+              <div style={{
+                ...panelStyle,
+                padding: '16px',
+                marginBottom: '0'
+              }}>
+                <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', marginBottom: '12px', fontWeight: '600' }}>
+                  BALANCE SHEET
+                </div>
+                <div style={{
+                  padding: '10px 12px',
+                  background: 'rgba(17, 24, 39, 0.5)',
+                  borderRadius: '6px',
+                  marginBottom: '10px'
+                }}>
+                  <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}>POSTURE</div>
+                  <div style={{ fontSize: 'var(--text-sm)', color: '#e5e7eb', fontWeight: '500' }}>
+                    {postureLabel}
+                  </div>
+                </div>
+                <div style={{
+                  padding: '10px 12px',
+                  background: 'rgba(17, 24, 39, 0.5)',
+                  borderRadius: '6px',
+                  marginBottom: '10px'
+                }}>
+                  <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginBottom: '4px' }}>FED BALANCE SHEET</div>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                    <span style={{
+                      fontFamily: '"IBM Plex Mono", monospace',
+                      fontSize: 'var(--text-base)',
+                      color: '#60a5fa'
+                    }}>
+                      ${Math.round(bs.totalAssets).toLocaleString()}B
+                    </span>
+                    {assetsChange !== 0 && (
+                      <span style={{
+                        fontFamily: '"IBM Plex Mono", monospace',
+                        fontSize: 'var(--text-xs)',
+                        color: assetsChange > 0 ? '#22c55e' : '#ef4444'
+                      }}>
+                        ({assetsChange > 0 ? '+' : ''}{assetsChange > 0 ? `$${assetsChange}B` : `-$${Math.abs(assetsChange)}B`})
+                      </span>
+                    )}
+                  </div>
+                </div>
+                {combinedSignal && (
+                  <div style={{
+                    padding: '10px 12px',
+                    background: 'rgba(217, 119, 6, 0.06)',
+                    borderRadius: '6px',
+                    borderLeft: '3px solid #d97706'
+                  }}>
+                    <div style={{ fontSize: '10px', letterSpacing: '1px', color: '#d97706', marginBottom: '4px', fontWeight: '600' }}>
+                      COMBINED SIGNAL
+                    </div>
+                    <div style={{ fontSize: 'var(--text-xs)', color: '#9ca3af', lineHeight: '1.5', fontFamily: 'var(--font-prose)' }}>
+                      {combinedSignal}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+
           {/* Credibility */}
           {aftermathPhase >= 1 && gameState && (
             <div className="animate-slideIn" style={{ ...panelStyle, padding: '16px' }}>

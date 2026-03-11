@@ -220,10 +220,20 @@ window.FedChair.Components.DecisionPanel = function({
   dotSelections,
   setDotSelections,
   onStatementPhrasesChange,
-  learnMode
+  learnMode,
+  balanceSheetPosture,
+  setBalanceSheetPosture,
+  balanceSheetPace,
+  setBalanceSheetPace
 }) {
   const LearnTerm = window.FedChair.Components.LearnTerm;
+  const balanceSheetData = window.FedChair.Data.balanceSheetData;
   const expandedPhrases = window.FedChair.Data.statementPhrasesExpanded;
+
+  // Balance sheet orientation card (Meeting 1 only)
+  const [balanceSheetOrientation, setBalanceSheetOrientation] = React.useState(
+    gameState?.meetingNumber > 1
+  );
   const useAccordion = !!expandedPhrases;
 
   // Build lookup: phraseId → categoryKey for one-per-category selection
@@ -474,6 +484,189 @@ window.FedChair.Components.DecisionPanel = function({
               }}>
                 {formatRate(currentRate + rateDecision / 100)}
               </div>
+            </div>
+          )}
+
+          {/* Balance Sheet Decision (Phase 7.6) */}
+          {!decisionPublished && balanceSheetData && (
+            <div style={{ marginBottom: '24px' }}>
+
+              {/* Orientation Card — Meeting 1 only */}
+              {gameState?.meetingNumber === 1 && !balanceSheetOrientation && (
+                <div style={{
+                  padding: '24px',
+                  background: 'rgba(217, 119, 6, 0.08)',
+                  border: '1px solid rgba(217, 119, 6, 0.3)',
+                  borderRadius: '10px',
+                  marginBottom: '16px'
+                }}>
+                  <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '11px', color: '#D97706',
+                                textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '12px' }}>
+                    NEW: THE BALANCE SHEET
+                  </div>
+                  <h3 style={{ fontSize: 'var(--text-lg)', marginBottom: '12px', color: '#e5e7eb' }}>
+                    {balanceSheetData.orientation.title}
+                  </h3>
+                  {balanceSheetData.orientation.paragraphs.map((p, i) => (
+                    <p key={i} style={{ fontSize: 'var(--text-sm)', lineHeight: '1.6',
+                                        color: '#9ca3af', marginBottom: '10px' }}>{p}</p>
+                  ))}
+                  <button onClick={() => setBalanceSheetOrientation(true)} style={{
+                    padding: '12px 24px',
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    letterSpacing: '1.5px',
+                    background: 'linear-gradient(135deg, #92400e 0%, #d97706 100%)',
+                    border: 'none',
+                    color: '#fff',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    marginTop: '8px',
+                    minHeight: 'auto'
+                  }}>
+                    {balanceSheetData.orientation.dismissLabel}
+                  </button>
+                </div>
+              )}
+
+              {/* Balance Sheet Posture Selection */}
+              {(gameState?.meetingNumber > 1 || balanceSheetOrientation) && (
+                <>
+                  <div style={{
+                    fontSize: 'var(--text-sm)',
+                    color: '#9ca3af',
+                    letterSpacing: '1.5px',
+                    fontWeight: '600',
+                    marginBottom: '6px'
+                  }}>
+                    <LearnTerm term="Balance Sheet" learnMode={learnMode}>BALANCE SHEET DECISION</LearnTerm>
+                  </div>
+                  <div style={{ fontSize: 'var(--text-xs)', color: '#6b7280', marginBottom: '12px' }}>
+                    Set your balance sheet posture
+                  </div>
+
+                  <div className="rate-btn-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+                    {balanceSheetData.postures.map(posture => {
+                      const isSelected = balanceSheetPosture === posture.id;
+                      const stanceColor = posture.stance === 'hawkish' ? '#ef4444'
+                        : posture.stance === 'dovish' ? '#22c55e' : '#6b7280';
+                      return (
+                        <button
+                          key={posture.id}
+                          onClick={() => setBalanceSheetPosture(posture.id)}
+                          style={{
+                            padding: '14px 10px',
+                            textAlign: 'left',
+                            background: isSelected ? 'rgba(217, 119, 6, 0.12)' : 'rgba(17, 24, 39, 0.6)',
+                            border: isSelected ? '2px solid #d97706' : '2px solid rgba(75, 85, 99, 0.3)',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            minHeight: 'auto',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '6px'
+                          }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span style={{ fontSize: '16px', color: isSelected ? '#d97706' : '#9ca3af' }}>{posture.icon}</span>
+                            <span style={{
+                              fontSize: 'var(--text-sm)',
+                              fontFamily: '"IBM Plex Mono", monospace',
+                              fontWeight: '600',
+                              color: isSelected ? '#d97706' : '#e5e7eb',
+                              letterSpacing: '1px'
+                            }}>
+                              {posture.label}
+                            </span>
+                          </div>
+                          <div style={{ fontSize: '11px', color: '#8b95a5' }}>
+                            <LearnTerm term={posture.id === 'expand' ? 'Quantitative Easing' : posture.id === 'reduce' ? 'Quantitative Tightening' : null} learnMode={learnMode}>
+                              {posture.sublabel}
+                            </LearnTerm>
+                          </div>
+                          <div style={{ fontSize: 'var(--text-xs)', color: '#6b7280', lineHeight: '1.5' }}>
+                            {posture.description}
+                          </div>
+                          <div style={{
+                            marginTop: '4px',
+                            padding: '2px 8px',
+                            borderRadius: '4px',
+                            fontSize: '10px',
+                            fontWeight: '600',
+                            letterSpacing: '1px',
+                            textTransform: 'uppercase',
+                            background: `${stanceColor}15`,
+                            color: stanceColor,
+                            alignSelf: 'flex-start'
+                          }}>
+                            {posture.stance}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Pace Selector (only when REDUCE is selected) */}
+                  {balanceSheetPosture === 'reduce' && (
+                    <div style={{
+                      marginTop: '12px',
+                      padding: '14px 16px',
+                      background: 'rgba(17, 24, 39, 0.5)',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(75, 85, 99, 0.3)',
+                      animation: 'slideIn 0.2s ease-out'
+                    }}>
+                      <div style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600', marginBottom: '10px' }}>
+                        REDUCTION PACE
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        {balanceSheetData.paceOptions.map(option => {
+                          const isSelected = balanceSheetPace === option.value;
+                          return (
+                            <button
+                              key={option.value}
+                              onClick={() => setBalanceSheetPace(option.value)}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                                padding: '10px 12px',
+                                background: isSelected ? 'rgba(217, 119, 6, 0.1)' : 'transparent',
+                                border: isSelected ? '1px solid rgba(217, 119, 6, 0.4)' : '1px solid rgba(75, 85, 99, 0.2)',
+                                borderRadius: '6px',
+                                cursor: 'pointer',
+                                textAlign: 'left',
+                                minHeight: 'auto'
+                              }}
+                            >
+                              <div style={{
+                                width: '14px',
+                                height: '14px',
+                                borderRadius: '50%',
+                                border: isSelected ? '4px solid #d97706' : '2px solid #4b5563',
+                                flexShrink: 0
+                              }} />
+                              <div>
+                                <span style={{
+                                  fontSize: 'var(--text-sm)',
+                                  fontFamily: '"IBM Plex Mono", monospace',
+                                  color: isSelected ? '#d97706' : '#e5e7eb',
+                                  fontWeight: '500'
+                                }}>
+                                  {option.label}
+                                </span>
+                                <span style={{ fontSize: 'var(--text-xs)', color: '#6b7280', marginLeft: '8px' }}>
+                                  {option.description}
+                                </span>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           )}
 

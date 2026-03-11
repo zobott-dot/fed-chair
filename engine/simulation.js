@@ -250,7 +250,16 @@ window.FedChair.Engine.createGameState = function(startingData, mode) {
     // Phase 7: Narrative arc
     cumulativePolicyStance: 0,  // negative = dovish, positive = hawkish
     meetingHistory: [],          // detailed record of each meeting
-    chairName: 'Powell'          // changes to 'Warsh' at meeting 3
+    chairName: 'Powell',         // changes to 'Warsh' at meeting 3
+
+    // Phase 7.6: Balance sheet
+    balanceSheet: {
+      currentPosture: 'hold',        // 'expand' | 'hold' | 'reduce'
+      currentPace: 60,               // billions per month (for QT) or 0 for hold
+      totalAssets: 6800,             // billions — starting value (approx current Fed holdings)
+      history: [],                   // array of { meeting, posture, pace, assetsLevel }
+      hasSeenOrientation: false      // controls whether orientation card shows
+    }
   };
 };
 
@@ -818,6 +827,21 @@ window.FedChair.Engine.updateCredibility = function(gameState, decision, hawkSco
     }
   }
 
+  // === Balance sheet / rate consistency (Phase 7.6) ===
+  if (gameState.balanceSheet) {
+    const bsPosture = gameState.balanceSheet.currentPosture;
+    // Reward consistent policy: tightening both levers OR easing both
+    if ((decision > 0 && bsPosture === 'reduce') ||
+        (decision < 0 && bsPosture === 'expand')) {
+      credibilityChange += 3; // consistent dual tightening/easing
+    }
+    // Penalize contradictory signals: hiking while doing QE, or cutting while doing QT
+    if ((decision > 0 && bsPosture === 'expand') ||
+        (decision < 0 && bsPosture === 'reduce')) {
+      credibilityChange -= 4; // contradictory signals confuse markets
+    }
+  }
+
   // === Asymmetric bounds: harder to build, easier to lose ===
   // Cap gains at +3, but losses can go to -20
   credibilityChange = Math.min(3, credibilityChange);
@@ -983,6 +1007,42 @@ window.FedChair.Engine.advanceToNextMeeting = function(gameState, decision, hawk
   gameState.markets.treasury10y = marketReaction.treasury10y.value;
   gameState.markets.treasury2y = marketReaction.treasury2y.value;
   gameState.markets.dxy = marketReaction.dxy.value;
+
+  // Balance sheet effects (Phase 7.6)
+  if (gameState.balanceSheet) {
+    const posture = gameState.balanceSheet.currentPosture;
+
+    if (posture === 'expand') {
+      // QE: pushes long-term rates down, loosens financial conditions
+      gameState.markets.treasury10y = Math.max(
+        gameState.markets.treasury10y - 0.10, 1.0
+      );
+      gameState.markets.sp500 = Math.round(
+        gameState.markets.sp500 * 1.008
+      );
+      gameState.balanceSheet.totalAssets += 120; // $120B expansion per meeting (~$60B/mo x 2 months)
+    }
+
+    if (posture === 'reduce') {
+      // QT: pushes long-term rates up slightly, tightens financial conditions
+      const pace = gameState.balanceSheet.currentPace;
+      const bimonthlyReduction = pace * 2;
+      gameState.markets.treasury10y = Math.min(
+        gameState.markets.treasury10y + 0.05, 8.0
+      );
+      gameState.balanceSheet.totalAssets = Math.max(
+        gameState.balanceSheet.totalAssets - bimonthlyReduction, 3000
+      );
+    }
+
+    // Record history
+    gameState.balanceSheet.history.push({
+      meeting: gameState.meetingNumber,
+      posture: posture,
+      pace: gameState.balanceSheet.currentPace,
+      assetsLevel: gameState.balanceSheet.totalAssets
+    });
+  }
 
   // Check for early end conditions
   const earlyEnd = window.FedChair.Engine.checkWinLoseConditions(gameState);

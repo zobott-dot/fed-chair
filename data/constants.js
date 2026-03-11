@@ -722,6 +722,100 @@ window.FedChair.Data.pressConferenceQuestions = {
         ]
       }
     ]
+  },
+
+  // ─── CATEGORY 6: BALANCE SHEET ──────────────────────────────────────────
+  balanceSheet: {
+    label: 'BALANCE SHEET',
+    variants: [
+      {
+        id: 'bs-qt-while-cutting',
+        conditions: { onCut: true },
+        journalist: 'Bloomberg News Fed reporter',
+        question: 'Chair, you cut the federal funds rate today but you\'re continuing to shrink the balance sheet. Aren\'t those two actions working against each other?',
+        responses: [
+          {
+            id: 'bs1r1',
+            label: 'Different Tools, Different Targets',
+            text: 'The rate cut and the balance sheet reduction are addressing different dimensions of financial conditions. The rate decision targets short-term borrowing costs; the balance sheet normalization addresses long-term liquidity. Both can operate simultaneously without contradiction.',
+            credibilityImpact: 'positive',
+            educationalNote: 'This is technically accurate and the right answer. The two tools operate on different parts of the yield curve \u2014 short-term rates vs. long-term rates \u2014 and can legitimately point in different directions.'
+          },
+          {
+            id: 'bs1r2',
+            label: 'Acknowledge the Tension',
+            text: 'That\'s a fair observation. The committee is navigating a careful balance \u2014 we want to ease the pressure on short-term borrowing costs while continuing to normalize the balance sheet that grew to extraordinary levels during the pandemic.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Acknowledging tension is honest but can signal the committee hasn\'t fully resolved its own internal debate. Markets may wonder which tool will blink first.'
+          },
+          {
+            id: 'bs1r3',
+            label: 'Suggest a Pause',
+            text: 'The committee is actively discussing whether to slow or pause the balance sheet reduction in light of today\'s rate decision. That\'s a live question for upcoming meetings.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Hinting at a QT pause mid-press-conference, without the committee having decided it, is poor communication discipline. It creates uncertainty and suggests the committee\'s policy framework is unsettled.'
+          }
+        ]
+      },
+      {
+        id: 'bs-qe-while-hiking',
+        conditions: { onHike: true },
+        journalist: 'Wall Street Journal Fed correspondent',
+        question: 'Chair, you raised rates today but the Fed\'s balance sheet remains historically large. Shouldn\'t you be doing both \u2014 hiking AND reducing the balance sheet \u2014 to fight inflation?',
+        responses: [
+          {
+            id: 'bs2r1',
+            label: 'Sequenced Approach',
+            text: 'The committee has deliberately chosen to sequence its tightening \u2014 establishing the rate path first, then addressing the balance sheet in a measured way. This sequencing allows us to assess the cumulative effects of tightening before adding additional pressure.',
+            credibilityImpact: 'positive',
+            educationalNote: 'The sequenced approach is how the Fed actually operated in 2022 \u2014 rate hikes first, QT second. Explaining the sequencing logic is a legitimate and credible answer.'
+          },
+          {
+            id: 'bs2r2',
+            label: 'Balance Sheet Is Secondary',
+            text: 'The rate decision is the primary tool of monetary policy. The balance sheet will be addressed in due course, but today\'s focus is on the rate path.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Calling the balance sheet "secondary" is debatable \u2014 at its peak, QT was removing $95B per month from the financial system, which is anything but secondary.'
+          },
+          {
+            id: 'bs2r3',
+            label: 'Defer the Question',
+            text: 'The balance sheet is something the committee will be discussing in coming meetings. I don\'t want to get ahead of that discussion today.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Deferring a direct question about a major policy tool looks evasive. Markets need to understand the committee\'s balance sheet intentions \u2014 especially during an active tightening cycle.'
+          }
+        ]
+      },
+      {
+        id: 'bs-default',
+        conditions: { default: true },
+        journalist: 'Reuters financial correspondent',
+        question: 'Chair, can you explain the committee\'s current thinking on the balance sheet \u2014 what is the target size, and over what timeline do you expect to normalize it?',
+        responses: [
+          {
+            id: 'bs3r1',
+            label: 'Clear Framework',
+            text: 'The committee\'s goal is to return the balance sheet to a level consistent with efficiently conducting monetary policy \u2014 we estimate that to be in the range of $5 to $6 trillion over the medium term. The pace will be determined by conditions in money markets and the broader economy.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Giving a specific target range with a rationale is the gold standard of balance sheet communication. It guides expectations without over-committing to a specific number or timeline.'
+          },
+          {
+            id: 'bs3r2',
+            label: 'Vague on Target',
+            text: 'The committee will reduce the balance sheet to a level sufficient to implement monetary policy efficiently. We\'ll know the right level when we get there.',
+            credibilityImpact: 'neutral',
+            educationalNote: '"We\'ll know it when we see it" is honest about uncertainty but frustrating for markets trying to price the terminal balance sheet size. Acceptable but not ideal communication.'
+          },
+          {
+            id: 'bs3r3',
+            label: 'Minimize the Issue',
+            text: 'The balance sheet is running on autopilot at this point \u2014 the committee doesn\'t actively discuss it at every meeting. Our focus is on the rate path.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Calling the balance sheet "autopilot" became famously problematic when the Fed used exactly that language in 2018 and then had to walk it back amid market turbulence. Markets take this as a sign the committee isn\'t watching.'
+          }
+        ]
+      }
+    ]
   }
 
 };
@@ -920,6 +1014,66 @@ window.FedChair.Data.learnTerms = {
     context: 'Dovish language — like emphasizing downside risks to growth or signaling potential cuts — loosens financial conditions. If markets interpret you as dovish while inflation is elevated, credibility can suffer.'
   }
 
+};
+
+window.FedChair.Data.balanceSheetData = {
+
+  orientation: {
+    title: 'The Fed\'s Second Tool: The Balance Sheet',
+    paragraphs: [
+      'Most people know the Fed sets interest rates. But the Fed has a second, equally powerful tool: its balance sheet \u2014 the total value of assets it holds, primarily US Treasury bonds and mortgage-backed securities.',
+      'When the Fed BUYS bonds, it creates new money and injects it into the financial system. This pushes long-term interest rates down and makes borrowing easier \u2014 even if the short-term rate stays the same. This is called Quantitative Easing (QE). The Fed used it extensively after the 2008 financial crisis and during COVID.',
+      'When the Fed SHRINKS its balance sheet by letting bonds mature without replacing them, it drains money from the system and puts upward pressure on long-term rates. This is called Quantitative Tightening (QT).',
+      'The balance sheet and the interest rate work together \u2014 but they can also point in different directions. As Fed Chair, you control both levers at every meeting.',
+    ],
+    dismissLabel: 'Got it \u2014 make my decision'
+  },
+
+  postures: [
+    {
+      id: 'expand',
+      label: 'EXPAND',
+      sublabel: 'Quantitative Easing (QE)',
+      description: 'Buy Treasury bonds and mortgage-backed securities to inject money into the financial system. Pushes long-term interest rates lower and loosens financial conditions. Used when rate cuts alone aren\'t providing enough stimulus.',
+      effect: 'Loosens financial conditions beyond what the rate decision achieves alone.',
+      stance: 'dovish',
+      icon: '\u2191'
+    },
+    {
+      id: 'hold',
+      label: 'HOLD',
+      sublabel: 'Maintain Current Holdings',
+      description: 'Keep the balance sheet at its current size. New purchases replace maturing bonds (if reinvesting) or the balance sheet gradually shrinks via passive runoff. Neither adding nor removing significant liquidity.',
+      effect: 'Neutral \u2014 policy effect comes entirely from the interest rate decision.',
+      stance: 'neutral',
+      icon: '\u2014'
+    },
+    {
+      id: 'reduce',
+      label: 'REDUCE',
+      sublabel: 'Quantitative Tightening (QT)',
+      description: 'Shrink the balance sheet by allowing bonds to mature without reinvesting the proceeds. Drains liquidity from the financial system and puts upward pressure on long-term interest rates.',
+      effect: 'Tightens financial conditions beyond what the rate decision achieves alone.',
+      stance: 'hawkish',
+      icon: '\u2193'
+    }
+  ],
+
+  paceOptions: [
+    { value: 30,  label: '$30B / month', description: 'Gradual \u2014 minimal market disruption' },
+    { value: 60,  label: '$60B / month', description: 'Moderate \u2014 current standard pace' },
+    { value: 95,  label: '$95B / month', description: 'Aggressive \u2014 maximum pace, higher market risk' }
+  ],
+
+  combinedSignals: {
+    'hike-reduce':  'Dual tightening: rate hike + QT. Strong anti-inflation signal. Watch for excessive tightening.',
+    'cut-expand':   'Dual easing: rate cut + QE. Strong stimulus signal. Watch for re-igniting inflation.',
+    'hike-expand':  'Contradictory signals: hiking rates while expanding balance sheet. Markets may be confused about your intentions.',
+    'cut-reduce':   'Contradictory signals: cutting rates while doing QT. Mixed message \u2014 easing with one hand, tightening with the other.',
+    'hold-reduce':  'Rate hold + QT. Tightening through balance sheet while keeping rate steady. Subtle but real tightening effect.',
+    'hold-expand':  'Rate hold + QE. Easing through balance sheet while keeping rate steady. Subtle but real stimulus effect.',
+    'hold-hold':    'Both levers held steady. Fully neutral posture. Policy is on autopilot.'
+  }
 };
 
 window.FedChair.Data.newsHeadlines = [

@@ -47,6 +47,8 @@ window.FedChair.Components.App = function() {
   const [endGameAssessment, setEndGameAssessment] = useState(null);
   const [activeStatementPhrases, setActiveStatementPhrases] = useState(null);
   const [learnMode, setLearnMode] = useState(false);
+  const [balanceSheetPosture, setBalanceSheetPosture] = useState('hold');
+  const [balanceSheetPace, setBalanceSheetPace] = useState(60);
 
   // Load data on mount (do NOT create gameState yet — wait for mode selection)
   useEffect(() => {
@@ -141,6 +143,12 @@ window.FedChair.Components.App = function() {
       gameState.dotHistory = [...(gameState.dotHistory || []), ...newDots];
     }
 
+    // Store balance sheet decision in gameState (Phase 7.6)
+    if (gameState.balanceSheet) {
+      gameState.balanceSheet.currentPosture = balanceSheetPosture;
+      gameState.balanceSheet.currentPace = balanceSheetPace;
+    }
+
     setDecisionPublished(true);
     const reaction = computeMarketReaction();
     setMarketReaction(reaction);
@@ -212,6 +220,8 @@ window.FedChair.Components.App = function() {
     setActiveStatementPhrases(null);
     setDotSelections({});
     setPressConferenceImpact(null);
+    setBalanceSheetPosture('hold');
+    setBalanceSheetPace(60);
 
     // Brief transition animation
     setTimeout(() => {
@@ -259,6 +269,8 @@ window.FedChair.Components.App = function() {
     setShowTransition(false);
     setEndGameAssessment(null);
     setActiveStatementPhrases(null);
+    setBalanceSheetPosture('hold');
+    setBalanceSheetPace(60);
   };
 
   // Show loading screen until data is ready
@@ -414,6 +426,10 @@ window.FedChair.Components.App = function() {
           setDotSelections={setDotSelections}
           onStatementPhrasesChange={setActiveStatementPhrases}
           learnMode={learnMode}
+          balanceSheetPosture={balanceSheetPosture}
+          setBalanceSheetPosture={setBalanceSheetPosture}
+          balanceSheetPace={balanceSheetPace}
+          setBalanceSheetPace={setBalanceSheetPace}
         />
       )}
 
