@@ -325,7 +325,7 @@ window.FedChair.Engine = window.FedChair.Engine || {};
 
   function generateHistoricalComparison(score, gameState) {
     // Simulated percentile
-    const percentile = Math.min(99, Math.max(1, Math.round(score * 0.95 + (Math.random() - 0.5) * 10)));
+    const percentile = Math.min(99, Math.max(1, Math.round(Math.pow(score / 100, 1.8) * 100 + (Math.random() - 0.5) * 8)));
 
     let chairComparison;
     if (score >= 90) {

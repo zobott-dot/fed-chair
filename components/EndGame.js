@@ -94,6 +94,7 @@ window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame
             OVERALL ASSESSMENT
           </div>
           <div className="grade-glow" style={{
+            '--grade-color': assessment.gradeColor,
             width: '90px',
             height: '90px',
             borderRadius: '50%',
