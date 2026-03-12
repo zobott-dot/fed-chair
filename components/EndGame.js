@@ -93,7 +93,7 @@ window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame
           <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#8b95a5', marginBottom: '16px', fontWeight: '600' }}>
             OVERALL ASSESSMENT
           </div>
-          <div style={{
+          <div className="grade-glow" style={{
             width: '90px',
             height: '90px',
             borderRadius: '50%',
@@ -289,33 +289,109 @@ window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame
       {/* Rate History Chart */}
       {revealPhase >= 5 && (
         <div className="animate-slideIn" style={{ ...endGamePanelStyle, padding: '24px', marginBottom: '20px' }}>
-          <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#8b95a5', marginBottom: '12px', fontWeight: '600', textAlign: 'center' }}>
+          <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#8b95a5', marginBottom: '6px', fontWeight: '600', textAlign: 'center' }}>
             RATE HISTORY
           </div>
-          <div style={{ display: 'flex', alignItems: 'flex-end', gap: '6px', height: '70px', padding: '0 8px' }}>
-            {gameState.rateHistory.slice(1).map((r, i) => {
-              const height = Math.max(12, (r.rate / 5.5) * 70);
-              return (
-                <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-                  <div style={{
-                    fontSize: '9px',
-                    fontFamily: '"IBM Plex Mono", monospace',
-                    color: '#6b7280'
-                  }}>
-                    {r.rate.toFixed(1)}
-                  </div>
-                  <div style={{
-                    width: '100%',
-                    height: `${height}px`,
-                    background: r.decision > 0 ? '#ef4444' : r.decision < 0 ? '#22c55e' : '#60a5fa',
-                    borderRadius: '3px',
-                    opacity: 0.8
-                  }} title={`Meeting ${r.meeting}: ${r.rate.toFixed(2)}%`} />
-                  <div style={{ fontSize: '9px', color: '#6b7280' }}>M{r.meeting}</div>
-                </div>
-              );
-            })}
+          {/* Color legend */}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginBottom: '14px' }}>
+            {[
+              { label: 'Hike', color: '#ef4444' },
+              { label: 'Hold', color: '#60a5fa' },
+              { label: 'Cut', color: '#22c55e' }
+            ].map((item, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: item.color, opacity: 0.8 }} />
+                <span style={{ fontSize: '10px', color: '#6b7280' }}>{item.label}</span>
+              </div>
+            ))}
           </div>
+          {(() => {
+            const history = gameState.rateHistory.slice(1);
+            if (history.length === 0) return null;
+            const rates = history.map(r => r.rate);
+            const minRate = Math.min(...rates);
+            const maxRate = Math.max(...rates);
+            const range = Math.max(maxRate - minRate, 0.5);
+            const baselineRate = gameState.rateHistory[0].rate;
+
+            return (
+              <div style={{ position: 'relative', padding: '0 8px' }}>
+                {/* Baseline reference line */}
+                {(() => {
+                  const baselinePos = Math.max(0, Math.min(100, ((baselineRate - minRate + 0.25) / (range + 0.5)) * 100));
+                  return (
+                    <div style={{
+                      position: 'absolute',
+                      left: '8px',
+                      right: '8px',
+                      bottom: `${baselinePos * 0.8 + 20}px`,
+                      borderTop: '1px dashed rgba(156, 163, 175, 0.3)',
+                      zIndex: 1
+                    }}>
+                      <span style={{
+                        position: 'absolute',
+                        right: '-2px',
+                        top: '-8px',
+                        fontSize: '8px',
+                        color: '#6b7280',
+                        fontFamily: '"IBM Plex Mono", monospace'
+                      }}>
+                        start
+                      </span>
+                    </div>
+                  );
+                })()}
+                <div style={{ display: 'flex', alignItems: 'flex-end', gap: '6px', height: '100px' }}>
+                  {history.map((r, i) => {
+                    const normalizedHeight = ((r.rate - minRate + 0.25) / (range + 0.5)) * 80;
+                    const height = Math.max(20, normalizedHeight);
+                    const barColor = r.decision > 0 ? '#ef4444' : r.decision < 0 ? '#22c55e' : '#60a5fa';
+                    const decisionLabel = r.decision > 0 ? `+${r.decision}` : r.decision < 0 ? `${r.decision}` : 'HOLD';
+
+                    return (
+                      <div key={i} style={{
+                        flex: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '3px'
+                      }}>
+                        <div style={{
+                          fontSize: '9px',
+                          fontFamily: '"IBM Plex Mono", monospace',
+                          color: '#9ca3af',
+                          fontWeight: '500'
+                        }}>
+                          {r.rate.toFixed(2)}%
+                        </div>
+                        <div style={{
+                          width: '100%',
+                          height: `${height}px`,
+                          background: barColor,
+                          borderRadius: '3px',
+                          opacity: 0.8,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'height 0.6s ease-out'
+                        }} title={`Meeting ${r.meeting}: ${r.rate.toFixed(2)}% (${decisionLabel} bps)`}>
+                          <span style={{
+                            fontSize: '8px',
+                            fontFamily: '"IBM Plex Mono", monospace',
+                            color: 'rgba(255,255,255,0.7)',
+                            fontWeight: '600'
+                          }}>
+                            {decisionLabel}
+                          </span>
+                        </div>
+                        <div style={{ fontSize: '9px', color: '#6b7280' }}>M{r.meeting}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })()}
         </div>
       )}
 
@@ -323,7 +399,7 @@ window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame
       {revealPhase >= 5 && (
         <button
           onClick={onNewGame}
-          className="animate-slideIn"
+          className="animate-slideIn play-again-shine"
           style={{
             width: '100%',
             padding: '18px',
