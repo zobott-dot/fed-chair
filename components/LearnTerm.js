@@ -11,10 +11,6 @@ window.FedChair.Components.LearnTerm = function({ term, learnMode, children }) {
   const tooltipRef = React.useRef(null);
   const tooltipData = window.FedChair.Data.learnTerms && window.FedChair.Data.learnTerms[term];
 
-  if (!learnMode || !tooltipData) {
-    return <span>{children}</span>;
-  }
-
   const calcPosition = () => {
     if (!termRef.current) return null;
     const rect = termRef.current.getBoundingClientRect();
@@ -90,6 +86,10 @@ window.FedChair.Components.LearnTerm = function({ term, learnMode, children }) {
       document.removeEventListener('touchstart', handleClickOutside);
     };
   }, [tooltipPos]);
+
+  if (!learnMode || !tooltipData) {
+    return <span>{children}</span>;
+  }
 
   const isOpen = !!tooltipPos;
 
