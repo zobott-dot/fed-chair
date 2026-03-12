@@ -13,6 +13,7 @@ const endGamePanelStyle = {
 
 window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame }) {
   const [revealPhase, setRevealPhase] = React.useState(0);
+  const [showCelebration, setShowCelebration] = React.useState(false);
 
   React.useEffect(() => {
     const timers = [
@@ -24,6 +25,13 @@ window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
+
+  React.useEffect(() => {
+    if (revealPhase >= 5) {
+      const timer = setTimeout(() => setShowCelebration(true), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [revealPhase]);
 
   if (!assessment) return null;
 
@@ -50,6 +58,27 @@ window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame
 
   return (
     <main style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
+      <style>{`
+        @keyframes scanLine {
+          0% { transform: scaleX(0); opacity: 0; }
+          20% { opacity: 0.8; }
+          100% { transform: scaleX(1); opacity: 0.3; }
+        }
+        @keyframes numberReveal {
+          0% { opacity: 0; transform: translateY(10px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseOnce {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.15); }
+          100% { transform: scale(1); }
+        }
+        @keyframes shimmerBorder {
+          0% { border-color: rgba(255,255,255,0.1); }
+          50% { border-color: ${banner.color}; }
+          100% { border-color: rgba(255,255,255,0.1); }
+        }
+      `}</style>
 
       {/* Result Banner */}
       <div style={{
@@ -82,6 +111,16 @@ window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame
         </div>
       </div>
 
+      {revealPhase >= 1 && (
+        <div style={{
+          height: '2px',
+          background: `linear-gradient(90deg, transparent 0%, ${banner.color} 50%, transparent 100%)`,
+          marginBottom: '20px',
+          animation: 'scanLine 1.5s ease-out forwards',
+          opacity: 0.8
+        }} />
+      )}
+
       {/* Overall Grade */}
       {revealPhase >= 1 && (
         <div className="animate-slideIn" style={{
@@ -93,8 +132,7 @@ window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame
           <div style={{ fontSize: '11px', letterSpacing: '2px', color: '#8b95a5', marginBottom: '16px', fontWeight: '600' }}>
             OVERALL ASSESSMENT
           </div>
-          <div className="grade-glow" style={{
-            '--grade-color': assessment.gradeColor,
+          <div style={{
             width: '90px',
             height: '90px',
             borderRadius: '50%',
@@ -103,7 +141,9 @@ window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 12px'
+            margin: '0 auto 12px',
+            animation: 'pulseOnce 0.8s ease-out',
+            boxShadow: `0 0 30px ${assessment.gradeColor}40, 0 0 60px ${assessment.gradeColor}20`
           }}>
             <span style={{
               fontSize: '40px',
@@ -400,7 +440,7 @@ window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame
       {revealPhase >= 5 && (
         <button
           onClick={onNewGame}
-          className="animate-slideIn play-again-shine"
+          className="animate-slideIn"
           style={{
             width: '100%',
             padding: '18px',
@@ -408,12 +448,13 @@ window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame
             fontWeight: '600',
             letterSpacing: '2px',
             background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
-            border: 'none',
+            border: '2px solid rgba(255,255,255,0.1)',
             color: '#fff',
             borderRadius: '10px',
             cursor: 'pointer',
             boxShadow: '0 6px 20px rgba(59, 130, 246, 0.4)',
-            marginBottom: '40px'
+            marginBottom: '40px',
+            animation: showCelebration ? 'shimmerBorder 2s ease-in-out 3' : 'none'
           }}
         >
           PLAY AGAIN

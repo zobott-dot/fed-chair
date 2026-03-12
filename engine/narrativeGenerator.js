@@ -143,10 +143,10 @@ window.FedChair.Engine = window.FedChair.Engine || {};
     let inflationScore = 100;
     const pce = economy.pceInflation;
     if (pce >= 1.8 && pce <= 2.2) inflationScore = 100;
-    else if (pce >= 1.5 && pce <= 2.5) inflationScore = 85;
-    else if (pce >= 1.0 && pce <= 3.0) inflationScore = 65;
-    else if (pce >= 0.5 && pce <= 3.5) inflationScore = 40;
-    else inflationScore = 15;
+    else if (pce >= 1.5 && pce <= 2.5) inflationScore = 80;
+    else if (pce >= 1.2 && pce <= 3.0) inflationScore = 55;
+    else if (pce >= 0.8 && pce <= 3.5) inflationScore = 30;
+    else inflationScore = 10;
     // Bonus for downward trend from elevated starting point
     if (startingEconomy && pce < startingEconomy.pceInflation && startingEconomy.pceInflation > 2.5) {
       inflationScore = Math.min(100, inflationScore + 10);
@@ -173,10 +173,10 @@ window.FedChair.Engine = window.FedChair.Engine || {};
     else marketScore = 15;
 
     // 4. Credibility maintenance (15%)
-    let credibilityScore = gameState.credibility;
+    let credibilityScore = Math.round(gameState.credibility);
 
     // 5. Projection accuracy (10%)
-    let projectionScore = 70; // default if no dots
+    let projectionScore = 40; // default if no dots — not engaging with projections is itself a weakness
     const dotHistory = gameState.dotHistory || [];
     if (dotHistory.length > 0) {
       let totalDeviation = 0;
@@ -199,7 +199,7 @@ window.FedChair.Engine = window.FedChair.Engine || {};
     }
 
     // 6. Communication quality (5%)
-    let communicationScore = 70; // default
+    let communicationScore = 50; // default
     if (history.length > 0) {
       const avgCredChange = history.reduce((s, m) => s + (m.pressCredibilityChange || 0), 0) / history.length;
       if (avgCredChange > 2) communicationScore = 95;
@@ -218,19 +218,37 @@ window.FedChair.Engine = window.FedChair.Engine || {};
       communicationScore * 0.05
     );
 
+    // ── Early termination penalty ──
+    const endReason = gameState.endReason;
+    let adjustedScore = overallScore;
+    if (endReason === 'recession') {
+      adjustedScore = Math.min(adjustedScore, 40);
+      adjustedScore -= 10;
+    } else if (endReason === 'runaway_inflation') {
+      adjustedScore = Math.min(adjustedScore, 35);
+      adjustedScore -= 10;
+    } else if (endReason === 'stagflation') {
+      adjustedScore = Math.min(adjustedScore, 30);
+      adjustedScore -= 15;
+    } else if (endReason === 'credibility_collapse') {
+      adjustedScore = Math.min(adjustedScore, 35);
+      adjustedScore -= 10;
+    }
+    adjustedScore = Math.max(0, adjustedScore);
+
     // ── Letter grade ──
     let grade, gradeColor, gradeText;
-    if (overallScore >= 95) { grade = 'A+'; gradeColor = '#22c55e'; gradeText = 'Masterful'; }
-    else if (overallScore >= 90) { grade = 'A'; gradeColor = '#22c55e'; gradeText = 'Excellent'; }
-    else if (overallScore >= 85) { grade = 'A-'; gradeColor = '#22c55e'; gradeText = 'Very Good'; }
-    else if (overallScore >= 80) { grade = 'B+'; gradeColor = '#84cc16'; gradeText = 'Good'; }
-    else if (overallScore >= 75) { grade = 'B'; gradeColor = '#84cc16'; gradeText = 'Solid'; }
-    else if (overallScore >= 70) { grade = 'B-'; gradeColor = '#84cc16'; gradeText = 'Decent'; }
-    else if (overallScore >= 65) { grade = 'C+'; gradeColor = '#eab308'; gradeText = 'Mixed'; }
-    else if (overallScore >= 60) { grade = 'C'; gradeColor = '#eab308'; gradeText = 'Adequate'; }
-    else if (overallScore >= 55) { grade = 'C-'; gradeColor = '#eab308'; gradeText = 'Below Average'; }
-    else if (overallScore >= 50) { grade = 'D+'; gradeColor = '#f97316'; gradeText = 'Poor'; }
-    else if (overallScore >= 45) { grade = 'D'; gradeColor = '#f97316'; gradeText = 'Weak'; }
+    if (adjustedScore >= 93) { grade = 'A+'; gradeColor = '#22c55e'; gradeText = 'Masterful'; }
+    else if (adjustedScore >= 88) { grade = 'A'; gradeColor = '#22c55e'; gradeText = 'Excellent'; }
+    else if (adjustedScore >= 83) { grade = 'B+'; gradeColor = '#84cc16'; gradeText = 'Good'; }
+    else if (adjustedScore >= 78) { grade = 'B'; gradeColor = '#84cc16'; gradeText = 'Solid'; }
+    else if (adjustedScore >= 73) { grade = 'B-'; gradeColor = '#84cc16'; gradeText = 'Decent'; }
+    else if (adjustedScore >= 68) { grade = 'C+'; gradeColor = '#eab308'; gradeText = 'Mixed'; }
+    else if (adjustedScore >= 63) { grade = 'C'; gradeColor = '#eab308'; gradeText = 'Adequate'; }
+    else if (adjustedScore >= 55) { grade = 'C-'; gradeColor = '#eab308'; gradeText = 'Below Average'; }
+    else if (adjustedScore >= 47) { grade = 'D+'; gradeColor = '#f97316'; gradeText = 'Poor'; }
+    else if (adjustedScore >= 40) { grade = 'D'; gradeColor = '#f97316'; gradeText = 'Weak'; }
+    else if (adjustedScore >= 30) { grade = 'D-'; gradeColor = '#f97316'; gradeText = 'Very Weak'; }
     else { grade = 'F'; gradeColor = '#ef4444'; gradeText = 'Failed'; }
 
     // ── Tenure summary (2-3 sentences) ──
@@ -252,7 +270,7 @@ window.FedChair.Engine = window.FedChair.Engine || {};
       startRate: startRate,
       endRate: gameState.currentRate,
       spChange: spChange,
-      finalCredibility: gameState.credibility,
+      finalCredibility: Math.round(gameState.credibility),
       meetingsPlayed: gameState.meetingNumber - 1,
       totalDissents: history.reduce((s, m) => s + (m.dissents || 0), 0),
       biggestMarketMove: history.length > 0
@@ -261,10 +279,10 @@ window.FedChair.Engine = window.FedChair.Engine || {};
     };
 
     // ── Historical comparison ──
-    const comparison = generateHistoricalComparison(overallScore, gameState);
+    const comparison = generateHistoricalComparison(adjustedScore, gameState);
 
     return {
-      overallScore,
+      overallScore: adjustedScore,
       grade,
       gradeColor,
       gradeText,
