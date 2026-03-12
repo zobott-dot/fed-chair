@@ -28,6 +28,7 @@ function selectPressConferenceQuestions(gameState, rateDecision) {
   if (!pool) return null;
 
   const selected = [];
+  const previouslyAsked = new Set(gameState.askedQuestionIds || []);
 
   const isHike = rateDecision > 0;
   const isCut = rateDecision < 0;
@@ -42,11 +43,10 @@ function selectPressConferenceQuestions(gameState, rateDecision) {
   const isEarly = gameState.meetingNumber <= 2;
 
   for (const [catKey, category] of Object.entries(pool)) {
-    let bestQuestion = null;
-    let bestScore = -1;
-
+    // Score all variants in this category
+    const scored = [];
     for (const variant of category.variants) {
-      let score = 0;
+      let score = 0.1; // Base score — every question has a chance
       const c = variant.conditions || {};
 
       if (c.onHike && isHike) score += 3;
@@ -62,29 +62,47 @@ function selectPressConferenceQuestions(gameState, rateDecision) {
       if (c.onEarly && isEarly) score += 1;
       if (c.default) score += 0.5;
 
-      score += Math.random() * 0.4;
+      // Deprioritize previously asked questions — don't exclude, just make unlikely
+      if (previouslyAsked.has(variant.id)) {
+        score *= 0.15;
+      }
 
-      if (score > bestScore) {
-        bestScore = score;
-        bestQuestion = variant;
+      scored.push({ variant, score });
+    }
+
+    // Weighted random selection from scored variants
+    const totalWeight = scored.reduce((sum, s) => sum + s.score, 0);
+    if (totalWeight <= 0) continue;
+
+    let rand = Math.random() * totalWeight;
+    let chosen = scored[0].variant;
+    for (const s of scored) {
+      rand -= s.score;
+      if (rand <= 0) {
+        chosen = s.variant;
+        break;
       }
     }
 
-    if (bestQuestion) {
-      const transformedResponses = bestQuestion.responses.map(r => ({
-        ...r,
-        hawkShift: 0,
-        credibilityEffect: CREDIBILITY_MAP[r.credibilityImpact] || 0
-      }));
+    const transformedResponses = chosen.responses.map(r => ({
+      ...r,
+      hawkShift: 0,
+      credibilityEffect: CREDIBILITY_MAP[r.credibilityImpact] || 0
+    }));
 
-      selected.push({
-        ...bestQuestion,
-        categoryLabel: category.label,
-        responses: transformedResponses,
-        question: substituteVariables(bestQuestion.question, gameState, rateDecision),
-        isNewFormat: true
-      });
-    }
+    selected.push({
+      ...chosen,
+      categoryLabel: category.label,
+      responses: transformedResponses,
+      question: substituteVariables(chosen.question, gameState, rateDecision),
+      isNewFormat: true
+    });
+  }
+
+  // Shuffle the final order so categories don't always appear in the same sequence
+  for (let i = selected.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [selected[i], selected[j]] = [selected[j], selected[i]];
   }
 
   return selected;
@@ -111,6 +129,12 @@ window.FedChair.Components.PressConference = function({
     if (newQuestions && newQuestions.length > 0) return newQuestions;
     return generatePressConferenceQuestions(gameState, rateDecision, hawkScore, marketReaction, selectedStatements);
   });
+
+  React.useEffect(() => {
+    if (questions && gameState) {
+      gameState.currentPressQuestionIds = questions.map(q => q.id);
+    }
+  }, []);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [scoredResponses, setScoredResponses] = useState([]);

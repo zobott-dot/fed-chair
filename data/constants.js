@@ -406,6 +406,136 @@ window.FedChair.Data.pressConferenceQuestions = {
             educationalNote: 'Signaling urgency while holding can create whipsaw expectations. If conditions don\'t cooperate and you don\'t move at the next meeting, credibility suffers significantly.'
           }
         ]
+      },
+      {
+        id: 'dc-shelter-inflation',
+        conditions: { onHold: true, onHighInflation: true },
+        journalist: 'New York Times economics reporter',
+        question: 'Shelter costs continue to drive much of the inflation overshoot. Is the Fed essentially raising rates to solve what many call a housing supply problem?',
+        responses: [
+          {
+            id: 'dc6r1', label: 'Nuanced',
+            text: 'Shelter inflation has structural roots, but monetary policy affects demand broadly. We cannot simply exempt the largest component of the price index from our analysis.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Acknowledging the structural argument while defending the Fed\'s mandate shows analytical sophistication. Markets respect this kind of nuance from a chair.'
+          },
+          {
+            id: 'dc6r2', label: 'Redirect to Supercore',
+            text: 'This is precisely why we have been emphasizing supercore inflation — services excluding shelter — as a better gauge of demand-driven pressure. That measure tells a more encouraging story.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Pointing to alternative measures is substantive but can seem like cherry-picking the most favorable metric. Markets will note the selective framing.'
+          },
+          {
+            id: 'dc6r3', label: 'Dismiss the Distinction',
+            text: 'Households experience one price level. The source of inflation matters less than the outcome. Our mandate is clear, and we pursue it using the tools we have.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'A blunt framing that projects resolve but misses an opportunity to demonstrate analytical depth. Some may read this as intellectually incurious.'
+          }
+        ]
+      },
+      {
+        id: 'dc-wage-pressure',
+        conditions: { onHike: true },
+        journalist: 'CNBC senior economics reporter',
+        question: 'Wage growth remains above levels most economists consider consistent with 2% inflation. Is the labor market still too tight for the committee\'s comfort?',
+        responses: [
+          {
+            id: 'dc7r1', label: 'Balanced',
+            text: 'Wage growth is moderating but remains elevated relative to productivity gains. We welcome strong real wages — the question is whether the current pace is sustainable without fueling inflation.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Linking wages to productivity is economically precise and shows the committee is thinking about the right relationship. This framing avoids appearing anti-worker.'
+          },
+          {
+            id: 'dc7r2', label: 'Pro-Worker',
+            text: 'Real wages are just now recovering the purchasing power lost during the inflation surge. We do not view the current pace of nominal wage growth as a primary threat to price stability.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'A sympathetic framing, but it can undercut the case for tightening. If wages aren\'t a concern, why hike?'
+          },
+          {
+            id: 'dc7r3', label: 'Hawkish',
+            text: 'The wage-price dynamic is a real concern. Without further rebalancing in labor supply and demand, it will be difficult to achieve the sustained disinflation the committee is looking for.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Signaling that the labor market must weaken further is honest but politically uncomfortable. Markets may price in more hikes.'
+          }
+        ]
+      },
+      {
+        id: 'dc-recession-fears',
+        conditions: { onHike: true, onHighUnemployment: true },
+        journalist: 'Politico economic policy reporter',
+        question: 'Several major forecasters now put recession probability above 40%. Does the committee share that level of concern?',
+        responses: [
+          {
+            id: 'dc8r1', label: 'Reassuring',
+            text: 'We do not assign specific recession probabilities. The labor market and consumer balance sheets remain solid. We see a slowdown, not a contraction, as the most likely path.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Reassurance grounded in specific data points — labor market and balance sheets — is more persuasive than generic optimism. It shows the committee has done its homework.'
+          },
+          {
+            id: 'dc8r2', label: 'Candid',
+            text: 'The risk of recession has risen — that is an unavoidable consequence of the tightening we have undertaken. We are weighing that risk carefully against the cost of allowing inflation to persist.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Acknowledging the tradeoff directly is surprisingly credibility-enhancing. Markets can handle bad news; what they cannot handle is a Fed that seems unaware of the risks.'
+          },
+          {
+            id: 'dc8r3', label: 'Evasive',
+            text: 'The committee\'s focus is on setting policy appropriately meeting by meeting. Recession forecasting is not our primary activity — executing our mandate is.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Deflecting a direct recession question can look evasive and out of touch. When the public is worried about their jobs, the Fed needs to show it is engaged with that concern.'
+          }
+        ]
+      },
+      {
+        id: 'dc-consumer-resilience',
+        conditions: { default: true },
+        journalist: 'MarketWatch economics correspondent',
+        question: 'Consumer spending has been remarkably resilient despite your rate hikes. Does that mean monetary policy isn\'t restrictive enough, or is something else at work?',
+        responses: [
+          {
+            id: 'dc9r1', label: 'Patient',
+            text: 'Monetary policy works with long and variable lags. Spending resilience today does not mean policy is insufficient — it means the transmission is still working through the economy.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Invoking "long and variable lags" — a concept from Milton Friedman — signals intellectual grounding. It is also the correct answer: rate hikes take 12-18 months to fully transmit.'
+          },
+          {
+            id: 'dc9r2', label: 'Concerned',
+            text: 'Consumer strength does suggest there may be more work to do. We are taking that signal seriously in our deliberations about the path of policy.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Suggesting more tightening may be needed is hawkish and data-responsive. But it can move markets significantly if unexpected.'
+          },
+          {
+            id: 'dc9r3', label: 'Analytical',
+            text: 'Some of that resilience reflects pandemic-era excess savings being drawn down — a one-time tailwind that is fading. We expect a more meaningful slowdown in spending in coming quarters.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'A specific analytical argument that shows depth. The risk is that if spending doesn\'t slow as predicted, this will look like wishful thinking.'
+          }
+        ]
+      },
+      {
+        id: 'dc-global-divergence',
+        conditions: { default: true },
+        journalist: 'Financial Times global economics editor',
+        question: 'Other major central banks — the ECB, Bank of England, Bank of Canada — have already begun cutting rates. Is the Fed at risk of falling behind a global trend?',
+        responses: [
+          {
+            id: 'dc10r1', label: 'Independent',
+            text: 'We set policy for the US economy. Other central banks face different conditions — different inflation dynamics, different labor markets, different fiscal positions. The right path for the Fed may well diverge from global peers.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Asserting monetary policy independence from global peers is the textbook answer and projects confidence. It reminds markets that the Fed is not a follower.'
+          },
+          {
+            id: 'dc10r2', label: 'Acknowledging',
+            text: 'Global disinflation is a trend worth noting, and it does affect our outlook through trade channels and imported goods prices. But domestic conditions remain the primary driver of our decisions.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Acknowledging global conditions without subordinating policy to them is diplomatically skillful. It shows the committee is aware of the world without being reactive to it.'
+          },
+          {
+            id: 'dc10r3', label: 'Assertive',
+            text: 'The US economy has been the outlier in strength, which is why our policy path differs. We will not import a rate-cutting cycle that does not fit our domestic data.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'A strong statement of US exceptionalism. Can sound slightly arrogant but reinforces the message that the Fed follows its own data.'
+          }
+        ]
       }
     ]
   },
@@ -489,6 +619,84 @@ window.FedChair.Data.pressConferenceQuestions = {
             text: 'The committee is keenly aware of where we are in the cycle, and there is a shared sense that we should make the most of the current environment to complete the work of bringing inflation durably to 2%.',
             credibilityImpact: 'negative',
             educationalNote: 'Expressing urgency tied to a timeline rather than the data can look like the committee is trying to rush to a conclusion — which undermines the credibility of any actions taken.'
+          }
+        ]
+      },
+      {
+        id: 'fg-neutral-rate',
+        conditions: { default: true },
+        journalist: 'Reuters financial markets correspondent',
+        question: 'Has the committee\'s estimate of the neutral rate changed? Some economists argue that r-star has risen since the pandemic.',
+        responses: [
+          {
+            id: 'fg4r1', label: 'Thoughtful',
+            text: 'There is an active debate about r-star among committee participants. If neutral is higher than previously assumed, then current policy may be less restrictive than we believe — that is something we are watching carefully.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Engaging seriously with the r-star debate shows intellectual honesty. The neutral rate is genuinely uncertain, and acknowledging that uncertainty is itself a form of credibility.'
+          },
+          {
+            id: 'fg4r2', label: 'Dismissive',
+            text: 'The neutral rate is a theoretical construct that cannot be measured directly in real time. We focus on observable outcomes — inflation, employment, financial conditions — rather than unobservable variables.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'A pragmatic stance, but dismissing r-star entirely can seem anti-intellectual. The dot plot\'s longer-run median IS an r-star estimate, so this framing is slightly inconsistent.'
+          },
+          {
+            id: 'fg4r3', label: 'Transparent',
+            text: 'The median longer-run dot has moved up modestly in recent projections, reflecting individual reassessments. That is a meaningful shift in the committee\'s collective thinking about the equilibrium rate.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Pointing to the dot plot as evidence of r-star revision is both transparent and data-grounded. It gives markets a concrete signal to work with.'
+          }
+        ]
+      },
+      {
+        id: 'fg-insurance-cut',
+        conditions: { onCut: true },
+        journalist: 'Bloomberg News chief economics correspondent',
+        question: 'Is this an insurance cut, or the start of a sustained cutting cycle? Markets need to know how to position.',
+        responses: [
+          {
+            id: 'fg5r1', label: 'Deliberate',
+            text: 'We are not pre-committing to a series of reductions. Each meeting is a fresh assessment of conditions. Today\'s action reflects the data we have today — nothing more, nothing less.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Refusing to characterize a cut as the start of a cycle preserves maximum optionality. This is the classic data-dependent framing that gives the Fed room to maneuver.'
+          },
+          {
+            id: 'fg5r2', label: 'Forward-Looking',
+            text: 'I would characterize this as a recalibration of policy toward a stance more consistent with the evolving risk balance. The direction is clear, but the pace will depend on conditions.',
+            credibilityImpact: 'neutral',
+            educationalNote: '"Recalibration" is a careful word choice — it implies adjustment, not reversal. But saying "the direction is clear" does lean toward signaling more cuts ahead.'
+          },
+          {
+            id: 'fg5r3', label: 'Candid',
+            text: 'If you are asking whether there will be more cuts — I would say the committee sees this as appropriate given current conditions, and we will continue to evaluate whether further adjustment is warranted.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'A more direct answer than most Fed chairs would give. Directness can build trust but also locks the committee into expectations that may need to change.'
+          }
+        ]
+      },
+      {
+        id: 'fg-soft-landing',
+        conditions: { onLate: true },
+        journalist: 'Wall Street Journal chief economics correspondent',
+        question: 'We\'re well into your tenure now. What are the odds of achieving a soft landing from here?',
+        responses: [
+          {
+            id: 'fg6r1', label: 'Optimistic',
+            text: 'A soft landing remains the most likely outcome in the committee\'s assessment. The economy has shown remarkable resilience, and the narrow path we have been navigating remains viable.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Measured optimism grounded in data resilience. The term "narrow path" is honest about the difficulty without surrendering confidence.'
+          },
+          {
+            id: 'fg6r2', label: 'Candid',
+            text: 'The window remains open, but I would be less than honest if I said it hasn\'t narrowed. Every decision from here carries significant weight. There is very little margin for error.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Radical honesty from a Fed chair is rare and tends to be rewarded by markets — it signals that the person in charge sees the same risks everyone else does.'
+          },
+          {
+            id: 'fg6r3', label: 'Evasive',
+            text: 'I do not find it productive to assign probabilities to outcomes. Our job is to make the best decision at each juncture — not to forecast the ending.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Ducking a soft-landing question late in a tenure looks evasive. By this point, markets expect the chair to have a view.'
           }
         ]
       }
@@ -576,6 +784,58 @@ window.FedChair.Data.pressConferenceQuestions = {
             educationalNote: 'Conceding a credibility loss in a press conference setting is dangerous — it becomes the headline. Better to defend the process while acknowledging the difficulty of the environment.'
           }
         ]
+      },
+      {
+        id: 'pol-tariffs',
+        conditions: { default: true },
+        journalist: 'Politico trade policy reporter',
+        question: 'New tariffs are being imposed on key trading partners. How is the committee factoring trade policy uncertainty into its economic projections?',
+        responses: [
+          {
+            id: 'pol4r1', label: 'Diplomatic',
+            text: 'Trade policy is the purview of elected officials. Our role is to assess the economic consequences and set monetary policy accordingly. Tariffs can affect both inflation and growth — we are modeling both channels.',
+            credibilityImpact: 'positive',
+            educationalNote: 'The textbook response: acknowledge the issue, defer on the politics, focus on the economics. This framing respects institutional boundaries while being substantive.'
+          },
+          {
+            id: 'pol4r2', label: 'Direct',
+            text: 'Tariffs are a supply shock. They raise prices in the near term and can dampen growth over time. The uncertainty itself is a headwind — businesses tell us they are delaying investment decisions.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Calling tariffs a supply shock is analytically precise and implicitly critical without being partisan. It also signals the Fed won\'t accommodate tariff-driven inflation.'
+          },
+          {
+            id: 'pol4r3', label: 'Evasive',
+            text: 'We incorporate a range of assumptions about the economic environment into our projections. I would prefer not to comment on specific trade policy decisions.',
+            credibilityImpact: 'negative',
+            educationalNote: 'Excessive caution on a topic everyone is asking about looks out of touch. The Fed can discuss economic effects of policy without taking a political position.'
+          }
+        ]
+      },
+      {
+        id: 'pol-fiscal-deficit',
+        conditions: { onLate: true },
+        journalist: 'Washington Post fiscal policy reporter',
+        question: 'Federal deficits are running at historically high levels outside a recession. Is fiscal policy making the Fed\'s job harder?',
+        responses: [
+          {
+            id: 'pol5r1', label: 'Candid',
+            text: 'Sustained fiscal stimulus does create demand that can work at cross-purposes with monetary tightening. That is a reality we incorporate into our models and our deliberations.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Acknowledging the fiscal-monetary tension is analytically honest and widely shared among economists. It\'s substantive without being partisan.'
+          },
+          {
+            id: 'pol5r2', label: 'Institutional',
+            text: 'Fiscal policy is the domain of Congress and the administration. We take the fiscal path as given and set monetary policy to achieve our mandate within that landscape.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'The safe institutional answer. Correct but somewhat evasive — everyone knows large deficits affect monetary policy transmission.'
+          },
+          {
+            id: 'pol5r3', label: 'Deflect',
+            text: 'I would prefer not to comment on fiscal policy choices. The committee is focused on the tools at our disposal.',
+            credibilityImpact: 'negative',
+            educationalNote: 'A complete deflection on a topic that directly affects your job. Markets may infer that the chair is being politically cautious rather than analytically honest.'
+          }
+        ]
       }
     ]
   },
@@ -633,6 +893,84 @@ window.FedChair.Data.pressConferenceQuestions = {
             text: 'I don\'t believe the easing in financial conditions we have seen poses a material inflation risk at this time. The economy is in a different place than it was when inflation was at its peak.',
             credibilityImpact: 'negative',
             educationalNote: 'Dismissing an inflation risk while cutting rates is bold — and leaves you exposed if inflation reaccelerates. The phrase "at this time" is an implicit hedge, but it may not be enough.'
+          }
+        ]
+      },
+      {
+        id: 'mi-housing-mortgage',
+        conditions: { onHike: true },
+        journalist: 'CNBC real estate correspondent',
+        question: 'Mortgage rates are at multi-decade highs and home sales have fallen sharply. How does the committee view the impact on the housing market and household wealth?',
+        responses: [
+          {
+            id: 'mi3r1', label: 'Empathetic',
+            text: 'Housing affordability is a genuine challenge, and I hear that concern. Higher mortgage rates are one of the most visible channels of monetary policy, and we are acutely aware of the burden they impose.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Showing empathy for housing hardship while pursuing tight policy is a delicate balance. It demonstrates the committee is not indifferent to distributional effects.'
+          },
+          {
+            id: 'mi3r2', label: 'Analytical',
+            text: 'The housing market is rebalancing from an unsustainable pace. Some cooling in residential investment is a necessary part of the inflation reduction process.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Technically correct but emotionally cold. Housing is where rate hikes hit hardest, and a purely analytical framing can seem tone-deaf to families struggling to buy or sell.'
+          },
+          {
+            id: 'mi3r3', label: 'Long-Term View',
+            text: 'When we achieve price stability, the conditions for a healthier and more affordable housing market will follow. The adjustment is painful in the short run, but it serves affordability in the long run.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'The "short-term pain for long-term gain" argument. Intellectually sound, but hard to sell to someone whose mortgage rate just doubled.'
+          }
+        ]
+      },
+      {
+        id: 'mi-dollar-strength',
+        conditions: { default: true },
+        journalist: 'Financial Times currency markets editor',
+        question: 'The dollar has strengthened significantly against major currencies. How does that factor into the committee\'s thinking about imported inflation and export competitiveness?',
+        responses: [
+          {
+            id: 'mi4r1', label: 'Balanced',
+            text: 'A stronger dollar has mixed effects for us. It dampens imported inflation, which supports our price stability goal, but it also creates headwinds for exporters and can tighten conditions for emerging markets.',
+            credibilityImpact: 'positive',
+            educationalNote: 'A well-rounded answer that shows the committee is thinking about multiple channels. The emerging markets mention signals awareness of global interconnections.'
+          },
+          {
+            id: 'mi4r2', label: 'Domestic Focus',
+            text: 'We set policy for domestic conditions. Exchange rate movements are an output of relative policy stances globally, not an input to our decisions.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'The standard Fed line on the dollar. Technically defensible but somewhat dismissive of an important transmission channel.'
+          },
+          {
+            id: 'mi4r3', label: 'Cautious',
+            text: 'Dollar strength is tightening financial conditions globally. We are mindful that stress in emerging markets can produce spillback effects that eventually reach the US economy.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Acknowledging spillback risk shows sophistication about global financial interconnections. It\'s a more dovish signal than the pure domestic focus framing.'
+          }
+        ]
+      },
+      {
+        id: 'mi-credit-spreads',
+        conditions: { default: true },
+        journalist: 'Barron\'s credit markets reporter',
+        question: 'Corporate credit spreads have widened notably in recent weeks. Does the committee see signs of stress developing in the credit markets?',
+        responses: [
+          {
+            id: 'mi5r1', label: 'Watchful',
+            text: 'We monitor credit conditions as part of our broader assessment of financial conditions. Some spread widening is a natural consequence of tighter policy — we distinguish between healthy repricing and disorderly stress.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Drawing the line between orderly repricing and disorderly stress is exactly the right framework. It shows the committee has a nuanced view of financial conditions.'
+          },
+          {
+            id: 'mi5r2', label: 'Dismissive',
+            text: 'Credit spreads remain well within historical norms. We do not see current conditions as indicating systemic stress in the financial system.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Dismissing spread widening can seem complacent. If spreads widen further, this answer will age poorly.'
+          },
+          {
+            id: 'mi5r3', label: 'Dovish Signal',
+            text: 'If credit conditions tighten meaningfully, that effectively does some of our tightening for us. We would factor that into our assessment of the overall stance of policy.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'This is a well-known Fed framework — financial conditions substituting for rate policy. Markets will read this as a signal that the Fed might pause if spreads keep widening.'
           }
         ]
       }
@@ -718,6 +1056,58 @@ window.FedChair.Data.pressConferenceQuestions = {
             text: 'I think the committee has benefited from strong, consistent leadership and a clear vision for what needed to be done. There were moments when the path forward was not obvious, and having a firm hand at the wheel made a difference.',
             credibilityImpact: 'negative',
             educationalNote: 'A Fed Chair who takes personal credit for outcomes is violating the collegial norms of the institution. The committee speaks collectively — and individual hubris is remembered when things go wrong.'
+          }
+        ]
+      },
+      {
+        id: 'com-fedspeak-confusion',
+        conditions: { default: true },
+        journalist: 'Associated Press economics writer',
+        question: 'Fed officials have made seemingly contradictory public statements between meetings. How should markets distinguish between individual views and committee consensus?',
+        responses: [
+          {
+            id: 'com3r1', label: 'Clarifying',
+            text: 'The post-meeting statement and this press conference represent the committee\'s collective view. Individual speeches reflect personal assessments that inform but do not bind the group. I would encourage focusing on the formal channels.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Establishing a clear hierarchy of Fed communication is genuinely useful guidance. It tells markets which signals to weight most heavily.'
+          },
+          {
+            id: 'com3r2', label: 'Defensive',
+            text: 'Members have every right to share their views publicly. It is part of our transparency commitment. I would caution against overinterpreting any single speech.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Defending the cacophony of Fedspeak without addressing the confusion it causes. This answer is correct but not especially helpful.'
+          },
+          {
+            id: 'com3r3', label: 'Honest',
+            text: 'I take your point. We can do better at ensuring public remarks are consistent with the committee\'s communicated direction. That is something I will continue to work on.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Admitting a communication problem and committing to improvement is refreshingly honest and tends to be rewarded with credibility.'
+          }
+        ]
+      },
+      {
+        id: 'com-plain-language',
+        conditions: { default: true },
+        journalist: 'NPR economics correspondent',
+        question: 'Chair, millions of Americans are watching this press conference. Can you explain in plain terms what today\'s decision means for ordinary families — their mortgage, their savings, their job security?',
+        responses: [
+          {
+            id: 'com4r1', label: 'Empathetic',
+            text: 'I know prices are still too high at the grocery store and the gas pump. We feel that urgency. Everything we are doing is aimed at bringing costs down while keeping the job market strong. That takes time, but we are committed to it.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Speaking to kitchen-table concerns in plain language humanizes the institution. This is the kind of communication that builds broad public trust in the Fed.'
+          },
+          {
+            id: 'com4r2', label: 'Technical',
+            text: 'Today\'s decision affects borrowing costs throughout the economy — mortgages, car loans, business investment. Those effects take time to work through, typically six to eighteen months.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Accurate but clinical. When a reporter asks you to speak plainly, responding with transmission mechanism language misses the human dimension.'
+          },
+          {
+            id: 'com4r3', label: 'Forward-Looking',
+            text: 'For families: we are working to make sure the progress on prices continues, so your paycheck goes further. For savers: higher rates mean better returns on savings. For workers: we are trying to cool inflation without causing unnecessary job losses.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Addressing different constituencies specifically — families, savers, workers — shows the committee is thinking about distributional effects. This is effective public communication.'
           }
         ]
       }
@@ -812,6 +1202,58 @@ window.FedChair.Data.pressConferenceQuestions = {
             text: 'The balance sheet is running on autopilot at this point \u2014 the committee doesn\'t actively discuss it at every meeting. Our focus is on the rate path.',
             credibilityImpact: 'negative',
             educationalNote: 'Calling the balance sheet "autopilot" became famously problematic when the Fed used exactly that language in 2018 and then had to walk it back amid market turbulence. Markets take this as a sign the committee isn\'t watching.'
+          }
+        ]
+      },
+      {
+        id: 'bs-pace-concern',
+        conditions: { default: true },
+        journalist: 'Reuters financial markets reporter',
+        question: 'The balance sheet remains far larger than pre-pandemic levels. What is the committee\'s view on the appropriate long-run size of the Fed\'s balance sheet?',
+        responses: [
+          {
+            id: 'bs4r1', label: 'Thoughtful',
+            text: 'The floor system we operate requires a larger balance sheet than the pre-2008 corridor system. The right size is where reserves are ample but not excessive — we will know it when money market conditions tell us.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Distinguishing between the floor and corridor systems shows genuine understanding of the plumbing. The "we will know it when we see it" framing is honest about the uncertainty.'
+          },
+          {
+            id: 'bs4r2', label: 'Ambitious',
+            text: 'We aim to normalize the balance sheet as much as the new operating framework allows. A smaller Fed footprint in financial markets restores more normal price discovery.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Framing normalization as restoring market functioning is a strong argument. But it sets expectations for further runoff that may need to be walked back.'
+          },
+          {
+            id: 'bs4r3', label: 'Cautious',
+            text: 'The economy has grown, demand for reserves has grown. The balance sheet will be permanently larger than it was before the financial crisis. The question is how much larger — and we are still learning.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Managing expectations that the balance sheet will never return to its pre-crisis size is important market communication. The humility about ongoing learning is appropriate.'
+          }
+        ]
+      },
+      {
+        id: 'bs-mbs-holdings',
+        conditions: { default: true },
+        journalist: 'Wall Street Journal housing reporter',
+        question: 'The Fed still holds trillions in mortgage-backed securities from its purchase programs. Should a central bank be involved in the mortgage market at all?',
+        responses: [
+          {
+            id: 'bs5r1', label: 'Reform-Minded',
+            text: 'I share the concern. The committee has discussed whether future asset purchases should be limited to Treasuries. That is a question for the framework review, but I can tell you it is being taken seriously.',
+            credibilityImpact: 'positive',
+            educationalNote: 'Signaling openness to reform on MBS purchases is forward-thinking and addresses a legitimate criticism of Fed intervention in specific credit markets.'
+          },
+          {
+            id: 'bs5r2', label: 'Institutional',
+            text: 'MBS purchases were an emergency tool deployed during extraordinary circumstances. As we normalize, the share of MBS on our balance sheet is declining through natural maturities and prepayments.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'The standard institutional defense. Accurate but does not engage with the deeper question about the Fed\'s role in housing finance.'
+          },
+          {
+            id: 'bs5r3', label: 'Defensive',
+            text: 'The housing market is systemically important. Stabilizing MBS markets during crises serves financial stability, which is a core central bank responsibility.',
+            credibilityImpact: 'neutral',
+            educationalNote: 'Defending MBS purchases on financial stability grounds is valid but does not address the ongoing distortion of holding a large MBS portfolio in normal times.'
           }
         ]
       }

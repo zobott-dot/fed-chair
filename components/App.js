@@ -165,6 +165,15 @@ window.FedChair.Components.App = function() {
   const handlePressConferenceComplete = (impact) => {
     setPressConferenceImpact(impact);
 
+    // Track asked question IDs for variety across meetings
+    if (gameState) {
+      const currentQuestionIds = (gameState.currentPressQuestionIds || []);
+      gameState.askedQuestionIds = [
+        ...(gameState.askedQuestionIds || []),
+        ...currentQuestionIds
+      ];
+    }
+
     // Apply mood to market reaction
     const modifiedReaction = applyPressConferenceToMarketReaction(marketReaction, impact);
     setMarketReaction(modifiedReaction);
