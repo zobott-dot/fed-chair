@@ -49,6 +49,9 @@ function selectPressConferenceQuestions(gameState, rateDecision) {
       let score = 0.1; // Base score — every question has a chance
       const c = variant.conditions || {};
 
+      // Hard gate: onTransition references "Chair Warsh" by name — skip entirely outside meeting 3
+      if (c.onTransition && !isTransition) { scored.push({ variant, score: 0 }); continue; }
+
       if (c.onHike && isHike) score += 3;
       if (c.onCut && isCut) score += 3;
       if (c.onHold && isHold) score += 3;
