@@ -593,6 +593,20 @@ window.FedChair.Components.Aftermath = function({
                 <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginTop: '4px' }}>
                   {score.overall.score}/100
                 </div>
+                {score.overall.insight && (
+                  <div style={{
+                    fontSize: 'var(--text-sm, 12px)',
+                    fontFamily: 'var(--font-prose, "Source Sans 3", sans-serif)',
+                    color: '#9ca3af',
+                    marginTop: '8px',
+                    lineHeight: '1.6',
+                    fontStyle: 'italic',
+                    maxWidth: '400px',
+                    margin: '8px auto 0'
+                  }}>
+                    {score.overall.insight}
+                  </div>
+                )}
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -624,6 +638,17 @@ window.FedChair.Components.Aftermath = function({
                           transition: 'width 0.8s ease-out'
                         }} />
                       </div>
+                      {item.data.feedback && (
+                        <div style={{
+                          fontSize: '11px',
+                          fontFamily: 'var(--font-prose, "Source Sans 3", sans-serif)',
+                          color: '#8b95a5',
+                          marginTop: '5px',
+                          lineHeight: '1.5'
+                        }}>
+                          {item.data.feedback}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

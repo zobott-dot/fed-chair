@@ -27,43 +27,91 @@ window.FedChair.Engine.getGrade = function(score) {
 window.FedChair.Engine.calculateScore = function({ reaction, rateDecision, hawkScore }) {
   const getGrade = window.FedChair.Engine.getGrade;
 
+  // ── Market Stability ──
   let marketStability = 100;
-  let credibility = 100;
-  let mandateBalance = 100;
-
-  // Market stability - penalize large market moves
+  let marketFeedback = '';
   const absSpChange = Math.abs(reaction.sp500.change);
-  if (absSpChange > 2) marketStability -= 40;
-  else if (absSpChange > 1) marketStability -= 20;
-  else if (absSpChange > 0.5) marketStability -= 10;
+  if (absSpChange > 2) {
+    marketStability -= 40;
+    marketFeedback = `Markets reacted sharply — the S&P moved ${reaction.sp500.change > 0 ? '+' : ''}${reaction.sp500.change.toFixed(1)}%, signaling your decision caught traders off guard.`;
+  } else if (absSpChange > 1) {
+    marketStability -= 20;
+    marketFeedback = `A notable market move of ${reaction.sp500.change > 0 ? '+' : ''}${reaction.sp500.change.toFixed(1)}% in the S&P suggests your decision wasn't fully priced in.`;
+  } else if (absSpChange > 0.5) {
+    marketStability -= 10;
+    marketFeedback = `Markets adjusted modestly — a measured reaction that suggests your decision was largely anticipated.`;
+  } else {
+    marketFeedback = `Markets barely moved — your decision was well-telegraphed and fully priced in. This is what the Fed aims for.`;
+  }
 
-  // Credibility - penalize mismatch between action and statement tone
+  // ── Credibility ──
+  let credibility = 100;
+  let credibilityFeedback = '';
   const actionTone = rateDecision < 0 ? -2 : rateDecision > 0 ? 2 : 0;
   const toneMismatch = Math.abs(hawkScore - actionTone);
-  if (toneMismatch > 4) credibility -= 40;
-  else if (toneMismatch > 2) credibility -= 20;
+  if (toneMismatch > 4) {
+    credibility -= 40;
+    const actionWord = rateDecision > 0 ? 'hiked' : rateDecision < 0 ? 'cut' : 'held';
+    credibilityFeedback = `Your statement tone clashed with your rate action — you ${actionWord} rates but your language pointed the other way. Markets hate mixed signals.`;
+  } else if (toneMismatch > 2) {
+    credibility -= 20;
+    credibilityFeedback = `Some tension between your words and your action — your statement leaned ${hawkScore > 0 ? 'hawkish' : 'dovish'} relative to a ${rateDecision > 0 ? 'hike' : rateDecision < 0 ? 'cut' : 'hold'}. Analysts will parse the contradiction.`;
+  } else {
+    credibilityFeedback = `Your statement tone aligned well with your rate decision — consistent messaging that reinforces credibility.`;
+  }
 
-  // Mandate balance - penalize extreme moves
-  if (rateDecision < -25) mandateBalance -= 20;
-  if (rateDecision > 25) mandateBalance -= 15;
+  // ── Mandate Balance ──
+  let mandateBalance = 100;
+  let mandateFeedback = '';
+  if (rateDecision < -25) {
+    mandateBalance -= 20;
+    mandateFeedback = `A ${Math.abs(rateDecision)} bps cut is aggressive — it risks signaling panic and could fuel inflation expectations.`;
+  } else if (rateDecision > 25) {
+    mandateBalance -= 15;
+    mandateFeedback = `A ${rateDecision} bps hike is an unusually large move — it may cool inflation but risks overtightening into a downturn.`;
+  } else if (rateDecision === 0) {
+    mandateFeedback = `Holding steady — a measured approach that preserves optionality. Sometimes the best move is no move.`;
+  } else if (rateDecision > 0) {
+    mandateFeedback = `A standard ${rateDecision} bps hike — a conventional move that signals resolve on inflation without overreacting.`;
+  } else {
+    mandateFeedback = `A measured ${Math.abs(rateDecision)} bps cut — providing support without appearing to panic.`;
+  }
 
   const overall = Math.round((marketStability + credibility + mandateBalance) / 3);
+
+  // ── Overall Insight ──
+  let insight = '';
+  if (overall >= 90) {
+    insight = 'Textbook meeting — your action, communication, and market reaction were all in harmony.';
+  } else if (overall >= 80) {
+    insight = 'A solid performance with minor rough edges. Markets are generally on your side.';
+  } else if (overall >= 70) {
+    insight = 'An adequate meeting, but there\'s room to tighten the alignment between your words and actions.';
+  } else if (overall >= 60) {
+    insight = 'This meeting raised some eyebrows. Review where your messaging diverged from your decision.';
+  } else {
+    insight = 'A difficult meeting — markets are questioning your coherence. Consistency is the path back to credibility.';
+  }
 
   return {
     marketStability: {
       score: Math.max(0, marketStability),
+      feedback: marketFeedback,
       ...getGrade(marketStability)
     },
     credibility: {
       score: Math.max(0, credibility),
+      feedback: credibilityFeedback,
       ...getGrade(credibility)
     },
     mandateBalance: {
       score: Math.max(0, mandateBalance),
+      feedback: mandateFeedback,
       ...getGrade(mandateBalance)
     },
     overall: {
       score: overall,
+      insight: insight,
       ...getGrade(overall)
     }
   };
