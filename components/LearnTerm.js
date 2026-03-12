@@ -1,4 +1,5 @@
 // LearnTerm Component - Inline contextual tooltip for Learn Mode
+// Click-to-toggle on all platforms. Click outside or click another term to dismiss.
 // Uses position: fixed + portal to escape overflow: hidden containers
 
 window.FedChair = window.FedChair || {};
@@ -7,6 +8,7 @@ window.FedChair.Components = window.FedChair.Components || {};
 window.FedChair.Components.LearnTerm = function({ term, learnMode, children }) {
   const [tooltipPos, setTooltipPos] = React.useState(null);
   const termRef = React.useRef(null);
+  const tooltipRef = React.useRef(null);
   const tooltipData = window.FedChair.Data.learnTerms && window.FedChair.Data.learnTerms[term];
 
   if (!learnMode || !tooltipData) {
@@ -26,10 +28,8 @@ window.FedChair.Components.LearnTerm = function({ term, learnMode, children }) {
     const spaceAbove = rect.top;
     let top;
     if (spaceAbove >= tooltipHeight + pad) {
-      // Place above: bottom edge of tooltip sits gap-px above the term
       top = rect.top - gap - tooltipHeight;
     } else {
-      // Place below: top edge of tooltip sits gap-px below the term
       top = rect.bottom + gap;
     }
 
@@ -44,27 +44,75 @@ window.FedChair.Components.LearnTerm = function({ term, learnMode, children }) {
     return { top, left, width: tooltipWidth };
   };
 
-  const show = () => setTooltipPos(calcPosition());
-  const hide = () => setTooltipPos(null);
-  const toggle = () => setTooltipPos(prev => prev ? null : calcPosition());
+  const open = () => {
+    // Close any other open tooltip first
+    window.dispatchEvent(new CustomEvent('learnterm-close'));
+    setTooltipPos(calcPosition());
+  };
+
+  const close = () => setTooltipPos(null);
+
+  const toggle = (e) => {
+    e.stopPropagation();
+    if (tooltipPos) {
+      close();
+    } else {
+      open();
+    }
+  };
+
+  // Listen for other LearnTerms opening — close this one
+  React.useEffect(() => {
+    const handleOtherOpen = () => setTooltipPos(null);
+    window.addEventListener('learnterm-close', handleOtherOpen);
+    return () => window.removeEventListener('learnterm-close', handleOtherOpen);
+  }, []);
+
+  // Click-outside dismissal
+  React.useEffect(() => {
+    if (!tooltipPos) return;
+
+    const handleClickOutside = (e) => {
+      if (termRef.current && termRef.current.contains(e.target)) return;
+      if (tooltipRef.current && tooltipRef.current.contains(e.target)) return;
+      close();
+    };
+
+    // Use setTimeout to avoid the opening click from immediately triggering dismiss
+    const timer = setTimeout(() => {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }, 10);
+
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [tooltipPos]);
+
+  const isOpen = !!tooltipPos;
 
   return (
     <span
       ref={termRef}
-      className="learn-term"
+      className={`learn-term${isOpen ? ' learn-term-active' : ''}`}
       onClick={toggle}
-      onMouseEnter={show}
-      onMouseLeave={hide}
     >
       {children}
-      {tooltipPos && ReactDOM.createPortal(
-        <span className="learn-tooltip" style={{
-          position: 'fixed',
-          top: tooltipPos.top + 'px',
-          left: tooltipPos.left + 'px',
-          width: tooltipPos.width + 'px',
-          zIndex: 9999
-        }}>
+      {isOpen && ReactDOM.createPortal(
+        <span
+          ref={tooltipRef}
+          className="learn-tooltip"
+          style={{
+            position: 'fixed',
+            top: tooltipPos.top + 'px',
+            left: tooltipPos.left + 'px',
+            width: tooltipPos.width + 'px',
+            zIndex: 9999
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
           <strong className="learn-tooltip-title">{tooltipData.title}</strong>
           <p className="learn-tooltip-plain">{tooltipData.plain}</p>
           <p className="learn-tooltip-context">{tooltipData.context}</p>

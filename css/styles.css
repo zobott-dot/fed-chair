@@ -353,8 +353,14 @@ button {
 .learn-term {
   display: inline;
   border-bottom: 1px dashed var(--color-gold, #D97706);
-  cursor: help;
+  cursor: pointer;
   color: inherit;
+}
+
+.learn-term-active {
+  border-bottom-color: #F59E0B;
+  background: rgba(217, 119, 6, 0.08);
+  border-radius: 2px;
 }
 
 /* Inside buttons: remove underline and cursor override so button feels clickable */
@@ -370,7 +376,6 @@ button .learn-term {
   border-radius: 6px;
   padding: 12px 14px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-  pointer-events: none;
 }
 
 .learn-tooltip-title {
