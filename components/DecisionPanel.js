@@ -936,7 +936,7 @@ window.FedChair.Components.DecisionPanel = function({
             const schedule = gameState?.meetingSchedule || [];
 
             const chartWidth = dotPlotWidth;
-            const chartHeight = 220;
+            const chartHeight = 300;
             const leftMargin = 50;
             const rightMargin = 10;
             const topMargin = 15;
@@ -944,8 +944,8 @@ window.FedChair.Components.DecisionPanel = function({
             const plotWidth = chartWidth - leftMargin - rightMargin;
             const plotHeight = chartHeight - topMargin - bottomMargin;
 
-            const rateMin = currentRate - 1.0;
-            const rateMax = currentRate + 1.0;
+            const rateMin = currentRate - 1.5;
+            const rateMax = currentRate + 1.5;
             const rateToY = (rate) => topMargin + plotHeight * (rateMax - rate) / (rateMax - rateMin);
 
             const N = remainingMeetings.length;
@@ -1064,26 +1064,26 @@ window.FedChair.Components.DecisionPanel = function({
                 )}
 
                 {/* Legend */}
-                <div style={{ display: 'flex', gap: '14px', marginBottom: '10px', fontSize: 'var(--text-xs)', color: '#9ca3af', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '14px', marginBottom: '10px', fontSize: '12px', color: '#9ca3af', justifyContent: 'center', flexWrap: 'wrap' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <div style={{ width: '10px', height: '10px', background: '#60a5fa', borderRadius: '50%' }} />
+                    <div style={{ width: '12px', height: '12px', background: '#60a5fa', borderRadius: '50%' }} />
                     Your projection
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <div style={{ width: '6px', height: '6px', background: 'rgba(156, 163, 175, 0.4)', borderRadius: '50%' }} />
+                    <div style={{ width: '9px', height: '9px', background: 'rgba(156, 163, 175, 0.6)', borderRadius: '50%' }} />
                     Committee
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <div style={{ width: '14px', height: '2px', background: 'rgba(156, 163, 175, 0.6)' }} />
+                    <div style={{ width: '18px', height: '2px', background: 'rgba(156, 163, 175, 0.8)' }} />
                     Median
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <div style={{ width: '14px', height: '0', borderTop: '2px dashed #60a5fa' }} />
+                    <div style={{ width: '18px', height: '0', borderTop: '2px dashed #60a5fa' }} />
                     Current rate
                   </div>
                   {gameState?.previousCommitteeDots && Object.keys(gameState.previousCommitteeDots).length > 0 && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <div style={{ width: '6px', height: '6px', borderRadius: '50%', border: '1px dashed rgba(156, 163, 175, 0.3)' }} />
+                      <div style={{ width: '9px', height: '9px', borderRadius: '50%', border: '1.5px dashed rgba(234, 179, 8, 0.35)' }} />
                       Previous dots
                     </div>
                   )}
@@ -1110,7 +1110,7 @@ window.FedChair.Components.DecisionPanel = function({
                         key={r}
                         x1={leftMargin} y1={Math.round(rateToY(r)) + 0.5}
                         x2={chartWidth - rightMargin} y2={Math.round(rateToY(r)) + 0.5}
-                        stroke="rgba(75, 85, 99, 0.2)" strokeWidth="1"
+                        stroke="rgba(75, 85, 99, 0.3)" strokeWidth="1"
                         shapeRendering="crispEdges"
                       />
                     ))}
@@ -1120,7 +1120,7 @@ window.FedChair.Components.DecisionPanel = function({
                       <text
                         key={'yl-' + r}
                         x={leftMargin - 6} y={rateToY(r) + 4}
-                        fill="#8b95a5" fontSize="12"
+                        fill="#8b95a5" fontSize="13"
                         fontFamily="'IBM Plex Mono', monospace"
                         textAnchor="end"
                       >
@@ -1156,8 +1156,8 @@ window.FedChair.Components.DecisionPanel = function({
                     <line
                       x1={leftMargin} y1={Math.round(rateToY(currentRate)) + 0.5}
                       x2={chartWidth - rightMargin} y2={Math.round(rateToY(currentRate)) + 0.5}
-                      stroke="#60a5fa" strokeWidth="1"
-                      strokeDasharray="6,4" opacity="0.5"
+                      stroke="#60a5fa" strokeWidth="1.5"
+                      strokeDasharray="6,4" opacity="0.7"
                       shapeRendering="crispEdges"
                     />
 
@@ -1165,7 +1165,7 @@ window.FedChair.Components.DecisionPanel = function({
                     {validMedians.length > 1 && (
                       <polyline
                         points={validMedians.map(([x, y]) => `${x},${y}`).join(' ')}
-                        fill="none" stroke="rgba(156, 163, 175, 0.6)" strokeWidth="1.5"
+                        fill="none" stroke="rgba(156, 163, 175, 0.8)" strokeWidth="2"
                       />
                     )}
 
@@ -1182,10 +1182,10 @@ window.FedChair.Components.DecisionPanel = function({
                               key={`ghost-${m}-${j}`}
                               cx={meetingToX(i) + jitter}
                               cy={rateToY(rate)}
-                              r="3" fill="none"
-                              stroke="rgba(156, 163, 175, 0.2)"
-                              strokeWidth="1"
-                              strokeDasharray="2,2"
+                              r="4" fill="none"
+                              stroke="rgba(234, 179, 8, 0.35)"
+                              strokeWidth="1.5"
+                              strokeDasharray="3,3"
                             />
                           );
                         }).filter(Boolean);
@@ -1202,7 +1202,7 @@ window.FedChair.Components.DecisionPanel = function({
                             key={`cd-${m}-${j}`}
                             cx={meetingToX(i) + jitter}
                             cy={rateToY(rate)}
-                            r="3" fill="rgba(156, 163, 175, 0.4)"
+                            r="4" fill="rgba(156, 163, 175, 0.6)"
                           />
                         );
                       });
@@ -1226,8 +1226,8 @@ window.FedChair.Components.DecisionPanel = function({
                         <circle
                           key={`pd-${m}`}
                           cx={meetingToX(idx)} cy={rateToY(r)}
-                          r="6" fill="#60a5fa"
-                          stroke="rgba(96, 165, 250, 0.3)" strokeWidth="3"
+                          r="8" fill="#60a5fa"
+                          stroke="rgba(96, 165, 250, 0.3)" strokeWidth="4"
                         />
                       );
                     })}
