@@ -92,7 +92,9 @@ window.FedChair.Components.App = function() {
   const currentRate = gameState?.currentRate || 3.625;
   const newsHeadlines = gameState?.recentHeadlines?.length > 0
     ? gameState.recentHeadlines
-    : window.FedChair.Data.newsHeadlines || [];
+    : (rawData?.economicData?._liveHeadlines?.length > 0
+      ? rawData.economicData._liveHeadlines
+      : window.FedChair.Data.newsHeadlines || []);
 
   // Dynamic FOMC board: swap to Warsh-era after chair transition
   const activeBoardOfGovernors = gameState?.chairName === 'Warsh'

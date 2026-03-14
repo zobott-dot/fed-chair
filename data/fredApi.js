@@ -225,12 +225,114 @@ window.FedChair.Data = window.FedChair.Data || {};
       _fredSeriesCount: 18
     };
 
+    // Generate data-driven headlines for Meeting 1
+    liveData._liveHeadlines = generateLiveHeadlines(liveData);
+
     // Cache it
     cachedLiveData = liveData;
     cachedTimestamp = Date.now();
 
     return liveData;
   };
+
+  /**
+   * Generate realistic news headlines from live FRED data
+   * These replace the hardcoded headlines for Meeting 1 when live data is available
+   */
+  function generateLiveHeadlines(data) {
+    const headlines = [];
+
+    // --- Inflation headlines ---
+    const pce = parseFloat(data.inflation.pceCore.value);
+    const cpi = parseFloat(data.inflation.cpiHeadline.value);
+    if (!isNaN(pce)) {
+      if (pce > 3.0) {
+        headlines.push({ headline: `Core PCE Remains Elevated at ${data.inflation.pceCore.value} — Fed's Preferred Gauge Stubbornly Above Target`, source: 'BEA', type: 'data' });
+      } else if (pce > 2.5) {
+        headlines.push({ headline: `Core PCE Holds at ${data.inflation.pceCore.value} — Progress Toward 2% Stalls`, source: 'BEA', type: 'data' });
+      } else if (pce > 2.0) {
+        headlines.push({ headline: `Core PCE Eases to ${data.inflation.pceCore.value} — Disinflation Trend Intact but Slow`, source: 'BEA', type: 'data' });
+      } else {
+        headlines.push({ headline: `Core PCE Falls to ${data.inflation.pceCore.value} — Fed's 2% Target Within Reach`, source: 'BEA', type: 'data' });
+      }
+    }
+
+    // --- Employment headlines ---
+    const unemp = parseFloat(data.employment.unemploymentU3.value);
+    const payrolls = data.employment.nfp.value;
+    if (!isNaN(unemp)) {
+      if (unemp > 5.0) {
+        headlines.push({ headline: `Unemployment Climbs to ${data.employment.unemploymentU3.value} — Labor Market Deterioration Accelerates`, source: 'BLS', type: 'data' });
+      } else if (unemp > 4.5) {
+        headlines.push({ headline: `Unemployment Rate Rises to ${data.employment.unemploymentU3.value} — Cooling Labor Market Tests Fed Resolve`, source: 'BLS', type: 'data' });
+      } else if (unemp > 4.0) {
+        headlines.push({ headline: `Unemployment at ${data.employment.unemploymentU3.value} — Labor Market Softening but Still Resilient`, source: 'BLS', type: 'data' });
+      } else {
+        headlines.push({ headline: `Unemployment Holds at ${data.employment.unemploymentU3.value} — Tight Labor Market Persists`, source: 'BLS', type: 'data' });
+      }
+    }
+    if (payrolls) {
+      const payrollNum = parseInt(payrolls.replace(/[^0-9-]/g, ''));
+      if (!isNaN(payrollNum)) {
+        if (payrollNum > 200) {
+          headlines.push({ headline: `Payrolls Surge: ${payrolls} Jobs Added, Beating Expectations`, source: 'BLS', type: 'data' });
+        } else if (payrollNum > 100) {
+          headlines.push({ headline: `Economy Adds ${payrolls} Jobs — Solid but Decelerating Pace`, source: 'BLS', type: 'data' });
+        } else if (payrollNum > 0) {
+          headlines.push({ headline: `Hiring Slows: Only ${payrolls} Jobs Added in Latest Report`, source: 'BLS', type: 'data' });
+        } else {
+          headlines.push({ headline: `Payrolls Turn Negative: ${payrolls} — First Decline Since Pandemic`, source: 'BLS', type: 'data' });
+        }
+      }
+    }
+
+    // --- GDP headline ---
+    const gdp = data.gdp.current;
+    if (gdp !== null && gdp !== undefined) {
+      if (gdp > 3.0) {
+        headlines.push({ headline: `GDP Growth Surges to ${gdp.toFixed(1)}% — Economy Running Hot`, source: 'BEA', type: 'data' });
+      } else if (gdp > 2.0) {
+        headlines.push({ headline: `GDP Growth Holds at ${gdp.toFixed(1)}% — Economy Expanding Above Trend`, source: 'BEA', type: 'data' });
+      } else if (gdp > 1.0) {
+        headlines.push({ headline: `GDP Growth Moderates to ${gdp.toFixed(1)}% — Expansion Continues at Slower Pace`, source: 'BEA', type: 'data' });
+      } else if (gdp > 0) {
+        headlines.push({ headline: `GDP Growth Slows to ${gdp.toFixed(1)}% — Economy Losing Momentum`, source: 'BEA', type: 'data' });
+      } else {
+        headlines.push({ headline: `GDP Contracts at ${gdp.toFixed(1)}% — Recession Fears Intensify`, source: 'BEA', type: 'data' });
+      }
+    }
+
+    // --- Market/rates headlines ---
+    const rate10y = data.markets.treasury10y.value;
+    const rate2y = data.markets.treasury2y.value;
+    const vixVal = data.markets.vix.value;
+
+    if (rate10y && rate2y) {
+      const spread = rate10y - rate2y;
+      if (spread < 0) {
+        headlines.push({ headline: `Yield Curve Remains Inverted — 2s/10s Spread at ${Math.round(spread * 100)} bps`, source: 'Treasury', type: 'market' });
+      } else if (spread < 0.2) {
+        headlines.push({ headline: `Yield Curve Barely Positive — 2s/10s Spread Narrows to ${Math.round(spread * 100)} bps`, source: 'Treasury', type: 'market' });
+      }
+    }
+
+    if (vixVal) {
+      if (vixVal > 30) {
+        headlines.push({ headline: `VIX Spikes to ${vixVal.toFixed(1)} — Market Volatility at Elevated Levels`, source: 'CBOE', type: 'market' });
+      } else if (vixVal > 20) {
+        headlines.push({ headline: `VIX at ${vixVal.toFixed(1)} — Markets Reflect Moderate Uncertainty`, source: 'CBOE', type: 'market' });
+      }
+    }
+
+    // --- Fed policy headline ---
+    const fedRate = data.fedFundsRate.target;
+    if (fedRate) {
+      headlines.push({ headline: `Fed Funds Rate at ${fedRate} — Markets Await Next FOMC Decision`, source: 'Federal Reserve', type: 'data' });
+    }
+
+    // Limit to 6 headlines max
+    return headlines.slice(0, 6);
+  }
 
   /**
    * Clear the cache (for manual refresh)
