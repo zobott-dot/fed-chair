@@ -9,7 +9,7 @@ window.FedChair.Data = window.FedChair.Data || {};
   'use strict';
 
   const API_KEY = '5f1dfeb40783eefa1e7d0d4e3e602597';
-  const BASE_URL = 'https://api.stlouisfed.org/fred/series/observations';
+  const BASE_URL = 'https://fred-proxy.dave-zobott.workers.dev/fred/series/observations';
 
   // Cache fetched data to avoid redundant calls within a session
   let cachedLiveData = null;
