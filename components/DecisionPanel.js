@@ -724,27 +724,32 @@ window.FedChair.Components.DecisionPanel = function({
                   </div>
                 </div>
                 {selectedStatements.length === 0 && (
-                  <button
-                    onClick={autoSelectStatements}
-                    disabled={decisionPublished}
-                    style={{
-                      padding: '8px 16px',
-                      fontSize: '11px',
-                      fontWeight: '600',
-                      letterSpacing: '1.5px',
-                      textTransform: 'uppercase',
-                      background: 'transparent',
-                      border: '1px solid rgba(75, 85, 99, 0.4)',
-                      color: '#6b7280',
-                      borderRadius: '6px',
-                      cursor: decisionPublished ? 'not-allowed' : 'pointer',
-                      opacity: decisionPublished ? 0.5 : 1,
-                      minHeight: 'auto',
-                      whiteSpace: 'nowrap'
-                    }}
-                  >
-                    Use Standard Language
-                  </button>
+                  <div>
+                    <button
+                      onClick={autoSelectStatements}
+                      disabled={decisionPublished}
+                      style={{
+                        padding: '8px 16px',
+                        fontSize: '11px',
+                        fontWeight: '600',
+                        letterSpacing: '1.5px',
+                        textTransform: 'uppercase',
+                        background: 'transparent',
+                        border: '1px solid rgba(75, 85, 99, 0.4)',
+                        color: '#6b7280',
+                        borderRadius: '6px',
+                        cursor: decisionPublished ? 'not-allowed' : 'pointer',
+                        opacity: decisionPublished ? 0.5 : 1,
+                        minHeight: 'auto',
+                        whiteSpace: 'nowrap'
+                      }}
+                    >
+                      Use Standard Language
+                    </button>
+                    <div style={{ fontSize: '10px', color: '#4b5563', marginTop: '4px', textAlign: 'right' }}>
+                      Consistent but generic — small credibility cost
+                    </div>
+                  </div>
                 )}
               </div>
 
