@@ -143,6 +143,62 @@ window.FedChair.Components.App = function() {
       gameState.dotHistory = [...(gameState.dotHistory || []), ...newDots];
     }
 
+    // Phase 7.7: Compute dot shift data for market interpretation
+    const dotShiftData = (() => {
+      const currentDots = (gameState.dotProjections || []).filter(d => d.placedAtMeeting === gameState.meetingNumber);
+      const previousDots = (gameState.dotProjections || []).filter(d => d.placedAtMeeting === gameState.meetingNumber - 1);
+
+      if (currentDots.length === 0) return null;
+
+      // Calculate player's median projection shift
+      const currentMedian = currentDots.length > 0
+        ? currentDots.reduce((s, d) => s + d.projectedRate, 0) / currentDots.length
+        : null;
+      const previousMedian = previousDots.length > 0
+        ? previousDots.reduce((s, d) => s + d.projectedRate, 0) / previousDots.length
+        : null;
+
+      const medianShift = (previousMedian !== null && currentMedian !== null)
+        ? currentMedian - previousMedian
+        : null;
+
+      // Committee median shift
+      const committeeDots = gameState.committeeDots || {};
+      const prevCommitteeDots = gameState.previousCommitteeDots || {};
+
+      function getMedian(arr) {
+        if (!arr || arr.length === 0) return null;
+        const sorted = [...arr].sort((a, b) => a - b);
+        return sorted[Math.floor(sorted.length / 2)];
+      }
+
+      const nextMeeting = gameState.meetingNumber + 1;
+      const currentCommitteeMedian = getMedian(committeeDots[nextMeeting]);
+      const prevCommitteeMedian = getMedian(prevCommitteeDots[nextMeeting]);
+      const committeeMedianShift = (currentCommitteeMedian !== null && prevCommitteeMedian !== null)
+        ? currentCommitteeMedian - prevCommitteeMedian
+        : null;
+
+      // Dot-to-action gap: what did the player project for THIS meeting last time vs what they actually did
+      const dotForThisMeeting = (gameState.dotProjections || []).find(
+        d => d.meeting === gameState.meetingNumber && d.placedAtMeeting < gameState.meetingNumber
+      );
+      const actualRate = gameState.currentRate;
+      const dotToActionGap = dotForThisMeeting
+        ? actualRate - dotForThisMeeting.projectedRate
+        : null;
+
+      return {
+        playerMedianShift: medianShift,
+        committeeMedianShift,
+        dotForThisMeeting: dotForThisMeeting ? dotForThisMeeting.projectedRate : null,
+        actualRate,
+        dotToActionGap,
+        dotsPlaced: currentDots.length
+      };
+    })();
+    gameState.lastDotShiftData = dotShiftData;
+
     // Store balance sheet decision in gameState (Phase 7.6)
     if (gameState.balanceSheet) {
       gameState.balanceSheet.currentPosture = balanceSheetPosture;

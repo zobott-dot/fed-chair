@@ -1017,6 +1017,52 @@ window.FedChair.Components.DecisionPanel = function({
                   <LearnTerm term="Dot Plot" learnMode={learnMode}>FORWARD GUIDANCE DOT PLOT</LearnTerm>
                 </div>
 
+                {/* Learn Mode: pre-placement panel (Phase 7.7) */}
+                {learnMode && (
+                  <div style={{
+                    padding: '14px 16px',
+                    background: 'rgba(217, 119, 6, 0.06)',
+                    borderLeft: '3px solid #D97706',
+                    borderRadius: '0 8px 8px 0',
+                    marginBottom: '12px'
+                  }}>
+                    <div style={{
+                      fontFamily: '"IBM Plex Mono", monospace',
+                      fontSize: '10px',
+                      color: '#D97706',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      marginBottom: '8px',
+                      fontWeight: '600'
+                    }}>
+                      LEARN: THE DOT PLOT
+                    </div>
+                    <div style={{
+                      fontSize: 'var(--text-sm, 12px)',
+                      fontFamily: 'var(--font-prose, "Source Sans 3", sans-serif)',
+                      color: '#9ca3af',
+                      lineHeight: '1.7'
+                    }}>
+                      {meetingNumber <= 2 && (
+                        'The dot plot is your most powerful communication tool besides the rate decision itself. Each dot you place is a public projection of where you believe rates should be at a future meeting. Markets will treat your dots as forward guidance — essentially a preview of your intentions. Place dots thoughtfully: they set expectations you will be measured against.'
+                      )}
+                      {meetingNumber >= 3 && meetingNumber <= 5 && (
+                        <>
+                          {'The shift in your dots between meetings is often bigger news than the dots themselves. If your median projection moved up, markets read that as "the Fed now expects to tighten more than previously signaled." That shift reprices bonds, equities, and futures before you even act.'}
+                          {gameState?.previousCommitteeDots && Object.keys(gameState.previousCommitteeDots).length > 0 && (
+                            <span style={{ display: 'block', marginTop: '6px', color: '#D97706', fontStyle: 'italic' }}>
+                              The faded dashed circles show where dots were last meeting. Look for the shift.
+                            </span>
+                          )}
+                        </>
+                      )}
+                      {meetingNumber >= 6 && (
+                        'By this point in your tenure, markets have built a track record of your dot projections versus your actual decisions. Consistent follow-through builds credibility. But if conditions genuinely changed, adjusting your dots is better than stubbornly holding an outdated projection — the key is explaining the shift clearly.'
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* Legend */}
                 <div style={{ display: 'flex', gap: '14px', marginBottom: '10px', fontSize: 'var(--text-xs)', color: '#9ca3af', justifyContent: 'center', flexWrap: 'wrap' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -1035,6 +1081,12 @@ window.FedChair.Components.DecisionPanel = function({
                     <div style={{ width: '14px', height: '0', borderTop: '2px dashed #60a5fa' }} />
                     Current rate
                   </div>
+                  {gameState?.previousCommitteeDots && Object.keys(gameState.previousCommitteeDots).length > 0 && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <div style={{ width: '6px', height: '6px', borderRadius: '50%', border: '1px dashed rgba(156, 163, 175, 0.3)' }} />
+                      Previous dots
+                    </div>
+                  )}
                 </div>
 
                 {/* SVG Chart */}
@@ -1116,6 +1168,29 @@ window.FedChair.Components.DecisionPanel = function({
                         fill="none" stroke="rgba(156, 163, 175, 0.6)" strokeWidth="1.5"
                       />
                     )}
+
+                    {/* Ghost dots — previous meeting's committee projections (Phase 7.7) */}
+                    {(() => {
+                      const prevCommitteeDots = gameState?.previousCommitteeDots || {};
+                      return remainingMeetings.flatMap((m, i) => {
+                        const prevDots = prevCommitteeDots[m] || [];
+                        return prevDots.map((rate, j) => {
+                          if (rate < rateMin || rate > rateMax) return null;
+                          const jitter = (j / 12 - 0.5) * columnWidth * 0.4;
+                          return (
+                            <circle
+                              key={`ghost-${m}-${j}`}
+                              cx={meetingToX(i) + jitter}
+                              cy={rateToY(rate)}
+                              r="3" fill="none"
+                              stroke="rgba(156, 163, 175, 0.2)"
+                              strokeWidth="1"
+                              strokeDasharray="2,2"
+                            />
+                          );
+                        }).filter(Boolean);
+                      });
+                    })()}
 
                     {/* Committee dots */}
                     {remainingMeetings.flatMap((m, i) => {

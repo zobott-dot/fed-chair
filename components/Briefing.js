@@ -612,6 +612,21 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
                   );
                 })}
               </div>
+              {learnMode && projections.some(d => d.meeting === gameState.meetingNumber) && (
+                <div style={{
+                  marginTop: '10px',
+                  padding: '10px 14px',
+                  background: 'rgba(217, 119, 6, 0.06)',
+                  borderLeft: '3px solid #D97706',
+                  borderRadius: '0 6px 6px 0',
+                  fontSize: '11px',
+                  fontFamily: 'var(--font-prose, "Source Sans 3", sans-serif)',
+                  color: '#9ca3af',
+                  lineHeight: '1.6'
+                }}>
+                  The highlighted projection is what you signaled for today's meeting. Markets have been positioning around this expectation since you published it. Deviating from your projection isn't necessarily wrong — conditions change — but the gap between signal and action is one of the most closely watched credibility indicators in central banking.
+                </div>
+              )}
             </div>
           );
         })()}

@@ -1384,6 +1384,30 @@ window.FedChair.Data.learnTerms = {
     context: 'When your dot projections differ from your actual decisions, credibility suffers. Markets treat dots as implicit commitments even though the Fed insists they\'re just forecasts.'
   },
 
+  'Median Dot': {
+    title: 'The Median Dot',
+    plain: 'The middle value when all FOMC participants\' rate projections are arranged from lowest to highest. The median is the single number markets focus on most — it represents the committee\'s "central tendency" for future rates.',
+    context: 'A shift in the median dot between meetings is often the day\'s biggest market-moving event. Even a 25 bps shift reprices trillions in fixed-income markets.'
+  },
+
+  'Dot Shift': {
+    title: 'Dot Shift Between Meetings',
+    plain: 'The change in the median dot projection from one meeting to the next. A hawkish shift (higher) signals the committee now expects more tightening; a dovish shift (lower) signals less tightening or more easing.',
+    context: 'The shift is often more newsworthy than the absolute level. "The median dot moved up 50 bps" is a headline; "the median dot is at 4.25%" is background.'
+  },
+
+  'Dot-to-Action Gap': {
+    title: 'Dot-to-Action Gap',
+    plain: 'The difference between what a Fed official projected at the previous meeting (their dot) and what actually happened at the current meeting. A large gap suggests the official\'s forecast was wrong or they changed course.',
+    context: 'Markets hold the Fed accountable for its projections. Consistent follow-through makes future dots more powerful as a signaling tool. Chronic deviation makes them noise.'
+  },
+
+  'Forward Guidance': {
+    title: 'Forward Guidance',
+    plain: 'Communication by the central bank about the likely future path of monetary policy. The dot plot, post-meeting statement, and press conference all serve as forward guidance tools.',
+    context: 'Forward guidance is itself a policy tool — by shaping expectations about future rates, the Fed can affect borrowing costs today without changing the current rate. Your dots are one of the most direct forms of forward guidance.'
+  },
+
   'FOMC': {
     title: 'Federal Open Market Committee (FOMC)',
     plain: 'The committee within the Federal Reserve that sets monetary policy. It has 12 voting members: 7 Fed governors plus 5 of the 12 regional bank presidents (on a rotating basis). Meets 8 times per year.',
@@ -1970,12 +1994,6 @@ window.FedChair.Data.learnTerms = {
     title: 'FOMC Dissent',
     plain: 'When an FOMC voting member votes against the majority\'s rate decision. Dissents are public and named in the post-meeting statement. They signal internal disagreement on the committee.',
     context: 'Dissents are rare and market-moving. A hawkish dissent (wanting to hike more) signals the committee may be too dovish. A dovish dissent (wanting to cut more) signals it may be too hawkish. Multiple dissents can undermine confidence in the committee\'s consensus.'
-  },
-
-  'Dot Plot': {
-    title: 'The Dot Plot',
-    plain: 'A chart showing each FOMC member\'s anonymous projection for where the federal funds rate will be at the end of each year. The median of the dots becomes the committee\'s "signal" to markets.',
-    context: 'When your dot projections differ from your actual decisions, credibility suffers. Markets treat dots as implicit commitments even though the Fed insists they\'re just forecasts.'
   },
 
   'Mandate Balance': {

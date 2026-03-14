@@ -1260,6 +1260,11 @@ window.FedChair.Engine.generateCommitteeDots = function(gameState) {
     committeeDots[m] = meetingDots;
   }
 
+  // Store previous meeting's committee dots for ghost overlay (Phase 7.7)
+  if (gameState.committeeDots && Object.keys(gameState.committeeDots).length > 0) {
+    gameState.previousCommitteeDots = JSON.parse(JSON.stringify(gameState.committeeDots));
+  }
+
   gameState.committeeDots = committeeDots;
   return committeeDots;
 };

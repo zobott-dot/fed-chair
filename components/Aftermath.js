@@ -557,6 +557,116 @@ window.FedChair.Components.Aftermath = function({
             </div>
           )}
 
+          {/* Dot Plot Impact — Phase 7.7 */}
+          {aftermathPhase >= 1 && gameState?.lastDotShiftData && gameState.lastDotShiftData.dotsPlaced > 0 && (
+            <div className="animate-d1" style={{ ...panelStyle, padding: '16px 20px', marginBottom: '16px' }}>
+              <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', marginBottom: '12px', fontWeight: '600' }}>
+                <LearnTerm term="Dot Plot" learnMode={learnMode}>DOT PLOT SIGNAL</LearnTerm>
+              </div>
+
+              {(() => {
+                const dsd = gameState.lastDotShiftData;
+
+                // Determine the market read
+                let signalText = '';
+                let signalColor = '#60a5fa';
+
+                if (dsd.playerMedianShift !== null && Math.abs(dsd.playerMedianShift) >= 0.1) {
+                  const direction = dsd.playerMedianShift > 0 ? 'hawkish' : 'dovish';
+                  const bpsShift = Math.round(dsd.playerMedianShift * 100);
+                  signalText = `Your projected rate path shifted ${Math.abs(bpsShift)} bps ${direction === 'hawkish' ? 'higher' : 'lower'} than last meeting. Markets interpret this as a ${direction} signal — `;
+                  if (direction === 'hawkish') {
+                    signalText += 'traders are repricing for tighter policy ahead, pushing short-term yields higher.';
+                    signalColor = '#ef4444';
+                  } else {
+                    signalText += 'traders are repricing for easier policy ahead, pushing yields lower and lifting equities.';
+                    signalColor = '#22c55e';
+                  }
+                } else if (dsd.playerMedianShift !== null) {
+                  signalText = 'Your projected rate path is largely unchanged from last meeting. Markets read this as steady-as-she-goes — no surprises in your forward guidance.';
+                  signalColor = '#60a5fa';
+                } else {
+                  signalText = 'This is your first set of dot projections. Markets are calibrating their expectations to your indicated rate path.';
+                  signalColor = '#60a5fa';
+                }
+
+                // Dot-to-action accountability
+                let accountabilityText = '';
+                let accountabilityColor = '#9ca3af';
+                if (dsd.dotToActionGap !== null) {
+                  const gapBps = Math.round(dsd.dotToActionGap * 100);
+                  if (Math.abs(gapBps) < 2) {
+                    accountabilityText = `You projected ${dsd.dotForThisMeeting.toFixed(2)}% for this meeting and delivered exactly that. Follow-through strengthens credibility.`;
+                    accountabilityColor = '#22c55e';
+                  } else if (Math.abs(gapBps) <= 25) {
+                    accountabilityText = `You projected ${dsd.dotForThisMeeting.toFixed(2)}% for this meeting but set ${dsd.actualRate.toFixed(2)}%. A small deviation — markets will note it but won't panic.`;
+                    accountabilityColor = '#eab308';
+                  } else {
+                    accountabilityText = `You projected ${dsd.dotForThisMeeting.toFixed(2)}% for this meeting but set ${dsd.actualRate.toFixed(2)}% — a ${Math.abs(gapBps)} bps gap. Markets had positioned around your projection. This deviation costs credibility.`;
+                    accountabilityColor = '#ef4444';
+                  }
+                }
+
+                return (
+                  <>
+                    <div style={{
+                      fontSize: 'var(--text-sm, 12px)',
+                      fontFamily: 'var(--font-prose, "Source Sans 3", sans-serif)',
+                      color: '#d1d5db',
+                      lineHeight: '1.7',
+                      marginBottom: accountabilityText ? '12px' : '0'
+                    }}>
+                      <span style={{ color: signalColor, fontWeight: '500' }}>MARKET READS YOUR DOTS: </span>
+                      {signalText}
+                    </div>
+
+                    {accountabilityText && (
+                      <div style={{
+                        fontSize: 'var(--text-sm, 12px)',
+                        fontFamily: 'var(--font-prose, "Source Sans 3", sans-serif)',
+                        color: '#d1d5db',
+                        lineHeight: '1.7',
+                        paddingTop: '10px',
+                        borderTop: '1px solid rgba(75, 85, 99, 0.3)'
+                      }}>
+                        <span style={{ color: accountabilityColor, fontWeight: '500' }}>DOT-TO-ACTION: </span>
+                        {accountabilityText}
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
+
+              {/* Learn Mode: deeper explanation */}
+              {learnMode && (
+                <div style={{
+                  marginTop: '12px',
+                  padding: '10px 14px',
+                  background: 'rgba(217, 119, 6, 0.06)',
+                  borderLeft: '3px solid #D97706',
+                  borderRadius: '0 6px 6px 0'
+                }}>
+                  <div style={{
+                    fontSize: '11px',
+                    fontFamily: 'var(--font-prose, "Source Sans 3", sans-serif)',
+                    color: '#9ca3af',
+                    lineHeight: '1.6'
+                  }}>
+                    {gameState.meetingNumber <= 2 && (
+                      'The dot plot is the Fed\'s most watched communication tool after the rate decision. When the median dot shifts, it moves billions of dollars in bond and futures markets instantly. Traders don\'t wait for the Fed to act — they price in the expected path. Your dots ARE policy, in a sense, because they shape financial conditions before your next meeting even arrives.'
+                    )}
+                    {gameState.meetingNumber >= 3 && gameState.meetingNumber <= 5 && (
+                      'Notice the relationship between your dot projections and your credibility score. Markets remember what you projected. If you consistently follow through, your dots become more powerful — markets trust them and adjust preemptively. If you deviate without explanation, your dots lose their signaling value and you lose a key policy tool.'
+                    )}
+                    {gameState.meetingNumber >= 6 && (
+                      'Late in a tenure, dot plot credibility compounds. A chair who has consistently matched projections to actions has enormous signaling power — their dots alone can move markets and tighten or ease financial conditions. A chair whose dots have been unreliable has lost this tool entirely and must rely solely on rate actions, which are blunter and slower.'
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Score Card */}
           {aftermathPhase >= 2 && score && (
             <div className="animate-d1" style={{ ...panelStyle, padding: '20px' }}>
