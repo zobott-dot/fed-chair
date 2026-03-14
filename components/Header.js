@@ -36,7 +36,7 @@ window.FedChair.Components.Header = function({
 
   return (
     <header style={{
-      padding: '12px 16px',
+      padding: '12px 0',
       borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
       background: 'rgba(10, 15, 26, 0.95)',
       backdropFilter: 'blur(10px)',
@@ -49,7 +49,8 @@ window.FedChair.Components.Header = function({
         justifyContent: 'space-between',
         alignItems: 'center',
         maxWidth: '1200px',
-        margin: '0 auto'
+        margin: '0 auto',
+        padding: '0 16px'
       }}>
         <div>
           <h1
