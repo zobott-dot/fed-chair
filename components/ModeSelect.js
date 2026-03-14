@@ -4,6 +4,11 @@ window.FedChair = window.FedChair || {};
 window.FedChair.Components = window.FedChair.Components || {};
 
 window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
+  const [hovered, setHovered] = React.useState(null);
+  const [dataStatus, setDataStatus] = React.useState('checking'); // 'checking' | 'live' | 'fallback' | 'refreshing'
+  const [dataDate, setDataDate] = React.useState(null);
+  const [fetchError, setFetchError] = React.useState(null);
+
   const cardBase = {
     background: 'linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.7) 100%)',
     border: '1px solid rgba(75, 85, 99, 0.3)',
@@ -13,7 +18,72 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
     transition: 'all 0.2s ease'
   };
 
-  const [hovered, setHovered] = React.useState(null);
+  // Check data status on mount
+  React.useEffect(() => {
+    checkDataStatus();
+  }, []);
+
+  const checkDataStatus = async () => {
+    setDataStatus('checking');
+    setFetchError(null);
+    try {
+      const data = await window.FedChair.Data.fetchFredData();
+      if (data && data._liveData) {
+        setDataStatus('live');
+        setDataDate(data._dataAsOf);
+      } else {
+        setDataStatus('fallback');
+      }
+    } catch (err) {
+      setDataStatus('fallback');
+      setFetchError(err.message);
+    }
+  };
+
+  const handleRefresh = async () => {
+    setDataStatus('refreshing');
+    setFetchError(null);
+    window.FedChair.Data.clearFredCache();
+    try {
+      const data = await window.FedChair.Data.fetchFredData();
+      if (data && data._liveData) {
+        setDataStatus('live');
+        setDataDate(data._dataAsOf);
+      } else {
+        setDataStatus('fallback');
+      }
+    } catch (err) {
+      setDataStatus('fallback');
+      setFetchError(err.message);
+    }
+  };
+
+  const statusBadge = () => {
+    if (dataStatus === 'checking' || dataStatus === 'refreshing') {
+      return {
+        text: dataStatus === 'checking' ? 'Checking FRED data...' : 'Refreshing...',
+        bg: 'rgba(96, 165, 250, 0.1)',
+        border: 'rgba(96, 165, 250, 0.3)',
+        color: '#60a5fa'
+      };
+    }
+    if (dataStatus === 'live') {
+      return {
+        text: `Live data \u2014 ${dataDate || 'latest available'}`,
+        bg: 'rgba(34, 197, 94, 0.1)',
+        border: 'rgba(34, 197, 94, 0.3)',
+        color: '#22c55e'
+      };
+    }
+    return {
+      text: fetchError ? 'FRED unavailable \u2014 using saved data' : 'Using saved data',
+      bg: 'rgba(234, 179, 8, 0.1)',
+      border: 'rgba(234, 179, 8, 0.3)',
+      color: '#eab308'
+    };
+  };
+
+  const badge = statusBadge();
 
   return (
     <div style={{
@@ -51,14 +121,18 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
           onClick={() => onSelectMode('live')}
           onMouseEnter={() => setHovered('live')}
           onMouseLeave={() => setHovered(null)}
+          disabled={dataStatus === 'checking' || dataStatus === 'refreshing'}
           style={{
             ...cardBase,
-            cursor: 'pointer',
+            cursor: (dataStatus === 'checking' || dataStatus === 'refreshing') ? 'wait' : 'pointer',
             borderColor: hovered === 'live' ? 'rgba(34, 197, 94, 0.6)' : 'rgba(34, 197, 94, 0.3)',
-            boxShadow: hovered === 'live' ? '0 0 20px rgba(34, 197, 94, 0.15)' : 'none'
+            boxShadow: hovered === 'live' ? '0 0 20px rgba(34, 197, 94, 0.15)' : 'none',
+            opacity: (dataStatus === 'checking' || dataStatus === 'refreshing') ? 0.7 : 1
           }}
         >
-          <div style={{ fontSize: '36px', marginBottom: '16px' }}>📡</div>
+          <div style={{ fontSize: '36px', marginBottom: '16px' }}>
+            {dataStatus === 'live' ? '\uD83D\uDCE1' : dataStatus === 'fallback' ? '\uD83D\uDCC1' : '\u23F3'}
+          </div>
           <div style={{
             fontSize: 'var(--text-lg)',
             fontWeight: '500',
@@ -75,19 +149,19 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
             lineHeight: '1.6',
             marginBottom: '16px'
           }}>
-            Play with real economic data. Make decisions based on actual Fed conditions as of March 2026.
+            Play with real economic data from the Federal Reserve. Make decisions based on actual conditions.
           </div>
           <div style={{
             display: 'inline-block',
             padding: '6px 12px',
-            background: 'rgba(34, 197, 94, 0.1)',
-            border: '1px solid rgba(34, 197, 94, 0.3)',
+            background: badge.bg,
+            border: `1px solid ${badge.border}`,
             borderRadius: '4px',
             fontSize: 'var(--text-xs)',
             letterSpacing: '1px',
-            color: '#22c55e'
+            color: badge.color
           }}>
-            Current data as of March 2026
+            {badge.text}
           </div>
         </button>
 
@@ -115,7 +189,7 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
           }}>
             COMING SOON
           </div>
-          <div style={{ fontSize: '36px', marginBottom: '16px' }}>🎮</div>
+          <div style={{ fontSize: '36px', marginBottom: '16px' }}>{'\uD83C\uDFAE'}</div>
           <div style={{
             fontSize: 'var(--text-lg)',
             fontWeight: '500',
@@ -133,6 +207,32 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
           }}>
             Navigate historical crises and custom scenarios. Oil shocks, banking panics, and more.
           </div>
+        </div>
+      </div>
+
+      {/* Refresh Button — below the cards */}
+      <div style={{ marginTop: '24px', textAlign: 'center' }}>
+        <button
+          onClick={handleRefresh}
+          disabled={dataStatus === 'checking' || dataStatus === 'refreshing'}
+          style={{
+            padding: '8px 20px',
+            fontSize: '11px',
+            fontWeight: '600',
+            letterSpacing: '1.5px',
+            textTransform: 'uppercase',
+            background: 'transparent',
+            border: '1px solid rgba(75, 85, 99, 0.4)',
+            color: '#6b7280',
+            borderRadius: '6px',
+            cursor: (dataStatus === 'checking' || dataStatus === 'refreshing') ? 'wait' : 'pointer',
+            minHeight: 'auto'
+          }}
+        >
+          {dataStatus === 'refreshing' ? 'Refreshing...' : 'Refresh Data'}
+        </button>
+        <div style={{ fontSize: '10px', color: '#4b5563', marginTop: '6px' }}>
+          Fetches latest data from FRED (Federal Reserve Economic Data)
         </div>
       </div>
     </div>

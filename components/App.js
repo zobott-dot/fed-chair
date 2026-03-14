@@ -54,7 +54,7 @@ window.FedChair.Components.App = function() {
   useEffect(() => {
     const loadData = async () => {
       const API = window.FedChair.Data.API;
-      const data = await API.getAllGameData();
+      const data = await API.getAllGameData(true);
 
       setRawData(data);
       setStatementPhrases(data.statementPhrases);
@@ -315,9 +315,13 @@ window.FedChair.Components.App = function() {
 
   // Start new game — reset to mode selection
   const handleNewGame = async () => {
+    // Clear FRED cache so fresh data is fetched
+    if (window.FedChair.Data.clearFredCache) {
+      window.FedChair.Data.clearFredCache();
+    }
     // Re-fetch data in case it changed
     const API = window.FedChair.Data.API;
-    const data = await API.getAllGameData();
+    const data = await API.getAllGameData(true);
     setRawData(data);
 
     // Reset to mode selection
