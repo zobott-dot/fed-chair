@@ -57,7 +57,7 @@ window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame
   const formatRate = (rate) => `${(rate - 0.125).toFixed(2)}% - ${(rate + 0.125).toFixed(2)}%`;
 
   return (
-    <main style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
+    <main style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
       <style>{`
         @keyframes scanLine {
           0% { transform: scaleX(0); opacity: 0; }

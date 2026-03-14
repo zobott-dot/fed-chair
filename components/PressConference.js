@@ -238,7 +238,7 @@ window.FedChair.Components.PressConference = function({
       impact.interpretation.includes('dovish') ? '#22c55e' : '#60a5fa';
 
     return (
-      <main style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
+      <main style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ ...pcPanelStyle, padding: '32px' }}>
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '28px' }}>
@@ -339,7 +339,7 @@ window.FedChair.Components.PressConference = function({
   const isNewFormat = currentQuestion.isNewFormat;
 
   return (
-    <main style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
+    <main style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
 
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: '20px' }}>

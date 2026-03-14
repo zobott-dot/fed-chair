@@ -70,7 +70,7 @@ window.FedChair.Components.Aftermath = function({
     };
 
     return (
-      <main style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
+      <main style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{
           background: resultStyle.bg,
           border: `2px solid ${resultStyle.border}`,
