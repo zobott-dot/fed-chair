@@ -328,8 +328,38 @@ window.FedChair.Components.Aftermath = function({
             </div>
           )}
 
+          {/* Deferred Press Conference Summary */}
+          {aftermathPhase >= 1 && pressConferenceImpact?.deferred && (
+            <div className="animate-d1" style={{
+              ...panelStyle,
+              padding: '16px 20px',
+              marginBottom: '16px',
+              borderLeft: '3px solid #6b7280'
+            }}>
+              <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', marginBottom: '8px', fontWeight: '600' }}>
+                PRESS CONFERENCE
+              </div>
+              <div style={{
+                fontSize: 'var(--text-sm, 12px)',
+                fontFamily: 'var(--font-prose, "Source Sans 3", sans-serif)',
+                color: '#9ca3af',
+                lineHeight: '1.7',
+                marginBottom: '8px'
+              }}>
+                {pressConferenceImpact.deferSummary}
+              </div>
+              <div style={{
+                fontSize: 'var(--text-xs)',
+                fontFamily: '"IBM Plex Mono", monospace',
+                color: pressConferenceImpact.totalCredibilityChange >= 0 ? '#22c55e' : '#eab308'
+              }}>
+                Credibility: {pressConferenceImpact.totalCredibilityChange >= 0 ? '+' : ''}{pressConferenceImpact.totalCredibilityChange} (includes -2 defer penalty)
+              </div>
+            </div>
+          )}
+
           {/* Press Conference Recap */}
-          {aftermathPhase >= 3 && pressConferenceImpact && (
+          {aftermathPhase >= 3 && pressConferenceImpact && !pressConferenceImpact.deferred && (
             <div className="animate-d2" style={panelStyle}>
               <div style={{
                 padding: '14px 16px',

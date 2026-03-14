@@ -199,6 +199,12 @@ window.FedChair.Components.App = function() {
     })();
     gameState.lastDotShiftData = dotShiftData;
 
+    // Apply credibility penalty for using standard language (speed run)
+    if (gameState.usedStandardLanguage) {
+      gameState.credibility = Math.max(0, gameState.credibility - 2);
+      gameState.usedStandardLanguage = false;
+    }
+
     // Store balance sheet decision in gameState (Phase 7.6)
     if (gameState.balanceSheet) {
       gameState.balanceSheet.currentPosture = balanceSheetPosture;

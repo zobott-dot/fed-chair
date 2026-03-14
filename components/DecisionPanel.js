@@ -267,6 +267,32 @@ window.FedChair.Components.DecisionPanel = function({
     }
   };
 
+  const [usedAutoSelect, setUsedAutoSelect] = React.useState(false);
+
+  const autoSelectStatements = () => {
+    const expandedData = window.FedChair.Data.statementPhrasesExpanded;
+    if (!expandedData) return;
+
+    // Determine target stance based on rate decision
+    let targetStance;
+    if (rateDecision > 0) targetStance = 'hawkish';
+    else if (rateDecision < 0) targetStance = 'dovish';
+    else targetStance = 'neutral';
+
+    const autoSelectedIds = [];
+    for (const [catKey, category] of Object.entries(expandedData)) {
+      const matchingSub = category.subcategories.find(sub => sub.stance === targetStance);
+      if (matchingSub && matchingSub.phrases.length > 0) {
+        const randomPhrase = matchingSub.phrases[Math.floor(Math.random() * matchingSub.phrases.length)];
+        autoSelectedIds.push(randomPhrase.id);
+      }
+    }
+
+    setSelectedStatements(autoSelectedIds);
+    setUsedAutoSelect(true);
+    if (gameState) gameState.usedStandardLanguage = true;
+  };
+
   const meetingNumber = gameState?.meetingNumber || 1;
   const totalMeetings = gameState?.totalMeetings || 8;
   const credibility = gameState?.credibility || 100;
@@ -681,21 +707,58 @@ window.FedChair.Components.DecisionPanel = function({
                 flexWrap: 'wrap',
                 gap: '8px'
               }}>
-                <div style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}>
-                  BUILD STATEMENT
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                  <div style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}>
+                    BUILD STATEMENT
+                  </div>
+                  <div style={{
+                    padding: '4px 12px',
+                    borderRadius: '4px',
+                    fontSize: 'var(--text-xs)',
+                    fontWeight: '500',
+                    background: `${hawkLabel.color}20`,
+                    color: hawkLabel.color,
+                    border: `1px solid ${hawkLabel.color}40`
+                  }}>
+                    {hawkLabel.label}
+                  </div>
                 </div>
-                <div style={{
-                  padding: '4px 12px',
-                  borderRadius: '4px',
-                  fontSize: 'var(--text-xs)',
-                  fontWeight: '500',
-                  background: `${hawkLabel.color}20`,
-                  color: hawkLabel.color,
-                  border: `1px solid ${hawkLabel.color}40`
-                }}>
-                  {hawkLabel.label}
-                </div>
+                {selectedStatements.length === 0 && (
+                  <button
+                    onClick={autoSelectStatements}
+                    disabled={decisionPublished}
+                    style={{
+                      padding: '8px 16px',
+                      fontSize: '11px',
+                      fontWeight: '600',
+                      letterSpacing: '1.5px',
+                      textTransform: 'uppercase',
+                      background: 'transparent',
+                      border: '1px solid rgba(75, 85, 99, 0.4)',
+                      color: '#6b7280',
+                      borderRadius: '6px',
+                      cursor: decisionPublished ? 'not-allowed' : 'pointer',
+                      opacity: decisionPublished ? 0.5 : 1,
+                      minHeight: 'auto',
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
+                    Use Standard Language
+                  </button>
+                )}
               </div>
+
+              {usedAutoSelect && selectedStatements.length > 0 && (
+                <div style={{
+                  fontSize: '11px',
+                  color: '#6b7280',
+                  fontStyle: 'italic',
+                  marginBottom: '10px',
+                  textAlign: 'center'
+                }}>
+                  Standard language selected — consistent with a {rateDecision > 0 ? 'hawkish' : rateDecision < 0 ? 'dovish' : 'neutral'} posture. You may override any selection below, or publish as-is.
+                </div>
+              )}
 
               {/* Loading indicator (non-accordion fallback) */}
               {showLoadingIndicator && (

@@ -190,6 +190,40 @@ window.FedChair.Components.PressConference = function({
     onComplete(impact);
   };
 
+  const handleDeferToRemarks = () => {
+    const actionTone = rateDecision > 0 ? 1 : rateDecision < 0 ? -1 : 0;
+    const statementTone = hawkScore > 2 ? 1 : hawkScore < -2 ? -1 : 0;
+    const overallTone = actionTone + statementTone;
+
+    const autoScoredResponses = questions.map(q => {
+      let bestIdx = 0;
+      let bestFit = Infinity;
+      q.responses.forEach((r, idx) => {
+        const responseDirection = r.hawkShift > 0 ? 1 : r.hawkShift < 0 ? -1 : 0;
+        const fit = r.hawkShift !== undefined
+          ? Math.abs(responseDirection - Math.sign(overallTone))
+          : (r.credibilityImpact === 'positive' ? 0 : r.credibilityImpact === 'neutral' ? 1 : 2);
+        if (fit < bestFit || (fit === bestFit && Math.random() > 0.5)) {
+          bestFit = fit;
+          bestIdx = idx;
+        }
+      });
+
+      const response = q.responses[bestIdx];
+      return scoreResponse(response, rateDecision, hawkScore, []);
+    });
+
+    const deferPenalty = -2;
+    const impact = calculatePressConferenceImpact(autoScoredResponses);
+    impact.totalCredibilityChange += deferPenalty;
+    impact.deferred = true;
+
+    const toneLabel = overallTone > 0 ? 'hawkish' : overallTone < 0 ? 'dovish' : 'measured';
+    impact.deferSummary = `You deferred to prepared remarks. Your staff delivered ${toneLabel} responses consistent with today's ${rateDecision > 0 ? 'rate hike' : rateDecision < 0 ? 'rate cut' : 'hold'} decision.`;
+
+    onComplete(impact);
+  };
+
   // Mood bar position: -10 to +10 mapped to 0-100%
   const moodBarPos = Math.max(0, Math.min(100, 50 + cumulativeMood * 5));
 
@@ -347,6 +381,33 @@ window.FedChair.Components.PressConference = function({
           {hawkLabel.label}
         </span>
       </div>
+
+      {/* Defer to Prepared Remarks — speed run option */}
+      {currentQuestionIndex === 0 && !showFeedback && (
+        <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+          <button
+            onClick={handleDeferToRemarks}
+            style={{
+              padding: '10px 20px',
+              fontSize: '11px',
+              fontWeight: '600',
+              letterSpacing: '1.5px',
+              textTransform: 'uppercase',
+              background: 'transparent',
+              border: '1px solid rgba(75, 85, 99, 0.4)',
+              color: '#6b7280',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              minHeight: 'auto'
+            }}
+          >
+            Defer to Prepared Remarks
+          </button>
+          <div style={{ fontSize: '10px', color: '#4b5563', marginTop: '6px' }}>
+            Staff handles Q&A — small credibility cost
+          </div>
+        </div>
+      )}
 
       {/* Progress Dots */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '12px' }}>
