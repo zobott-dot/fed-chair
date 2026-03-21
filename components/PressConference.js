@@ -5,7 +5,7 @@ window.FedChair.Components = window.FedChair.Components || {};
 
 const pcPanelStyle = {
   background: 'linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.7) 100%)',
-  border: '1px solid rgba(75, 85, 99, 0.3)',
+  border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
   borderRadius: '12px',
   overflow: 'hidden'
 };
@@ -490,7 +490,7 @@ window.FedChair.Components.PressConference = function({
 
         <div style={{
           padding: '14px 16px',
-          borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
+          borderBottom: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
           background: 'rgba(59, 130, 246, 0.08)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -560,7 +560,7 @@ window.FedChair.Components.PressConference = function({
                     : 'rgba(17, 24, 39, 0.5)',
                   border: isSelected
                     ? '1px solid rgba(59, 130, 246, 0.5)'
-                    : '1px solid rgba(75, 85, 99, 0.3)',
+                    : '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
                   borderRadius: '10px',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
@@ -609,7 +609,7 @@ window.FedChair.Components.PressConference = function({
             letterSpacing: '2px',
             background: currentSelection !== null
               ? 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)'
-              : 'rgba(75, 85, 99, 0.3)',
+              : 'var(--atmo-border, rgba(75, 85, 99, 0.3))',
             border: 'none',
             color: currentSelection !== null ? '#fff' : '#6b7280',
             borderRadius: '8px',
@@ -631,7 +631,7 @@ window.FedChair.Components.PressConference = function({
             padding: '14px 16px',
             background: 'rgba(17, 24, 39, 0.5)',
             borderRadius: '10px',
-            border: '1px solid rgba(75, 85, 99, 0.3)',
+            border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
             marginBottom: '12px'
           }}>
             <div style={{ fontSize: '10px', color: '#6b7280', letterSpacing: '1px', marginBottom: '6px' }}>YOUR RESPONSE</div>
@@ -669,7 +669,7 @@ window.FedChair.Components.PressConference = function({
                     padding: '12px 16px',
                     background: 'rgba(17, 24, 39, 0.5)',
                     borderRadius: '10px',
-                    border: '1px solid rgba(75, 85, 99, 0.3)',
+                    border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
                     marginBottom: '12px',
                     display: 'flex',
                     alignItems: 'center',

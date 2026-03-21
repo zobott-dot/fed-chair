@@ -18,6 +18,7 @@ window.FedChair.Components.Header = function({
   setLearnMode
 }) {
   const [showConfirm, setShowConfirm] = React.useState(false);
+  const atmo = React.useContext(window.FedChair.Components.AtmosphereContext);
   const views = ['dashboard', 'briefing', 'decision', ...(showReaction ? ['aftermath'] : [])];
 
   const handleNewGameClick = () => {
@@ -37,7 +38,7 @@ window.FedChair.Components.Header = function({
   return (
     <header style={{
       padding: '12px 0',
-      borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
+      borderBottom: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
       background: 'rgba(10, 15, 26, 0.95)',
       backdropFilter: 'blur(10px)',
       position: 'sticky',
@@ -126,6 +127,30 @@ window.FedChair.Components.Header = function({
             LEARN
           </button>
 
+          {/* Atmosphere Toggle */}
+          <button
+            className={`atmo-toggle${atmo.enabled ? ' active' : ''}`}
+            onClick={() => atmo.setEnabled(!atmo.enabled)}
+            style={{ minHeight: 'auto' }}
+          >
+            ATMO
+            {atmo.enabled && (
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: '5px',
+                  height: '5px',
+                  borderRadius: '50%',
+                  background: 'var(--atmo-band, transparent)',
+                  marginLeft: '5px',
+                  verticalAlign: 'middle',
+                  boxShadow: '0 0 4px var(--atmo-band, transparent)',
+                  transition: 'background var(--atmo-transition, 0ms) ease-in-out',
+                }}
+              />
+            )}
+          </button>
+
           <div style={{
             padding: '8px 14px',
             background: gameMode === 'scenario' ? 'rgba(168, 85, 247, 0.1)' : 'rgba(34, 197, 94, 0.1)',
@@ -188,7 +213,7 @@ window.FedChair.Components.Header = function({
                 style={{
                   padding: '12px 24px',
                   fontSize: '13px',
-                  background: 'rgba(75, 85, 99, 0.3)',
+                  background: 'var(--atmo-border, rgba(75, 85, 99, 0.3))',
                   border: '1px solid rgba(75, 85, 99, 0.5)',
                   color: '#9ca3af',
                   borderRadius: '6px',
@@ -229,7 +254,7 @@ window.FedChair.Components.Header = function({
               fontSize: 'var(--text-sm)',
               letterSpacing: '1px',
               background: activeView === view ? 'rgba(59, 130, 246, 0.2)' : 'rgba(17, 24, 39, 0.5)',
-              border: activeView === view ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid rgba(75, 85, 99, 0.3)',
+              border: activeView === view ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
               color: activeView === view ? '#60a5fa' : '#8b95a5',
               borderRadius: '6px',
               cursor: 'pointer',

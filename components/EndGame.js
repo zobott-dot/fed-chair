@@ -6,7 +6,7 @@ window.FedChair.Components = window.FedChair.Components || {};
 
 const endGamePanelStyle = {
   background: 'linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.7) 100%)',
-  border: '1px solid rgba(75, 85, 99, 0.3)',
+  border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
   borderRadius: '12px',
   overflow: 'hidden'
 };
@@ -182,7 +182,7 @@ window.FedChair.Components.EndGame = function({ gameState, assessment, onNewGame
                   </div>
                   <div style={{
                     height: '6px',
-                    background: 'rgba(75, 85, 99, 0.3)',
+                    background: 'var(--atmo-border, rgba(75, 85, 99, 0.3))',
                     borderRadius: '3px',
                     overflow: 'hidden'
                   }}>

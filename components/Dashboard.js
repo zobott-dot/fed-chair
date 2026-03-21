@@ -5,7 +5,7 @@ window.FedChair.Components = window.FedChair.Components || {};
 
 const panelStyle = {
   background: 'linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.7) 100%)',
-  border: '1px solid rgba(75, 85, 99, 0.3)',
+  border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
   borderRadius: '12px',
   overflow: 'hidden'
 };
@@ -65,7 +65,7 @@ window.FedChair.Components.Dashboard = function({
       {gameState && (
         <div style={{
           background: 'rgba(17, 24, 39, 0.6)',
-          border: '1px solid rgba(75, 85, 99, 0.3)',
+          border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
           borderRadius: '8px',
           padding: '12px 16px',
           marginBottom: '16px',
@@ -90,7 +90,7 @@ window.FedChair.Components.Dashboard = function({
                     flex: 1,
                     height: '4px',
                     borderRadius: '2px',
-                    background: i < meetingNumber ? '#3b82f6' : 'rgba(75, 85, 99, 0.3)'
+                    background: i < meetingNumber ? '#3b82f6' : 'var(--atmo-border, rgba(75, 85, 99, 0.3))'
                   }}
                 />
               ))}
@@ -122,7 +122,7 @@ window.FedChair.Components.Dashboard = function({
           marginBottom: '16px',
           background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(17, 24, 39, 0.8) 100%)'
         }}>
-          <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))' }}>
             <span style={{ fontSize: 'var(--text-sm)', color: '#60a5fa', letterSpacing: '1.5px', fontWeight: '600' }}>
               📰 SINCE LAST MEETING
             </span>
@@ -177,7 +177,7 @@ window.FedChair.Components.Dashboard = function({
       {/* Fed Funds Rate Hero */}
       <div style={{
         background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.3) 0%, rgba(17, 24, 39, 0.8) 100%)',
-        border: '1px solid rgba(75, 85, 99, 0.3)',
+        border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
         borderRadius: '12px',
         padding: '20px',
         marginBottom: '16px',
@@ -244,7 +244,7 @@ window.FedChair.Components.Dashboard = function({
       <div className="grid-responsive">
         {/* Inflation */}
         <div style={panelStyle}>
-          <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))' }}>
             <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}><LearnTerm term="Inflation Expectations" learnMode={learnMode}>INFLATION</LearnTerm></span>
           </div>
           <div style={{ padding: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
@@ -268,7 +268,7 @@ window.FedChair.Components.Dashboard = function({
 
         {/* Employment */}
         <div style={panelStyle}>
-          <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))' }}>
             <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}><LearnTerm term="Maximum Employment" learnMode={learnMode}>EMPLOYMENT</LearnTerm></span>
           </div>
           <div style={{ padding: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
@@ -294,7 +294,7 @@ window.FedChair.Components.Dashboard = function({
         <div style={panelStyle}>
           <div style={{
             padding: '12px 16px',
-            borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
+            borderBottom: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
@@ -367,7 +367,7 @@ window.FedChair.Components.Dashboard = function({
 
         {/* News */}
         <div style={panelStyle}>
-          <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))' }}>
             <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}>NEWS</span>
           </div>
           <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
@@ -388,7 +388,7 @@ window.FedChair.Components.Dashboard = function({
 
       {/* Markets */}
       <div style={{ ...panelStyle, marginTop: '16px' }}>
-        <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(75, 85, 99, 0.3)' }}>
+        <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))' }}>
           <span style={{ fontSize: 'var(--text-sm)', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600' }}><LearnTerm term="Financial Conditions" learnMode={learnMode}>MARKETS</LearnTerm></span>
         </div>
         <div style={{ padding: '12px' }}>

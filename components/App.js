@@ -5,7 +5,7 @@ window.FedChair = window.FedChair || {};
 window.FedChair.Components = window.FedChair.Components || {};
 
 const { useState, useEffect, useCallback } = React;
-const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, PressConference, Aftermath, Transition, EndGame, LearnTerm } = window.FedChair.Components;
+const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, PressConference, Aftermath, Transition, EndGame, LearnTerm, AtmosphereProvider, StatusBand, AtmosphereContext } = window.FedChair.Components;
 const { calculateMarketReaction } = window.FedChair.Engine;
 const { calculateScore, calculateHawkScore, getHawkLabel } = window.FedChair.Engine;
 const { createGameState, advanceToNextMeeting, gameStateToEconomicData, generateBriefing, generateCommitteeDots } = window.FedChair.Engine;
@@ -47,6 +47,7 @@ window.FedChair.Components.App = function() {
   const [endGameAssessment, setEndGameAssessment] = useState(null);
   const [activeStatementPhrases, setActiveStatementPhrases] = useState(null);
   const [learnMode, setLearnMode] = useState(false);
+  const [atmosphereEnabled, setAtmosphereEnabled] = useState(false);
   const [balanceSheetPosture, setBalanceSheetPosture] = useState('hold');
   const [balanceSheetPace, setBalanceSheetPace] = useState(60);
 
@@ -363,36 +364,40 @@ window.FedChair.Components.App = function() {
   // Show transition screen
   if (transitioning) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(180deg, #0a0f1a 0%, #0d1117 100%)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#e5e7eb'
-      }}>
-        <div style={{ fontSize: '14px', color: '#60a5fa', letterSpacing: '2px', marginBottom: '20px' }}>
-          ADVANCING TO NEXT MEETING
-        </div>
-        <div style={{ fontSize: '24px', color: '#9ca3af' }}>
-          {gameState.meetingDisplayDate}
-        </div>
+      <AtmosphereProvider gameState={gameState} enabled={atmosphereEnabled} setEnabled={setAtmosphereEnabled}>
         <div style={{
-          marginTop: '30px',
-          width: '200px',
-          height: '2px',
-          background: '#1f2937',
-          borderRadius: '1px',
-          overflow: 'hidden'
+          minHeight: '100vh',
+          background: 'linear-gradient(180deg, var(--atmo-bg, #0a0f1a) 0%, var(--atmo-bg-end, #0d1117) 100%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#e5e7eb',
+          transition: 'background var(--atmo-transition, 0ms) ease-in-out'
         }}>
+          <StatusBand learnMode={learnMode} />
+          <div style={{ fontSize: '14px', color: '#60a5fa', letterSpacing: '2px', marginBottom: '20px' }}>
+            ADVANCING TO NEXT MEETING
+          </div>
+          <div style={{ fontSize: '24px', color: '#9ca3af' }}>
+            {gameState.meetingDisplayDate}
+          </div>
           <div style={{
-            height: '100%',
-            background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
-            animation: 'loadingBar 0.8s ease-in-out forwards'
-          }} />
+            marginTop: '30px',
+            width: '200px',
+            height: '2px',
+            background: '#1f2937',
+            borderRadius: '1px',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              height: '100%',
+              background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
+              animation: 'loadingBar 0.8s ease-in-out forwards'
+            }} />
+          </div>
         </div>
-      </div>
+      </AtmosphereProvider>
     );
   }
 
@@ -407,123 +412,128 @@ window.FedChair.Components.App = function() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(180deg, #0a0f1a 0%, #0d1117 100%)',
-      color: '#e5e7eb'
-    }}>
-      <Header
-        activeView={activeView}
-        setActiveView={setActiveView}
-        showReaction={showReaction}
-        nextMeeting={economicData.nextMeeting}
-        meetingNumber={gameState.meetingNumber}
-        totalMeetings={gameState.totalMeetings}
-        gameEnded={gameState.gamePhase === 'ended'}
-        onNewGame={handleNewGame}
-        gameMode={gameState.mode}
-        shimmerKey={shimmerKey}
-        learnMode={learnMode}
-        setLearnMode={setLearnMode}
-      />
+    <AtmosphereProvider gameState={gameState} enabled={atmosphereEnabled} setEnabled={setAtmosphereEnabled}>
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(180deg, var(--atmo-bg, #0a0f1a) 0%, var(--atmo-bg-end, #0d1117) 100%)',
+        color: '#e5e7eb',
+        transition: 'background var(--atmo-transition, 0ms) ease-in-out'
+      }}>
+        <StatusBand learnMode={learnMode} />
 
-      <MeetingBanner
-        nextMeeting={economicData.nextMeeting}
-        meetingNumber={gameState.meetingNumber}
-        totalMeetings={gameState.totalMeetings}
-        marketExpects={gameState.marketExpects}
-        credibility={gameState.credibility}
-      />
-
-      {activeView === 'pressConference' && marketReaction && (
-        <PressConference
-          gameState={gameState}
-          rateDecision={rateDecision}
-          hawkScore={hawkScore}
-          hawkLabel={hawkLabel}
-          marketReaction={marketReaction}
-          selectedStatements={selectedStatements}
-          onComplete={handlePressConferenceComplete}
-          learnMode={learnMode}
-        />
-      )}
-
-      {activeView === 'endgame' && endGameAssessment && (
-        <EndGame
-          gameState={gameState}
-          assessment={endGameAssessment}
-          onNewGame={handleNewGame}
-        />
-      )}
-
-      {activeView === 'aftermath' && showReaction && (
-        <Aftermath
-          marketReaction={marketReaction}
-          score={score}
-          rateDecision={rateDecision}
-          currentRate={currentRate}
-          selectedStatements={selectedStatements}
-          hawkLabel={hawkLabel}
-          aftermathPhase={aftermathPhase}
-          economicData={economicData}
-          gameState={gameState}
-          onAdvance={handleAdvanceToNextMeeting}
-          onNewGame={handleNewGame}
-          pressConferenceImpact={pressConferenceImpact}
-          learnMode={learnMode}
-        />
-      )}
-
-      {activeView === 'briefing' && briefingData && (
-        <Briefing
-          briefingData={briefingData}
-          gameState={gameState}
+        <Header
+          activeView={activeView}
           setActiveView={setActiveView}
+          showReaction={showReaction}
+          nextMeeting={economicData.nextMeeting}
+          meetingNumber={gameState.meetingNumber}
+          totalMeetings={gameState.totalMeetings}
+          gameEnded={gameState.gamePhase === 'ended'}
+          onNewGame={handleNewGame}
+          gameMode={gameState.mode}
+          shimmerKey={shimmerKey}
           learnMode={learnMode}
+          setLearnMode={setLearnMode}
         />
-      )}
 
-      {activeView === 'decision' && (
-        <DecisionPanel
-          economicData={economicData}
-          statementPhrases={statementPhrases}
-          currentRate={currentRate}
-          gameMode="full"
-          setGameMode={() => {}}
-          rateDecision={rateDecision}
-          setRateDecision={setRateDecision}
-          selectedStatements={selectedStatements}
-          setSelectedStatements={setSelectedStatements}
-          decisionPublished={decisionPublished}
-          hawkLabel={hawkLabel}
-          onDecision={(bps) => setRateDecision(bps)}
-          onPublish={handlePublish}
-          onReset={() => {}}
-          gameState={gameState}
-          dotSelections={dotSelections}
-          setDotSelections={setDotSelections}
-          onStatementPhrasesChange={setActiveStatementPhrases}
-          learnMode={learnMode}
-          balanceSheetPosture={balanceSheetPosture}
-          setBalanceSheetPosture={setBalanceSheetPosture}
-          balanceSheetPace={balanceSheetPace}
-          setBalanceSheetPace={setBalanceSheetPace}
+        <MeetingBanner
+          nextMeeting={economicData.nextMeeting}
+          meetingNumber={gameState.meetingNumber}
+          totalMeetings={gameState.totalMeetings}
+          marketExpects={gameState.marketExpects}
+          credibility={gameState.credibility}
         />
-      )}
 
-      {activeView === 'dashboard' && (
-        <Dashboard
-          economicData={economicData}
-          boardOfGovernors={activeBoardOfGovernors}
-          regionalPresidents={regionalPresidents}
-          newsHeadlines={newsHeadlines}
-          setActiveView={setActiveView}
-          gameState={gameState}
-          learnMode={learnMode}
-        />
-      )}
+        {activeView === 'pressConference' && marketReaction && (
+          <PressConference
+            gameState={gameState}
+            rateDecision={rateDecision}
+            hawkScore={hawkScore}
+            hawkLabel={hawkLabel}
+            marketReaction={marketReaction}
+            selectedStatements={selectedStatements}
+            onComplete={handlePressConferenceComplete}
+            learnMode={learnMode}
+          />
+        )}
 
-      <Footer />
-    </div>
+        {activeView === 'endgame' && endGameAssessment && (
+          <EndGame
+            gameState={gameState}
+            assessment={endGameAssessment}
+            onNewGame={handleNewGame}
+          />
+        )}
+
+        {activeView === 'aftermath' && showReaction && (
+          <Aftermath
+            marketReaction={marketReaction}
+            score={score}
+            rateDecision={rateDecision}
+            currentRate={currentRate}
+            selectedStatements={selectedStatements}
+            hawkLabel={hawkLabel}
+            aftermathPhase={aftermathPhase}
+            economicData={economicData}
+            gameState={gameState}
+            onAdvance={handleAdvanceToNextMeeting}
+            onNewGame={handleNewGame}
+            pressConferenceImpact={pressConferenceImpact}
+            learnMode={learnMode}
+          />
+        )}
+
+        {activeView === 'briefing' && briefingData && (
+          <Briefing
+            briefingData={briefingData}
+            gameState={gameState}
+            setActiveView={setActiveView}
+            learnMode={learnMode}
+          />
+        )}
+
+        {activeView === 'decision' && (
+          <DecisionPanel
+            economicData={economicData}
+            statementPhrases={statementPhrases}
+            currentRate={currentRate}
+            gameMode="full"
+            setGameMode={() => {}}
+            rateDecision={rateDecision}
+            setRateDecision={setRateDecision}
+            selectedStatements={selectedStatements}
+            setSelectedStatements={setSelectedStatements}
+            decisionPublished={decisionPublished}
+            hawkLabel={hawkLabel}
+            onDecision={(bps) => setRateDecision(bps)}
+            onPublish={handlePublish}
+            onReset={() => {}}
+            gameState={gameState}
+            dotSelections={dotSelections}
+            setDotSelections={setDotSelections}
+            onStatementPhrasesChange={setActiveStatementPhrases}
+            learnMode={learnMode}
+            balanceSheetPosture={balanceSheetPosture}
+            setBalanceSheetPosture={setBalanceSheetPosture}
+            balanceSheetPace={balanceSheetPace}
+            setBalanceSheetPace={setBalanceSheetPace}
+          />
+        )}
+
+        {activeView === 'dashboard' && (
+          <Dashboard
+            economicData={economicData}
+            boardOfGovernors={activeBoardOfGovernors}
+            regionalPresidents={regionalPresidents}
+            newsHeadlines={newsHeadlines}
+            setActiveView={setActiveView}
+            gameState={gameState}
+            learnMode={learnMode}
+          />
+        )}
+
+        <Footer />
+      </div>
+    </AtmosphereProvider>
   );
 };
