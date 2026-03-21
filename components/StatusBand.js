@@ -8,6 +8,9 @@ window.FedChair.Components.StatusBand = function({ learnMode }) {
   const [showTooltip, setShowTooltip] = React.useState(false);
   const config = window.FedChair.Data.AtmosphereConfig;
 
+  // DEBUG: Log render state
+  console.log('[StatusBand] render, enabled:', atmo.enabled, 'band color:', atmo.enabled ? `var(--atmo-band, transparent)` : 'N/A', 'channels:', atmo.channels);
+
   if (!atmo.enabled) return null;
 
   const bandColor = `var(--atmo-band, transparent)`;

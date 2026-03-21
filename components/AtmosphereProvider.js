@@ -261,11 +261,30 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
     const markets = gameState.markets || {};
     const credibility = gameState.credibility;
 
-    return {
+    const result = {
       inflation: computeInflationStress(economy, lastEconomy, config.channels.inflation),
       recession: computeRecessionStress(economy, lastEconomy, config.channels.recession),
       financial: computeFinancialStress(markets, credibility, config.channels.financial),
     };
+
+    // DEBUG: Log raw inputs and computed channels
+    console.log('[Atmosphere] Raw economy:', {
+      pceInflation: economy.pceInflation,
+      gdpGrowth: economy.gdpGrowth,
+      unemploymentRate: economy.unemploymentRate,
+      fullEconomyKeys: Object.keys(economy),
+    });
+    console.log('[Atmosphere] Raw markets:', {
+      vix: markets.vix,
+      treasury10y: markets.treasury10y,
+      treasury2y: markets.treasury2y,
+      fullMarketsKeys: Object.keys(markets),
+    });
+    console.log('[Atmosphere] Credibility:', credibility);
+    console.log('[Atmosphere] Full gameState.economy:', JSON.parse(JSON.stringify(economy)));
+    console.log('[Atmosphere] Computed channels:', result);
+
+    return result;
   }, [
     gameState?.economy?.pceInflation,
     gameState?.economy?.gdpGrowth,
@@ -311,6 +330,15 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
     wrapper.style.setProperty('--atmo-border', palette.border);
     wrapper.style.setProperty('--atmo-accent', palette.accent);
     wrapper.style.setProperty('--atmo-band', palette.band);
+
+    // DEBUG: Log actual computed CSS var values on the DOM element
+    console.log('[Atmosphere] CSS vars on DOM:', {
+      bg: wrapper.style.getPropertyValue('--atmo-bg'),
+      border: wrapper.style.getPropertyValue('--atmo-border'),
+      band: wrapper.style.getPropertyValue('--atmo-band'),
+      accent: wrapper.style.getPropertyValue('--atmo-accent'),
+      transition: wrapper.style.getPropertyValue('--atmo-transition'),
+    });
 
     // Reset transition duration after it fires
     if (duration > 0) {
