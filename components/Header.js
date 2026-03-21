@@ -134,18 +134,18 @@ window.FedChair.Components.Header = function({
             style={{ minHeight: 'auto' }}
           >
             ATMO
-            {atmo.enabled && (
+            {atmo.enabled && atmo.palette && (
               <span
                 style={{
                   display: 'inline-block',
                   width: '5px',
                   height: '5px',
                   borderRadius: '50%',
-                  background: 'var(--atmo-band, transparent)',
+                  background: atmo.palette.band,
                   marginLeft: '5px',
                   verticalAlign: 'middle',
-                  boxShadow: '0 0 4px var(--atmo-band, transparent)',
-                  transition: 'background var(--atmo-transition, 0ms) ease-in-out',
+                  boxShadow: `0 0 4px ${atmo.palette.band}`,
+                  transition: 'background 500ms ease-in-out',
                 }}
               />
             )}

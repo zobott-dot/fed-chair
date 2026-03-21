@@ -11,6 +11,22 @@ const { calculateScore, calculateHawkScore, getHawkLabel } = window.FedChair.Eng
 const { createGameState, advanceToNextMeeting, gameStateToEconomicData, generateBriefing, generateCommitteeDots } = window.FedChair.Engine;
 const { applyPressConferenceToMarketReaction, calculateEndOfCampaignAssessment } = window.FedChair.Engine;
 
+// Inner wrapper that reads atmosphere context and applies background
+function AtmosphereGameWrapper({ children }) {
+  const atmo = React.useContext(AtmosphereContext);
+  const palette = atmo.palette || window.FedChair.Data.AtmosphereConfig.colors.neutral;
+  return (
+    <div style={{
+      minHeight: '100vh',
+      background: `linear-gradient(180deg, ${palette.bg} 0%, ${palette.bgGradientEnd} 100%)`,
+      color: '#e5e7eb',
+      transition: 'background 500ms ease-in-out',
+    }}>
+      {children}
+    </div>
+  );
+}
+
 window.FedChair.Components.App = function() {
   // Game state (persistent across rounds)
   const [gameState, setGameState] = useState(null);
@@ -365,38 +381,38 @@ window.FedChair.Components.App = function() {
   if (transitioning) {
     return (
       <AtmosphereProvider gameState={gameState} enabled={atmosphereEnabled} setEnabled={setAtmosphereEnabled}>
-        <div style={{
-          minHeight: '100vh',
-          background: 'linear-gradient(180deg, var(--atmo-bg, #0a0f1a) 0%, var(--atmo-bg-end, #0d1117) 100%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#e5e7eb',
-          transition: 'background var(--atmo-transition, 0ms) ease-in-out'
-        }}>
+        <AtmosphereGameWrapper>
           <StatusBand learnMode={learnMode} />
-          <div style={{ fontSize: '14px', color: '#60a5fa', letterSpacing: '2px', marginBottom: '20px' }}>
-            ADVANCING TO NEXT MEETING
-          </div>
-          <div style={{ fontSize: '24px', color: '#9ca3af' }}>
-            {gameState.meetingDisplayDate}
-          </div>
           <div style={{
-            marginTop: '30px',
-            width: '200px',
-            height: '2px',
-            background: '#1f2937',
-            borderRadius: '1px',
-            overflow: 'hidden'
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#e5e7eb',
           }}>
+            <div style={{ fontSize: '14px', color: '#60a5fa', letterSpacing: '2px', marginBottom: '20px' }}>
+              ADVANCING TO NEXT MEETING
+            </div>
+            <div style={{ fontSize: '24px', color: '#9ca3af' }}>
+              {gameState.meetingDisplayDate}
+            </div>
             <div style={{
-              height: '100%',
-              background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
-              animation: 'loadingBar 0.8s ease-in-out forwards'
-            }} />
+              marginTop: '30px',
+              width: '200px',
+              height: '2px',
+              background: '#1f2937',
+              borderRadius: '1px',
+              overflow: 'hidden'
+            }}>
+              <div style={{
+                height: '100%',
+                background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
+                animation: 'loadingBar 0.8s ease-in-out forwards'
+              }} />
+            </div>
           </div>
-        </div>
+        </AtmosphereGameWrapper>
       </AtmosphereProvider>
     );
   }
@@ -413,12 +429,7 @@ window.FedChair.Components.App = function() {
 
   return (
     <AtmosphereProvider gameState={gameState} enabled={atmosphereEnabled} setEnabled={setAtmosphereEnabled}>
-      <div style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(180deg, var(--atmo-bg, #0a0f1a) 0%, var(--atmo-bg-end, #0d1117) 100%)',
-        color: '#e5e7eb',
-        transition: 'background var(--atmo-transition, 0ms) ease-in-out'
-      }}>
+      <AtmosphereGameWrapper>
         <StatusBand learnMode={learnMode} />
 
         <Header
@@ -533,7 +544,7 @@ window.FedChair.Components.App = function() {
         )}
 
         <Footer />
-      </div>
+      </AtmosphereGameWrapper>
     </AtmosphereProvider>
   );
 };

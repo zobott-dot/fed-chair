@@ -8,13 +8,9 @@ window.FedChair.Components.StatusBand = function({ learnMode }) {
   const [showTooltip, setShowTooltip] = React.useState(false);
   const config = window.FedChair.Data.AtmosphereConfig;
 
-  // DEBUG: Log render state
-  console.log('[StatusBand] render, enabled:', atmo.enabled, 'band color:', atmo.enabled ? `var(--atmo-band, transparent)` : 'N/A', 'channels:', atmo.channels);
-
   if (!atmo.enabled) return null;
 
-  const bandColor = `var(--atmo-band, transparent)`;
-  const transMs = `var(--atmo-transition, 0ms)`;
+  const bandColor = atmo.palette ? atmo.palette.band : 'transparent';
 
   return (
     <div
@@ -27,7 +23,7 @@ window.FedChair.Components.StatusBand = function({ learnMode }) {
         background: bandColor,
         boxShadow: `0 0 ${config.statusBand.blur} 2px ${bandColor}`,
         zIndex: 200,
-        transition: `background ${transMs} ease-in-out, box-shadow ${transMs} ease-in-out`,
+        transition: 'background 500ms ease-in-out, box-shadow 500ms ease-in-out',
         cursor: learnMode ? 'pointer' : 'default',
       }}
       onClick={() => learnMode && setShowTooltip(!showTooltip)}

@@ -1,5 +1,6 @@
 // AtmosphereProvider - Visual atmosphere system based on economic conditions
-// Computes stress channels and outputs CSS custom properties for color shifts
+// Sets CSS custom properties on document.documentElement for global availability
+// and exposes palette through React context for direct access.
 
 window.FedChair = window.FedChair || {};
 window.FedChair.Components = window.FedChair.Components || {};
@@ -11,6 +12,7 @@ const AtmosphereContext = React.createContext({
   dominant: null,
   severity: 'stable',
   explanation: '',
+  palette: null,
 });
 
 window.FedChair.Components.AtmosphereContext = AtmosphereContext;
@@ -42,7 +44,6 @@ function toRgba(r, g, b, a) {
 }
 
 function lerpColor(colorA, colorB, t) {
-  // colorA and colorB can be hex or rgba strings
   if (colorA === 'transparent' && colorB === 'transparent') return 'transparent';
   if (colorA === 'transparent') colorA = 'rgba(0,0,0,0)';
   if (colorB === 'transparent') colorB = 'rgba(0,0,0,0)';
@@ -244,9 +245,7 @@ function getExplanation(inflationStress, recessionStress, financialStress, confi
 
 window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, setEnabled, children }) {
   const [transitionDuration, setTransitionDuration] = React.useState(0);
-  const wrapperRef = React.useRef(null);
   const prevMeetingRef = React.useRef(null);
-  const prevViewRef = React.useRef(null);
 
   const config = window.FedChair.Data.AtmosphereConfig;
 
@@ -261,30 +260,11 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
     const markets = gameState.markets || {};
     const credibility = gameState.credibility;
 
-    const result = {
+    return {
       inflation: computeInflationStress(economy, lastEconomy, config.channels.inflation),
       recession: computeRecessionStress(economy, lastEconomy, config.channels.recession),
       financial: computeFinancialStress(markets, credibility, config.channels.financial),
     };
-
-    // DEBUG: Log raw inputs and computed channels
-    console.log('[Atmosphere] Raw economy:', {
-      pceInflation: economy.pceInflation,
-      gdpGrowth: economy.gdpGrowth,
-      unemploymentRate: economy.unemploymentRate,
-      fullEconomyKeys: Object.keys(economy),
-    });
-    console.log('[Atmosphere] Raw markets:', {
-      vix: markets.vix,
-      treasury10y: markets.treasury10y,
-      treasury2y: markets.treasury2y,
-      fullMarketsKeys: Object.keys(markets),
-    });
-    console.log('[Atmosphere] Credibility:', credibility);
-    console.log('[Atmosphere] Full gameState.economy:', JSON.parse(JSON.stringify(economy)));
-    console.log('[Atmosphere] Computed channels:', result);
-
-    return result;
   }, [
     gameState?.economy?.pceInflation,
     gameState?.economy?.gdpGrowth,
@@ -308,7 +288,7 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
     return getExplanation(channels.inflation, channels.recession, channels.financial, config);
   }, [channels.inflation, channels.recession, channels.financial]);
 
-  // Manage transition timing
+  // Manage transition timing for meeting changes
   React.useEffect(() => {
     if (!gameState) return;
     const currentMeeting = gameState.meetingNumber;
@@ -318,34 +298,38 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
     prevMeetingRef.current = currentMeeting;
   }, [gameState?.meetingNumber]);
 
-  // Apply CSS custom properties
+  // Set CSS custom properties on document.documentElement for global availability
   React.useEffect(() => {
-    const wrapper = wrapperRef.current;
-    if (!wrapper) return;
+    const root = document.documentElement;
+    root.style.setProperty('--atmo-bg', palette.bg);
+    root.style.setProperty('--atmo-bg-end', palette.bgGradientEnd);
+    root.style.setProperty('--atmo-border', palette.border);
+    root.style.setProperty('--atmo-accent', palette.accent);
+    root.style.setProperty('--atmo-band', palette.band);
+    root.style.setProperty('--atmo-transition', (transitionDuration || 0) + 'ms');
+  }, [palette, transitionDuration]);
 
-    const duration = transitionDuration || 0;
-    wrapper.style.setProperty('--atmo-transition', duration + 'ms');
-    wrapper.style.setProperty('--atmo-bg', palette.bg);
-    wrapper.style.setProperty('--atmo-bg-end', palette.bgGradientEnd);
-    wrapper.style.setProperty('--atmo-border', palette.border);
-    wrapper.style.setProperty('--atmo-accent', palette.accent);
-    wrapper.style.setProperty('--atmo-band', palette.band);
-
-    // DEBUG: Log actual computed CSS var values on the DOM element
-    console.log('[Atmosphere] CSS vars on DOM:', {
-      bg: wrapper.style.getPropertyValue('--atmo-bg'),
-      border: wrapper.style.getPropertyValue('--atmo-border'),
-      band: wrapper.style.getPropertyValue('--atmo-band'),
-      accent: wrapper.style.getPropertyValue('--atmo-accent'),
-      transition: wrapper.style.getPropertyValue('--atmo-transition'),
-    });
-
-    // Reset transition duration after it fires
-    if (duration > 0) {
-      const timer = setTimeout(() => setTransitionDuration(0), duration + 50);
+  // Reset transition duration after animation completes
+  React.useEffect(() => {
+    if (transitionDuration > 0) {
+      const timer = setTimeout(() => setTransitionDuration(0), transitionDuration + 50);
       return () => clearTimeout(timer);
     }
-  }, [palette, transitionDuration]);
+  }, [transitionDuration]);
+
+  // Clean up document vars on unmount
+  React.useEffect(() => {
+    return () => {
+      const root = document.documentElement;
+      const neutral = config.colors.neutral;
+      root.style.setProperty('--atmo-bg', neutral.bg);
+      root.style.setProperty('--atmo-bg-end', neutral.bgGradientEnd);
+      root.style.setProperty('--atmo-border', neutral.border);
+      root.style.setProperty('--atmo-accent', neutral.accent);
+      root.style.setProperty('--atmo-band', neutral.band);
+      root.style.setProperty('--atmo-transition', '0ms');
+    };
+  }, []);
 
   // Handle toggle transitions
   const handleToggle = React.useCallback((newEnabled) => {
@@ -360,25 +344,12 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
     dominant: explanationData.dominant,
     severity: explanationData.dominant === 'stagflation' ? 'severe' : getSeverity(Math.max(channels.inflation, channels.recession, channels.financial)),
     explanation: explanationData.text,
-  }), [enabled, handleToggle, channels, explanationData]);
-
-  const transMs = transitionDuration || 0;
+    palette,
+  }), [enabled, handleToggle, channels, explanationData, palette]);
 
   return (
     <AtmosphereContext.Provider value={contextValue}>
-      <div
-        ref={wrapperRef}
-        style={{
-          '--atmo-bg': palette.bg,
-          '--atmo-bg-end': palette.bgGradientEnd,
-          '--atmo-border': palette.border,
-          '--atmo-accent': palette.accent,
-          '--atmo-band': palette.band,
-          '--atmo-transition': transMs + 'ms',
-        }}
-      >
-        {children}
-      </div>
+      {children}
     </AtmosphereContext.Provider>
   );
 };
