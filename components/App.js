@@ -5,27 +5,11 @@ window.FedChair = window.FedChair || {};
 window.FedChair.Components = window.FedChair.Components || {};
 
 const { useState, useEffect, useCallback } = React;
-const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, PressConference, Aftermath, Transition, EndGame, LearnTerm, AtmosphereProvider, StatusBand, AtmosphereContext } = window.FedChair.Components;
+const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, PressConference, Aftermath, Transition, EndGame, LearnTerm } = window.FedChair.Components;
 const { calculateMarketReaction } = window.FedChair.Engine;
 const { calculateScore, calculateHawkScore, getHawkLabel } = window.FedChair.Engine;
 const { createGameState, advanceToNextMeeting, gameStateToEconomicData, generateBriefing, generateCommitteeDots } = window.FedChair.Engine;
 const { applyPressConferenceToMarketReaction, calculateEndOfCampaignAssessment } = window.FedChair.Engine;
-
-// Inner wrapper that reads atmosphere context and applies background
-function AtmosphereGameWrapper({ children }) {
-  const atmo = React.useContext(AtmosphereContext);
-  const palette = atmo.palette || window.FedChair.Data.AtmosphereConfig.colors.neutral;
-  return (
-    <div style={{
-      minHeight: '100vh',
-      background: `linear-gradient(180deg, ${palette.bg} 0%, ${palette.bgGradientEnd} 100%)`,
-      color: '#e5e7eb',
-      transition: 'background 500ms ease-in-out',
-    }}>
-      {children}
-    </div>
-  );
-}
 
 window.FedChair.Components.App = function() {
   // Game state (persistent across rounds)
@@ -63,7 +47,6 @@ window.FedChair.Components.App = function() {
   const [endGameAssessment, setEndGameAssessment] = useState(null);
   const [activeStatementPhrases, setActiveStatementPhrases] = useState(null);
   const [learnMode, setLearnMode] = useState(false);
-  const [atmosphereEnabled, setAtmosphereEnabled] = useState(false);
   const [balanceSheetPosture, setBalanceSheetPosture] = useState('hold');
   const [balanceSheetPace, setBalanceSheetPace] = useState(60);
 
@@ -380,40 +363,37 @@ window.FedChair.Components.App = function() {
   // Show transition screen
   if (transitioning) {
     return (
-      <AtmosphereProvider gameState={gameState} enabled={atmosphereEnabled} setEnabled={setAtmosphereEnabled}>
-        <AtmosphereGameWrapper>
-          <StatusBand learnMode={learnMode} />
-          <div style={{
-            minHeight: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#e5e7eb',
-          }}>
-            <div style={{ fontSize: '14px', color: '#60a5fa', letterSpacing: '2px', marginBottom: '20px' }}>
-              ADVANCING TO NEXT MEETING
-            </div>
-            <div style={{ fontSize: '24px', color: '#9ca3af' }}>
-              {gameState.meetingDisplayDate}
-            </div>
-            <div style={{
-              marginTop: '30px',
-              width: '200px',
-              height: '2px',
-              background: '#1f2937',
-              borderRadius: '1px',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                height: '100%',
-                background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
-                animation: 'loadingBar 0.8s ease-in-out forwards'
-              }} />
-            </div>
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(180deg, #0a0f1a 0%, #0d1117 100%)', color: '#e5e7eb' }}>
+        <div style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#e5e7eb',
+        }}>
+          <div style={{ fontSize: '14px', color: '#60a5fa', letterSpacing: '2px', marginBottom: '20px' }}>
+            ADVANCING TO NEXT MEETING
           </div>
-        </AtmosphereGameWrapper>
-      </AtmosphereProvider>
+          <div style={{ fontSize: '24px', color: '#9ca3af' }}>
+            {gameState.meetingDisplayDate}
+          </div>
+          <div style={{
+            marginTop: '30px',
+            width: '200px',
+            height: '2px',
+            background: '#1f2937',
+            borderRadius: '1px',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              height: '100%',
+              background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
+              animation: 'loadingBar 0.8s ease-in-out forwards'
+            }} />
+          </div>
+        </div>
+      </div>
     );
   }
 
@@ -428,11 +408,8 @@ window.FedChair.Components.App = function() {
   }
 
   return (
-    <AtmosphereProvider gameState={gameState} enabled={atmosphereEnabled} setEnabled={setAtmosphereEnabled}>
-      <AtmosphereGameWrapper>
-        <StatusBand learnMode={learnMode} />
-
-        <Header
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(180deg, #0a0f1a 0%, #0d1117 100%)', color: '#e5e7eb' }}>
+      <Header
           activeView={activeView}
           setActiveView={setActiveView}
           showReaction={showReaction}
@@ -543,8 +520,7 @@ window.FedChair.Components.App = function() {
           />
         )}
 
-        <Footer />
-      </AtmosphereGameWrapper>
-    </AtmosphereProvider>
+      <Footer />
+    </div>
   );
 };

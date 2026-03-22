@@ -5,7 +5,7 @@ window.FedChair.Components = window.FedChair.Components || {};
 
 const briefingPanelStyle = {
   background: 'linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.7) 100%)',
-  border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+  border: '1px solid rgba(75, 85, 99, 0.3)',
   borderRadius: '12px',
   overflow: 'hidden'
 };
@@ -124,7 +124,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
             left: toPercent(data.range[0]) + '%',
             width: (toPercent(data.range[1]) - toPercent(data.range[0])) + '%',
             height: '8px',
-            background: 'var(--atmo-border, rgba(75, 85, 99, 0.3))',
+            background: 'rgba(75, 85, 99, 0.3)',
             borderRadius: '4px'
           }} />
           {/* Current marker */}
@@ -202,7 +202,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
             Market Forecast
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <div style={{ width: '20px', height: '6px', background: 'var(--atmo-border, rgba(75, 85, 99, 0.3))', borderRadius: '3px' }} />
+            <div style={{ width: '20px', height: '6px', background: 'rgba(75, 85, 99, 0.3)', borderRadius: '3px' }} />
             Staff Range
           </div>
         </div>
@@ -954,7 +954,7 @@ window.FedChair.Components.Briefing = function({ briefingData, gameState, setAct
                 : 'rgba(17, 24, 39, 0.5)',
               border: activeSection === section.id
                 ? '1px solid rgba(59, 130, 246, 0.4)'
-                : '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+                : '1px solid rgba(75, 85, 99, 0.3)',
               color: activeSection === section.id ? '#60a5fa' : '#8b95a5',
               borderRadius: '6px',
               cursor: 'pointer',

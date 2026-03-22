@@ -5,7 +5,7 @@ window.FedChair.Components = window.FedChair.Components || {};
 
 const panelStyle = {
   background: 'linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.7) 100%)',
-  border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+  border: '1px solid rgba(75, 85, 99, 0.3)',
   borderRadius: '12px',
   overflow: 'hidden'
 };
@@ -53,7 +53,6 @@ window.FedChair.Components.Aftermath = function({
   learnMode
 }) {
   const LearnTerm = window.FedChair.Components.LearnTerm;
-  const atmo = React.useContext(window.FedChair.Components.AtmosphereContext);
   const isGameOver = gameState?.gamePhase === 'ended';
   const endResult = gameState?.endResult;
   const endReason = gameState?.endReason;
@@ -243,7 +242,7 @@ window.FedChair.Components.Aftermath = function({
             <div className="animate-slideIn" style={panelStyle}>
               <div style={{
                 padding: '14px 16px',
-                borderBottom: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+                borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
                 background: marketReaction.surprise < 0
                   ? 'rgba(34, 197, 94, 0.1)'
                   : marketReaction.surprise > 0
@@ -364,7 +363,7 @@ window.FedChair.Components.Aftermath = function({
             <div className="animate-d2" style={panelStyle}>
               <div style={{
                 padding: '14px 16px',
-                borderBottom: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+                borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
                 background: 'rgba(59, 130, 246, 0.1)'
               }}>
                 <div style={{ fontSize: 'var(--text-sm)', letterSpacing: '2px', color: '#9ca3af', fontWeight: '600' }}>
@@ -434,7 +433,7 @@ window.FedChair.Components.Aftermath = function({
           {/* Decision Summary */}
           <div style={{
             background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.3) 0%, rgba(17, 24, 39, 0.8) 100%)',
-            border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+            border: '1px solid rgba(75, 85, 99, 0.3)',
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center'
@@ -564,7 +563,7 @@ window.FedChair.Components.Aftermath = function({
               </div>
               <div style={{
                 height: '8px',
-                background: 'var(--atmo-border, rgba(75, 85, 99, 0.3))',
+                background: 'rgba(75, 85, 99, 0.3)',
                 borderRadius: '4px',
                 overflow: 'hidden'
               }}>
@@ -658,7 +657,7 @@ window.FedChair.Components.Aftermath = function({
                         color: '#d1d5db',
                         lineHeight: '1.7',
                         paddingTop: '10px',
-                        borderTop: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))'
+                        borderTop: '1px solid rgba(75, 85, 99, 0.3)'
                       }}>
                         <span style={{ color: accountabilityColor, fontWeight: '500' }}>DOT-TO-ACTION: </span>
                         {accountabilityText}
@@ -767,7 +766,7 @@ window.FedChair.Components.Aftermath = function({
                       </div>
                       <div style={{
                         height: '5px',
-                        background: 'var(--atmo-border, rgba(75, 85, 99, 0.3))',
+                        background: 'rgba(75, 85, 99, 0.3)',
                         borderRadius: '3px',
                         overflow: 'hidden'
                       }}>
@@ -813,43 +812,13 @@ window.FedChair.Components.Aftermath = function({
                       borderRadius: '4px',
                       background: i < gameState.meetingNumber
                         ? '#3b82f6'
-                        : 'var(--atmo-border, rgba(75, 85, 99, 0.3))'
+                        : 'rgba(75, 85, 99, 0.3)'
                     }}
                   />
                 ))}
               </div>
               <div style={{ fontSize: 'var(--text-xs)', color: '#8b95a5', marginTop: '8px', textAlign: 'center' }}>
                 Meeting {gameState.meetingNumber} of {gameState.totalMeetings}
-              </div>
-            </div>
-          )}
-
-          {/* Atmosphere Learn Mode note */}
-          {aftermathPhase >= 3 && learnMode && atmo.enabled && atmo.explanation && atmo.dominant !== 'stable' && (
-            <div style={{
-              padding: '10px 14px',
-              background: 'rgba(217, 119, 6, 0.06)',
-              borderLeft: '3px solid #D97706',
-              borderRadius: '0 6px 6px 0',
-            }}>
-              <div style={{
-                fontSize: '10px',
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontWeight: 700,
-                color: '#D97706',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                marginBottom: '4px',
-              }}>
-                ATMOSPHERE
-              </div>
-              <div style={{
-                fontSize: '11px',
-                fontFamily: 'var(--font-prose, "Source Sans 3", sans-serif)',
-                color: '#9ca3af',
-                lineHeight: '1.6',
-              }}>
-                {atmo.explanation}
               </div>
             </div>
           )}

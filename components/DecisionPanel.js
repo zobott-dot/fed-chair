@@ -5,7 +5,7 @@ window.FedChair.Components = window.FedChair.Components || {};
 
 const panelStyle = {
   background: 'linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.7) 100%)',
-  border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+  border: '1px solid rgba(75, 85, 99, 0.3)',
   borderRadius: '12px',
   overflow: 'hidden'
 };
@@ -377,7 +377,7 @@ window.FedChair.Components.DecisionPanel = function({
         marginBottom: '16px',
         padding: '12px 16px',
         background: 'rgba(17, 24, 39, 0.6)',
-        border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+        border: '1px solid rgba(75, 85, 99, 0.3)',
         borderRadius: '8px'
       }}>
         <div>
@@ -407,7 +407,7 @@ window.FedChair.Components.DecisionPanel = function({
       <div style={panelStyle}>
         <div style={{
           padding: '16px',
-          borderBottom: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+          borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
           background: 'rgba(30, 58, 138, 0.2)'
         }}>
           <div style={{ fontSize: 'var(--text-base)', letterSpacing: '2px', color: '#9ca3af', marginBottom: '4px', fontWeight: '600' }}>
@@ -456,7 +456,7 @@ window.FedChair.Components.DecisionPanel = function({
                     fontFamily: '"IBM Plex Mono", monospace',
                     fontWeight: '500',
                     background: rateDecision === bps ? `${getDecisionColor(bps)}30` : 'rgba(17, 24, 39, 0.6)',
-                    border: rateDecision === bps ? `2px solid ${getDecisionColor(bps)}` : '2px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+                    border: rateDecision === bps ? `2px solid ${getDecisionColor(bps)}` : '2px solid rgba(75, 85, 99, 0.3)',
                     color: rateDecision === bps ? getDecisionColor(bps) : '#9ca3af',
                     borderRadius: '8px',
                     cursor: decisionPublished ? 'not-allowed' : 'pointer',
@@ -584,7 +584,7 @@ window.FedChair.Components.DecisionPanel = function({
                             padding: '14px 10px',
                             textAlign: 'left',
                             background: isSelected ? 'rgba(217, 119, 6, 0.12)' : 'rgba(17, 24, 39, 0.6)',
-                            border: isSelected ? '2px solid #d97706' : '2px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+                            border: isSelected ? '2px solid #d97706' : '2px solid rgba(75, 85, 99, 0.3)',
                             borderRadius: '8px',
                             cursor: 'pointer',
                             minHeight: 'auto',
@@ -639,7 +639,7 @@ window.FedChair.Components.DecisionPanel = function({
                       padding: '14px 16px',
                       background: 'rgba(17, 24, 39, 0.5)',
                       borderRadius: '8px',
-                      border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+                      border: '1px solid rgba(75, 85, 99, 0.3)',
                       animation: 'slideIn 0.2s ease-out'
                     }}>
                       <div style={{ fontSize: '11px', color: '#9ca3af', letterSpacing: '1.5px', fontWeight: '600', marginBottom: '10px' }}>
@@ -797,7 +797,7 @@ window.FedChair.Components.DecisionPanel = function({
                         alignItems: 'center',
                         padding: '14px 16px',
                         background: hasSelection ? 'rgba(59, 130, 246, 0.1)' : 'rgba(17, 24, 39, 0.6)',
-                        border: hasSelection ? '1px solid rgba(59, 130, 246, 0.3)' : '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+                        border: hasSelection ? '1px solid rgba(59, 130, 246, 0.3)' : '1px solid rgba(75, 85, 99, 0.3)',
                         borderRadius: isCatOpen ? '8px 8px 0 0' : '8px',
                         cursor: 'pointer',
                         minHeight: '48px'
@@ -919,7 +919,7 @@ window.FedChair.Components.DecisionPanel = function({
                     {isCatOpen && (
                       <div style={{
                         height: '1px',
-                        background: 'var(--atmo-border, rgba(75, 85, 99, 0.3))',
+                        background: 'rgba(75, 85, 99, 0.3)',
                         borderRadius: '0 0 8px 8px'
                       }} />
                     )}
@@ -1160,7 +1160,7 @@ window.FedChair.Components.DecisionPanel = function({
                 {/* SVG Chart */}
                 <div ref={dotPlotContainerRef} style={{
                   background: 'linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.7) 100%)',
-                  border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
+                  border: '1px solid rgba(75, 85, 99, 0.3)',
                   borderRadius: '8px',
                   padding: '8px',
                   cursor: 'crosshair',
@@ -1178,7 +1178,7 @@ window.FedChair.Components.DecisionPanel = function({
                         key={r}
                         x1={leftMargin} y1={Math.round(rateToY(r)) + 0.5}
                         x2={chartWidth - rightMargin} y2={Math.round(rateToY(r)) + 0.5}
-                        stroke="var(--atmo-border, rgba(75, 85, 99, 0.3))" strokeWidth="1"
+                        stroke="rgba(75, 85, 99, 0.3)" strokeWidth="1"
                         shapeRendering="crispEdges"
                       />
                     ))}
