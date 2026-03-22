@@ -249,17 +249,6 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
 
   const config = window.FedChair.Data.AtmosphereConfig;
 
-  // TEMPORARY DEBUG: Force high stress to test visual output
-  const FORCE_DEBUG = true;
-  if (FORCE_DEBUG && enabled) {
-    const root = document.documentElement;
-    root.style.setProperty('--atmo-bg', '#1a1210');
-    root.style.setProperty('--atmo-bg-end', '#161008');
-    root.style.setProperty('--atmo-border', 'rgba(180, 83, 9, 0.5)');
-    root.style.setProperty('--atmo-accent', '#f59e0b');
-    root.style.setProperty('--atmo-band', 'rgba(220, 100, 20, 0.8)');
-  }
-
   // Compute channels from game state
   const channels = React.useMemo(() => {
     if (!gameState || !gameState.economy) {
@@ -349,6 +338,7 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
 
   // Handle toggle transitions
   const handleToggle = React.useCallback((newEnabled) => {
+    console.log('HANDLE TOGGLE CALLED:', newEnabled);
     setTransitionDuration(config.transitions.toggle);
     setEnabled(newEnabled);
   }, [setEnabled]);
