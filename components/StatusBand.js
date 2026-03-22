@@ -5,6 +5,7 @@ window.FedChair.Components = window.FedChair.Components || {};
 
 window.FedChair.Components.StatusBand = function({ learnMode }) {
   const atmo = React.useContext(window.FedChair.Components.AtmosphereContext);
+  console.log('STATUSBAND RENDER:', { enabled: atmo.enabled, band: atmo.palette?.band, palette: atmo.palette });
   const [showTooltip, setShowTooltip] = React.useState(false);
   const config = window.FedChair.Data.AtmosphereConfig;
 

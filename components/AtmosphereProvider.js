@@ -249,6 +249,17 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
 
   const config = window.FedChair.Data.AtmosphereConfig;
 
+  // TEMPORARY DEBUG: Force high stress to test visual output
+  const FORCE_DEBUG = true;
+  if (FORCE_DEBUG && enabled) {
+    const root = document.documentElement;
+    root.style.setProperty('--atmo-bg', '#1a1210');
+    root.style.setProperty('--atmo-bg-end', '#161008');
+    root.style.setProperty('--atmo-border', 'rgba(180, 83, 9, 0.5)');
+    root.style.setProperty('--atmo-accent', '#f59e0b');
+    root.style.setProperty('--atmo-band', 'rgba(220, 100, 20, 0.8)');
+  }
+
   // Compute channels from game state
   const channels = React.useMemo(() => {
     if (!gameState || !gameState.economy) {
@@ -260,10 +271,14 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
     const markets = gameState.markets || {};
     const credibility = gameState.credibility;
 
+    const infStress = computeInflationStress(economy, lastEconomy, config.channels.inflation);
+    const recStress = computeRecessionStress(economy, lastEconomy, config.channels.recession);
+    const finStress = computeFinancialStress(markets, credibility, config.channels.financial);
+    console.log('ATMO DEBUG:', { enabled, pce: economy.pceInflation, gdp: economy.gdpGrowth, unemp: economy.unemploymentRate, vix: (gameState.markets || {}).vix, credibility: gameState.credibility, infStress, recStress, finStress });
     return {
-      inflation: computeInflationStress(economy, lastEconomy, config.channels.inflation),
-      recession: computeRecessionStress(economy, lastEconomy, config.channels.recession),
-      financial: computeFinancialStress(markets, credibility, config.channels.financial),
+      inflation: infStress,
+      recession: recStress,
+      financial: finStress,
     };
   }, [
     gameState?.economy?.pceInflation,
@@ -300,6 +315,7 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
 
   // Set CSS custom properties on document.documentElement for global availability
   React.useEffect(() => {
+    console.log('ATMO PALETTE SET:', { enabled, bg: palette.bg, border: palette.border, band: palette.band });
     const root = document.documentElement;
     root.style.setProperty('--atmo-bg', palette.bg);
     root.style.setProperty('--atmo-bg-end', palette.bgGradientEnd);
