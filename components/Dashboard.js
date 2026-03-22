@@ -109,7 +109,7 @@ window.FedChair.Components.Dashboard = function({
               fontFamily: '"IBM Plex Mono", monospace',
               color: getCredibilityColor(credibility)
             }}>
-              {credibility}
+              {Math.round(credibility)}
             </div>
           </div>
         </div>

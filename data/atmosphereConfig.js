@@ -48,25 +48,25 @@ window.FedChair.Data.AtmosphereConfig = {
       band: 'transparent',
     },
     inflation: {
-      bg: '#1a1210',
-      bgGradientEnd: '#161008',
-      border: 'rgba(180, 83, 9, 0.4)',
+      bg: '#1f1008',
+      bgGradientEnd: '#1a0a04',
+      border: 'rgba(220, 90, 10, 0.55)',
       accent: '#f59e0b',
-      band: 'rgba(220, 100, 20, 0.6)',
+      band: 'rgba(240, 100, 20, 0.85)',
     },
     recession: {
-      bg: '#0d1117',
-      bgGradientEnd: '#080d14',
-      border: 'rgba(59, 130, 246, 0.3)',
+      bg: '#080e1a',
+      bgGradientEnd: '#040810',
+      border: 'rgba(40, 100, 220, 0.45)',
       accent: '#60a5fa',
-      band: 'rgba(59, 100, 180, 0.5)',
+      band: 'rgba(40, 90, 200, 0.75)',
     },
     financial: {
       bg: '#121212',
       bgGradientEnd: '#0e0e0e',
-      border: 'rgba(107, 114, 128, 0.3)',
+      border: 'rgba(140, 140, 140, 0.45)',
       accent: '#9ca3af',
-      band: 'rgba(107, 114, 128, 0.5)',
+      band: 'rgba(140, 140, 140, 0.7)',
     },
   },
 
@@ -79,9 +79,9 @@ window.FedChair.Data.AtmosphereConfig = {
 
   // Status band configuration
   statusBand: {
-    height: '4px',
+    height: '6px',
     position: 'top',
-    blur: '8px',
+    blur: '12px',
   },
 
   // Learn Mode atmosphere explanations

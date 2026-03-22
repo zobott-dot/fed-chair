@@ -263,7 +263,6 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
     const infStress = computeInflationStress(economy, lastEconomy, config.channels.inflation);
     const recStress = computeRecessionStress(economy, lastEconomy, config.channels.recession);
     const finStress = computeFinancialStress(markets, credibility, config.channels.financial);
-    console.log('ATMO DEBUG:', { enabled, pce: economy.pceInflation, gdp: economy.gdpGrowth, unemp: economy.unemploymentRate, vix: (gameState.markets || {}).vix, credibility: gameState.credibility, infStress, recStress, finStress });
     return {
       inflation: infStress,
       recession: recStress,
@@ -304,7 +303,6 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
 
   // Set CSS custom properties on document.documentElement for global availability
   React.useEffect(() => {
-    console.log('ATMO PALETTE SET:', { enabled, bg: palette.bg, border: palette.border, band: palette.band });
     const root = document.documentElement;
     root.style.setProperty('--atmo-bg', palette.bg);
     root.style.setProperty('--atmo-bg-end', palette.bgGradientEnd);
@@ -338,7 +336,6 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
 
   // Handle toggle transitions
   const handleToggle = React.useCallback((newEnabled) => {
-    console.log('HANDLE TOGGLE CALLED:', newEnabled);
     setTransitionDuration(config.transitions.toggle);
     setEnabled(newEnabled);
   }, [setEnabled]);

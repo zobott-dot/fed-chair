@@ -63,9 +63,7 @@ window.FedChair.Components.App = function() {
   const [endGameAssessment, setEndGameAssessment] = useState(null);
   const [activeStatementPhrases, setActiveStatementPhrases] = useState(null);
   const [learnMode, setLearnMode] = useState(false);
-  const [atmosphereEnabled, rawSetAtmosphereEnabled] = useState(false);
-  const setAtmosphereEnabled = (val) => { console.log('APP SET ATMO:', val); rawSetAtmosphereEnabled(val); };
-  console.log('APP ATMO STATE:', atmosphereEnabled);
+  const [atmosphereEnabled, setAtmosphereEnabled] = useState(false);
   const [balanceSheetPosture, setBalanceSheetPosture] = useState('hold');
   const [balanceSheetPace, setBalanceSheetPace] = useState(60);
 

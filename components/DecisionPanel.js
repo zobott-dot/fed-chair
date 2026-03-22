@@ -399,7 +399,7 @@ window.FedChair.Components.DecisionPanel = function({
         <div style={{ textAlign: 'right' }}>
           <div style={{ fontSize: 'var(--text-sm)', color: '#8b95a5', marginBottom: '2px', letterSpacing: '1px' }}><LearnTerm term="Credibility" learnMode={learnMode}>Credibility</LearnTerm></div>
           <div style={{ fontSize: 'var(--text-lg)', fontFamily: '"IBM Plex Mono", monospace', color: getCredibilityColor(credibility) }}>
-            {credibility}/100
+            {Math.round(credibility)}/100
           </div>
         </div>
       </div>

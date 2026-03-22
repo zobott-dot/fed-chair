@@ -323,7 +323,7 @@ window.FedChair.Components.MeetingBanner = function({
             fontWeight: '600',
             fontFamily: 'var(--font-data)'
           }}>
-            {credibility}/100
+            {Math.round(credibility)}/100
           </span>
         </div>
       )}

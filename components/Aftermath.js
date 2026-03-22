@@ -106,7 +106,7 @@ window.FedChair.Components.Aftermath = function({
               { label: 'PCE Inflation', value: `${gameState.economy.pceInflation.toFixed(1)}%`, target: '2.0%', good: gameState.economy.pceInflation >= 1.5 && gameState.economy.pceInflation <= 3.0 },
               { label: 'GDP Growth', value: `${gameState.economy.gdpGrowth.toFixed(1)}%`, target: '> 0%', good: gameState.economy.gdpGrowth > 0 },
               { label: 'Unemployment', value: `${gameState.economy.unemploymentRate.toFixed(1)}%`, target: '< 6%', good: gameState.economy.unemploymentRate < 6 },
-              { label: 'Credibility', value: `${gameState.credibility}`, target: '> 50', good: gameState.credibility > 50 }
+              { label: 'Credibility', value: `${Math.round(gameState.credibility)}`, target: '> 50', good: gameState.credibility > 50 }
             ].map((stat, i) => (
               <div key={i} style={{
                 padding: '16px',
@@ -559,7 +559,7 @@ window.FedChair.Components.Aftermath = function({
                   fontFamily: '"IBM Plex Mono", monospace',
                   color: getCredibilityColor(gameState.credibility)
                 }}>
-                  {gameState.credibility}
+                  {Math.round(gameState.credibility)}
                 </div>
               </div>
               <div style={{
@@ -569,7 +569,7 @@ window.FedChair.Components.Aftermath = function({
                 overflow: 'hidden'
               }}>
                 <div style={{
-                  width: `${gameState.credibility}%`,
+                  width: `${Math.round(gameState.credibility)}%`,
                   height: '100%',
                   background: getCredibilityColor(gameState.credibility),
                   borderRadius: '4px',
