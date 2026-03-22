@@ -187,7 +187,7 @@ window.FedChair.Components.EconCalendar = function({ onClose }) {
     }}>
       {/* Header */}
       <div style={{
-        padding: '16px 20px 12px',
+        padding: '16px 16px 14px',
         borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
         background: 'rgba(10, 15, 26, 0.95)',
         flexShrink: 0
@@ -196,12 +196,13 @@ window.FedChair.Components.EconCalendar = function({ onClose }) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
-          maxWidth: '800px',
-          margin: '0 auto'
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: '0 16px'
         }}>
           <div>
             <h2 style={{
-              fontSize: 'clamp(18px, 4vw, 24px)',
+              fontSize: 'clamp(20px, 5vw, 28px)',
               fontWeight: '600',
               letterSpacing: '4px',
               margin: 0,
@@ -210,7 +211,7 @@ window.FedChair.Components.EconCalendar = function({ onClose }) {
               ECONOMIC CALENDAR
             </h2>
             <div style={{
-              fontSize: '11px',
+              fontSize: 'var(--text-sm)',
               color: '#6b7280',
               marginTop: '4px',
               fontFamily: 'var(--font-data)',
@@ -228,9 +229,9 @@ window.FedChair.Components.EconCalendar = function({ onClose }) {
               border: '1px solid rgba(75, 85, 99, 0.4)',
               borderRadius: '4px',
               color: '#9ca3af',
-              fontSize: '16px',
+              fontSize: 'var(--text-lg)',
               cursor: 'pointer',
-              padding: '4px 10px',
+              padding: '4px 12px',
               minHeight: 'auto',
               lineHeight: '1'
             }}
@@ -242,7 +243,7 @@ window.FedChair.Components.EconCalendar = function({ onClose }) {
 
       {/* Filter bar */}
       {!loading && !error && (
-        <div style={{ maxWidth: '800px', margin: '0 auto', width: '100%', flexShrink: 0 }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', flexShrink: 0, padding: '0 16px' }}>
           <CalendarFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
         </div>
       )}
@@ -251,25 +252,26 @@ window.FedChair.Components.EconCalendar = function({ onClose }) {
       <div style={{
         flex: 1,
         overflowY: 'auto',
-        maxWidth: '800px',
+        maxWidth: '1200px',
         margin: '0 auto',
-        width: '100%'
+        width: '100%',
+        padding: '0 16px'
       }}>
         {/* Loading skeleton */}
         {loading && (
-          <div style={{ padding: '40px 20px' }}>
+          <div style={{ padding: '40px 16px' }}>
             {[1, 2, 3].map(i => (
               <div key={i} style={{ marginBottom: '32px' }}>
                 <div style={{
-                  height: '14px',
-                  width: '200px',
+                  height: '16px',
+                  width: '220px',
                   background: 'rgba(75, 85, 99, 0.2)',
                   borderRadius: '3px',
                   marginBottom: '16px'
                 }} className="animate-pulse" />
                 {[1, 2].map(j => (
                   <div key={j} style={{
-                    height: '40px',
+                    height: '48px',
                     background: 'rgba(75, 85, 99, 0.1)',
                     borderRadius: '3px',
                     marginBottom: '8px'
@@ -283,13 +285,13 @@ window.FedChair.Components.EconCalendar = function({ onClose }) {
         {/* Error state */}
         {error && (
           <div style={{
-            padding: '60px 20px',
+            padding: '60px 16px',
             textAlign: 'center'
           }}>
-            <div style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>
+            <div style={{ fontSize: 'var(--text-base)', color: '#9ca3af', marginBottom: '8px' }}>
               Economic calendar data is temporarily unavailable.
             </div>
-            <div style={{ fontSize: '12px', color: '#6b7280' }}>
+            <div style={{ fontSize: 'var(--text-sm)', color: '#6b7280' }}>
               Please try again later.
             </div>
           </div>
@@ -311,7 +313,7 @@ window.FedChair.Components.EconCalendar = function({ onClose }) {
             <div key={dateKey}>
               {/* Date header */}
               <div style={{
-                padding: '12px 16px 8px',
+                padding: '14px 16px 10px',
                 borderTop: '1px solid rgba(75, 85, 99, 0.3)',
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -319,7 +321,7 @@ window.FedChair.Components.EconCalendar = function({ onClose }) {
                 background: isToday ? 'rgba(245, 158, 11, 0.05)' : 'transparent'
               }}>
                 <div style={{
-                  fontSize: '12px',
+                  fontSize: 'var(--text-sm)',
                   fontFamily: 'var(--font-data)',
                   fontWeight: '500',
                   color: isToday ? '#f59e0b' : '#9ca3af',
@@ -329,13 +331,13 @@ window.FedChair.Components.EconCalendar = function({ onClose }) {
                 </div>
                 {isToday && (
                   <span style={{
-                    fontSize: '9px',
+                    fontSize: 'var(--text-xs)',
                     fontFamily: 'var(--font-data)',
                     letterSpacing: '2px',
                     color: '#f59e0b',
                     background: 'rgba(245, 158, 11, 0.1)',
                     border: '1px solid rgba(245, 158, 11, 0.3)',
-                    padding: '2px 8px',
+                    padding: '3px 10px',
                     borderRadius: '3px'
                   }}>
                     TODAY
@@ -365,11 +367,11 @@ window.FedChair.Components.EconCalendar = function({ onClose }) {
                       background: 'none',
                       border: 'none',
                       color: '#4b5563',
-                      fontSize: '10px',
+                      fontSize: 'var(--text-xs)',
                       fontFamily: 'var(--font-data)',
                       letterSpacing: '1px',
                       cursor: 'pointer',
-                      padding: '6px 0',
+                      padding: '8px 0',
                       minHeight: 'auto',
                       display: 'flex',
                       alignItems: 'center',
@@ -390,8 +392,8 @@ window.FedChair.Components.EconCalendar = function({ onClose }) {
                         <div
                           key={`other-${rel.release_id}-${idx}`}
                           style={{
-                            padding: '4px 0',
-                            fontSize: '11px',
+                            padding: '5px 0',
+                            fontSize: 'var(--text-sm)',
                             color: '#4b5563',
                             opacity: isDimmed(rel) ? 0.35 : 1
                           }}

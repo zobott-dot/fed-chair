@@ -40,8 +40,8 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
   const calcPosition = () => {
     if (!entryRef.current) return null;
     const rect = entryRef.current.getBoundingClientRect();
-    const tooltipWidth = 320;
-    const tooltipHeight = showDeep ? 360 : 160;
+    const tooltipWidth = 340;
+    const tooltipHeight = showDeep ? 380 : 180;
     const gap = 8;
     const pad = 12;
 
@@ -129,8 +129,8 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
       style={{
         display: 'flex',
         alignItems: 'flex-start',
-        padding: '10px 16px',
-        gap: '12px',
+        padding: '12px 16px',
+        gap: '14px',
         opacity: dimmed ? 0.35 : 1,
         transition: 'opacity 0.2s ease',
         cursor: isRegistered ? 'pointer' : 'default'
@@ -139,10 +139,10 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
     >
       {/* Time */}
       <div style={{
-        width: '68px',
+        width: '76px',
         flexShrink: 0,
         fontFamily: 'var(--font-data)',
-        fontSize: '11px',
+        fontSize: 'var(--text-sm)',
         color: '#6b7280',
         paddingTop: '2px',
         textAlign: 'right'
@@ -152,11 +152,11 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
 
       {/* Tier marker */}
       <div style={{
-        width: '12px',
+        width: '14px',
         flexShrink: 0,
-        fontSize: tier === 3 ? '8px' : '10px',
+        fontSize: tier === 3 ? '10px' : 'var(--text-sm)',
         color: tier === 1 ? '#60a5fa' : tier === 2 ? '#9ca3af' : '#6b7280',
-        paddingTop: tier === 3 ? '5px' : '3px',
+        paddingTop: tier === 3 ? '5px' : '2px',
         textAlign: 'center'
       }}>
         {tierMarker}
@@ -165,10 +165,10 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
       {/* Name + metadata */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{
-          fontSize: '13px',
+          fontSize: 'var(--text-base)',
           fontWeight: nameWeight,
           color: nameColor,
-          lineHeight: '1.3'
+          lineHeight: 'var(--leading-tight)'
         }}>
           {release.name}
         </div>
@@ -177,8 +177,8 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            marginTop: '2px',
-            fontSize: '10px'
+            marginTop: '3px',
+            fontSize: 'var(--text-xs)'
           }}>
             {release.abbreviation && (
               <span style={{
@@ -197,7 +197,7 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
                 color: catInfo.color,
                 fontFamily: 'var(--font-data)',
                 letterSpacing: '1px',
-                fontSize: '9px'
+                fontSize: 'var(--text-xs)'
               }}>
                 {catInfo.label}
               </span>
@@ -209,7 +209,7 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
       {/* Source */}
       <div style={{
         flexShrink: 0,
-        fontSize: '10px',
+        fontSize: 'var(--text-xs)',
         color: '#6b7280',
         fontFamily: 'var(--font-data)',
         letterSpacing: '0.5px',
@@ -244,7 +244,7 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
                 background: 'none',
                 border: 'none',
                 color: '#60a5fa',
-                fontSize: '11px',
+                fontSize: 'var(--text-xs)',
                 cursor: 'pointer',
                 padding: '4px 0',
                 minHeight: 'auto',
@@ -269,7 +269,7 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
                   borderTop: '1px solid rgba(255,255,255,0.08)'
                 }}>
                   <div style={{
-                    fontSize: '9px',
+                    fontSize: 'var(--text-xs)',
                     color: '#6b7280',
                     letterSpacing: '1px',
                     fontFamily: 'var(--font-data)',
@@ -286,8 +286,8 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
                           background: activeLearnTerm === term ? 'rgba(217, 119, 6, 0.2)' : 'rgba(217, 119, 6, 0.1)',
                           border: '1px solid rgba(217, 119, 6, ' + (activeLearnTerm === term ? '0.6' : '0.3') + ')',
                           borderRadius: '3px',
-                          padding: '2px 8px',
-                          fontSize: '10px',
+                          padding: '3px 10px',
+                          fontSize: 'var(--text-xs)',
                           color: '#D97706',
                           cursor: 'pointer',
                           minHeight: 'auto',
@@ -308,7 +308,7 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
                     }}>
                       <strong style={{
                         display: 'block',
-                        fontSize: '10px',
+                        fontSize: 'var(--text-xs)',
                         color: '#D97706',
                         fontFamily: 'var(--font-data)',
                         letterSpacing: '0.5px',
@@ -317,19 +317,19 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
                         {learnTermData.title}
                       </strong>
                       <p style={{
-                        fontSize: '11px',
+                        fontSize: 'var(--text-sm)',
                         color: '#E5E7EB',
                         margin: '0 0 4px 0',
-                        lineHeight: '1.4'
+                        lineHeight: '1.5'
                       }}>
                         {learnTermData.plain}
                       </p>
                       <p style={{
-                        fontSize: '10px',
+                        fontSize: 'var(--text-xs)',
                         color: '#9CA3AF',
                         margin: 0,
                         fontStyle: 'italic',
-                        lineHeight: '1.4'
+                        lineHeight: '1.5'
                       }}>
                         {learnTermData.context}
                       </p>
@@ -345,7 +345,7 @@ window.FedChair.Components.CalendarEntry = function({ release, categories, dimme
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
-                      fontSize: '10px',
+                      fontSize: 'var(--text-xs)',
                       color: '#60a5fa',
                       fontFamily: 'var(--font-data)',
                       letterSpacing: '0.5px'

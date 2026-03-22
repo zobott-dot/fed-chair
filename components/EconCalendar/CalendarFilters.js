@@ -15,8 +15,8 @@ window.FedChair.Components.CalendarFilters = function({ activeFilter, onFilterCh
   return (
     <div style={{
       display: 'flex',
-      gap: '2px',
-      padding: '8px 16px',
+      gap: '4px',
+      padding: '10px 16px',
       background: 'rgba(17, 24, 39, 0.6)',
       borderBottom: '1px solid rgba(75, 85, 99, 0.3)',
       overflowX: 'auto',
@@ -30,13 +30,13 @@ window.FedChair.Components.CalendarFilters = function({ activeFilter, onFilterCh
             key={f.key}
             onClick={() => onFilterChange(f.key)}
             style={{
-              padding: '6px 12px',
-              fontSize: '11px',
+              padding: '8px 14px',
+              fontSize: 'var(--text-sm)',
               fontFamily: 'var(--font-data)',
               letterSpacing: '1px',
               background: isActive ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
               border: isActive ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid transparent',
-              borderRadius: '3px',
+              borderRadius: '4px',
               color: isActive ? '#60a5fa' : '#6b7280',
               cursor: 'pointer',
               whiteSpace: 'nowrap',
