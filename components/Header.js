@@ -15,8 +15,10 @@ window.FedChair.Components.Header = function({
   gameMode,
   shimmerKey,
   learnMode,
-  setLearnMode
+  setLearnMode,
+  onOpenCalendar
 }) {
+  const CalendarButton = window.FedChair.Components.CalendarButton;
   const [showConfirm, setShowConfirm] = React.useState(false);
   const views = ['dashboard', 'briefing', 'decision', ...(showReaction ? ['aftermath'] : [])];
 
@@ -116,6 +118,9 @@ window.FedChair.Components.Header = function({
           >
             🔄 NEW
           </button>
+
+          {/* Economic Calendar */}
+          <CalendarButton onClick={onOpenCalendar} />
 
           {/* Learn Mode Toggle */}
           <button

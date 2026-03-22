@@ -5,7 +5,7 @@ window.FedChair = window.FedChair || {};
 window.FedChair.Components = window.FedChair.Components || {};
 
 const { useState, useEffect, useCallback } = React;
-const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, PressConference, Aftermath, Transition, EndGame, LearnTerm } = window.FedChair.Components;
+const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, PressConference, Aftermath, Transition, EndGame, LearnTerm, EconCalendar } = window.FedChair.Components;
 const { calculateMarketReaction } = window.FedChair.Engine;
 const { calculateScore, calculateHawkScore, getHawkLabel } = window.FedChair.Engine;
 const { createGameState, advanceToNextMeeting, gameStateToEconomicData, generateBriefing, generateCommitteeDots } = window.FedChair.Engine;
@@ -47,6 +47,7 @@ window.FedChair.Components.App = function() {
   const [endGameAssessment, setEndGameAssessment] = useState(null);
   const [activeStatementPhrases, setActiveStatementPhrases] = useState(null);
   const [learnMode, setLearnMode] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
   const [balanceSheetPosture, setBalanceSheetPosture] = useState('hold');
   const [balanceSheetPace, setBalanceSheetPace] = useState(60);
 
@@ -409,6 +410,10 @@ window.FedChair.Components.App = function() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(180deg, #0a0f1a 0%, #0d1117 100%)', color: '#e5e7eb' }}>
+      {showCalendar && (
+        <EconCalendar onClose={() => setShowCalendar(false)} />
+      )}
+
       <Header
           activeView={activeView}
           setActiveView={setActiveView}
@@ -422,6 +427,7 @@ window.FedChair.Components.App = function() {
           shimmerKey={shimmerKey}
           learnMode={learnMode}
           setLearnMode={setLearnMode}
+          onOpenCalendar={() => setShowCalendar(true)}
         />
 
         <MeetingBanner
