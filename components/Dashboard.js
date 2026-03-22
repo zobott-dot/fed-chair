@@ -7,7 +7,9 @@ const panelStyle = {
   background: 'linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.7) 100%)',
   border: '1px solid var(--atmo-border, rgba(75, 85, 99, 0.3))',
   borderRadius: '12px',
-  overflow: 'hidden'
+  overflow: 'hidden',
+  boxShadow: 'var(--atmo-panel-glow, none)',
+  animation: 'var(--atmo-breathing, none)',
 };
 
 const getStanceColor = (stance) => {

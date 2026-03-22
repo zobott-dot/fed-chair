@@ -310,7 +310,34 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
     root.style.setProperty('--atmo-accent', palette.accent);
     root.style.setProperty('--atmo-band', palette.band);
     root.style.setProperty('--atmo-transition', (transitionDuration || 0) + 'ms');
-  }, [palette, transitionDuration]);
+
+    // Panel glow effect - scales with stress
+    const maxStress = Math.max(channels.inflation, channels.recession, channels.financial);
+    const glowConfig = config.glow;
+    if (enabled && maxStress > 0.05) {
+      const accentParsed = parseHex(palette.accent);
+      const glowOpacity = Math.min(glowConfig.panelMaxOpacity, maxStress * 0.4);
+      const glowSpread = 8 + maxStress * glowConfig.panelMaxSpread;
+      root.style.setProperty('--atmo-panel-glow',
+        `0 0 ${Math.round(glowSpread)}px rgba(${accentParsed.r}, ${accentParsed.g}, ${accentParsed.b}, ${glowOpacity.toFixed(3)})`
+      );
+    } else {
+      root.style.setProperty('--atmo-panel-glow', 'none');
+    }
+
+    // Brighter border for breathing animation
+    const borderParsed = parseRgba(palette.border);
+    if (borderParsed) {
+      root.style.setProperty('--atmo-border-bright',
+        toRgba(borderParsed.r, borderParsed.g, borderParsed.b, Math.min(1, borderParsed.a + 0.18))
+      );
+    }
+
+    // Border breathing: active when enabled and stress > 0.3
+    root.style.setProperty('--atmo-breathing',
+      enabled && maxStress > 0.3 ? 'borderBreath 3s ease-in-out infinite' : 'none'
+    );
+  }, [palette, transitionDuration, enabled, channels.inflation, channels.recession, channels.financial]);
 
   // Reset transition duration after animation completes
   React.useEffect(() => {
@@ -331,6 +358,9 @@ window.FedChair.Components.AtmosphereProvider = function({ gameState, enabled, s
       root.style.setProperty('--atmo-accent', neutral.accent);
       root.style.setProperty('--atmo-band', neutral.band);
       root.style.setProperty('--atmo-transition', '0ms');
+      root.style.setProperty('--atmo-panel-glow', 'none');
+      root.style.setProperty('--atmo-border-bright', neutral.border);
+      root.style.setProperty('--atmo-breathing', 'none');
     };
   }, []);
 

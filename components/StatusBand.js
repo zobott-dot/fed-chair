@@ -1,4 +1,5 @@
-// StatusBand - Narrow colored strip at top of viewport reflecting atmospheric state
+// StatusBand - Animated heartbeat bar reflecting atmospheric stress
+// Pulses with varying speed and intensity based on economic conditions
 
 window.FedChair = window.FedChair || {};
 window.FedChair.Components = window.FedChair.Components || {};
@@ -10,7 +11,26 @@ window.FedChair.Components.StatusBand = function({ learnMode }) {
 
   if (!atmo.enabled) return null;
 
+  const channels = atmo.channels || { inflation: 0, recession: 0, financial: 0 };
+  const maxStress = Math.max(channels.inflation, channels.recession, channels.financial);
+  const isStagflation = atmo.dominant === 'stagflation';
+
+  // Pulse timing from config
+  const pulseConfig = config.pulse;
+  const pulseDuration = maxStress < 0.2 ? pulseConfig.calm
+    : maxStress < 0.5 ? pulseConfig.moderate
+    : maxStress < 0.8 ? pulseConfig.elevated
+    : pulseConfig.crisis;
+
+  // Glow parameters
+  const glowConfig = config.glow;
+  const glowIntensity = Math.min(1, maxStress * 1.5);
+  const glowSpread = glowConfig.bandBaseSpread + maxStress * (glowConfig.bandMaxSpread - glowConfig.bandBaseSpread);
+
+  // Band color
   const bandColor = atmo.palette ? atmo.palette.band : 'transparent';
+
+  const animationName = isStagflation ? 'stagflationPulse' : 'atmospherePulse';
 
   return (
     <div
@@ -21,9 +41,13 @@ window.FedChair.Components.StatusBand = function({ learnMode }) {
         right: 0,
         height: config.statusBand.height,
         background: bandColor,
-        boxShadow: `0 0 ${config.statusBand.blur} 2px ${bandColor}`,
         zIndex: 200,
-        transition: 'background 500ms ease-in-out, box-shadow 500ms ease-in-out',
+        animation: `${animationName} ${pulseDuration}s ease-in-out infinite`,
+        '--atmo-glow-color': bandColor,
+        '--atmo-glow-spread': glowSpread + 'px',
+        '--atmo-glow-intensity': glowIntensity,
+        '--atmo-warm-band': isStagflation ? config.colors.inflation.band : bandColor,
+        '--atmo-cool-band': isStagflation ? config.colors.recession.band : bandColor,
         cursor: learnMode ? 'pointer' : 'default',
       }}
       onClick={() => learnMode && setShowTooltip(!showTooltip)}
@@ -48,6 +72,7 @@ window.FedChair.Components.StatusBand = function({ learnMode }) {
           fontSize: '12px',
           lineHeight: '1.5',
           color: '#E5E7EB',
+          animation: 'none',
         }}>
           <span style={{
             display: 'block',

@@ -84,6 +84,22 @@ window.FedChair.Data.AtmosphereConfig = {
     blur: '12px',
   },
 
+  // Pulse timing (seconds) by stress level
+  pulse: {
+    calm: 4,        // maxStress < 0.2
+    moderate: 2.5,  // maxStress 0.2-0.5
+    elevated: 1.5,  // maxStress 0.5-0.8
+    crisis: 0.8,    // maxStress > 0.8
+  },
+
+  // Glow intensity multipliers
+  glow: {
+    panelMaxOpacity: 0.3,
+    panelMaxSpread: 20,     // px
+    bandMaxSpread: 33,      // px
+    bandBaseSpread: 8,      // px
+  },
+
   // Learn Mode atmosphere explanations
   explanations: {
     inflation: {
