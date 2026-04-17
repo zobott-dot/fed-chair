@@ -74,11 +74,35 @@ window.FedChair.Components.App = function() {
   const initializeGame = useCallback((mode) => {
     if (!rawData) return;
     const gs = createGameState(rawData.economicData, mode);
+
+    // Temporary: override with Volcker starting conditions for scenario testing
+    if (mode === 'scenario') {
+      const volcker = window.FedChair.Data.volckerIntro;
+      if (volcker) {
+        const s6 = volcker.sections.find(s => s.number === 6);
+        if (s6) {
+          gs.currentRate = 11.50;
+          gs.rateHistory = [{ meeting: 0, date: '1979-10-06', rate: 11.50, decision: 0, hawkScore: 0 }];
+          gs.economy.pceInflation = 12.2;
+          gs.economy.coreInflation = 11.8;
+          gs.economy.cpiInflation = 11.8;
+          gs.economy.unemploymentRate = 6.0;
+          gs.economy.gdpGrowth = 1.0;
+          gs.markets.sp500 = 107;
+          gs.markets.treasury10y = 10.5;
+          gs.markets.treasury2y = 11.8;
+          gs.credibility = 40;
+          gs.credibilityHistory = [40];
+          gs.scenarioId = 'volcker';
+        }
+      }
+    }
+
     generateCommitteeDots(gs);
     setGameState(gs);
     setBriefingData(generateBriefing(gs));
     setSelectedMode(mode);
-    setActiveView('dashboard');
+    setActiveView(mode === 'scenario' ? 'decision' : 'dashboard');
   }, [rawData]);
 
   // Aftermath phase progression

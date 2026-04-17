@@ -165,12 +165,16 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
           </div>
         </button>
 
-        {/* Scenario Mode Card (disabled) */}
-        <div
+        {/* Scenario Mode Card (temporary test entry for Volcker scenario) */}
+        <button
+          onClick={() => onSelectMode('scenario')}
+          onMouseEnter={() => setHovered('scenario')}
+          onMouseLeave={() => setHovered(null)}
           style={{
             ...cardBase,
-            opacity: 0.5,
-            cursor: 'not-allowed',
+            cursor: 'pointer',
+            borderColor: hovered === 'scenario' ? 'rgba(168, 85, 247, 0.6)' : 'rgba(168, 85, 247, 0.3)',
+            boxShadow: hovered === 'scenario' ? '0 0 20px rgba(168, 85, 247, 0.15)' : 'none',
             position: 'relative'
           }}
         >
@@ -187,7 +191,7 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
             color: '#a855f7',
             fontWeight: '600'
           }}>
-            COMING SOON
+            TESTING
           </div>
           <div style={{ fontSize: '36px', marginBottom: '16px' }}>{'\uD83C\uDFAE'}</div>
           <div style={{
@@ -207,7 +211,7 @@ window.FedChair.Components.ModeSelect = function({ onSelectMode }) {
           }}>
             Navigate historical crises and custom scenarios. Oil shocks, banking panics, and more.
           </div>
-        </div>
+        </button>
       </div>
 
       {/* Refresh Button — below the cards */}
