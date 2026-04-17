@@ -5,7 +5,7 @@ window.FedChair = window.FedChair || {};
 window.FedChair.Components = window.FedChair.Components || {};
 
 const { useState, useEffect, useCallback } = React;
-const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, PressConference, Aftermath, Transition, EndGame, LearnTerm, EconCalendar } = window.FedChair.Components;
+const { LoadingScreen, ModeSelect, Header, MeetingBanner, Footer, Dashboard, Briefing, DecisionPanel, PressConference, Aftermath, Transition, EndGame, LearnTerm, EconCalendar, ScenarioIntroReader } = window.FedChair.Components;
 const { calculateMarketReaction } = window.FedChair.Engine;
 const { calculateScore, calculateHawkScore, getHawkLabel } = window.FedChair.Engine;
 const { createGameState, advanceToNextMeeting, gameStateToEconomicData, generateBriefing, generateCommitteeDots } = window.FedChair.Engine;
@@ -48,6 +48,7 @@ window.FedChair.Components.App = function() {
   const [activeStatementPhrases, setActiveStatementPhrases] = useState(null);
   const [learnMode, setLearnMode] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [showIntro, setShowIntro] = useState(false);
   const [balanceSheetPosture, setBalanceSheetPosture] = useState('hold');
   const [balanceSheetPace, setBalanceSheetPace] = useState(60);
 
@@ -349,6 +350,7 @@ window.FedChair.Components.App = function() {
     setActiveStatementPhrases(null);
     setBalanceSheetPosture('hold');
     setBalanceSheetPace(60);
+    setShowIntro(false);
   };
 
   // Show loading screen until data is ready
@@ -414,6 +416,13 @@ window.FedChair.Components.App = function() {
         <EconCalendar onClose={() => setShowCalendar(false)} />
       )}
 
+      {showIntro && (
+        <ScenarioIntroReader
+          onClose={() => setShowIntro(false)}
+          scenarioId={gameState?.scenarioId || 'volcker'}
+        />
+      )}
+
       <Header
           activeView={activeView}
           setActiveView={setActiveView}
@@ -428,6 +437,7 @@ window.FedChair.Components.App = function() {
           learnMode={learnMode}
           setLearnMode={setLearnMode}
           onOpenCalendar={() => setShowCalendar(true)}
+          onOpenIntro={() => setShowIntro(true)}
         />
 
         <MeetingBanner

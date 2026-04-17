@@ -16,9 +16,11 @@ window.FedChair.Components.Header = function({
   shimmerKey,
   learnMode,
   setLearnMode,
-  onOpenCalendar
+  onOpenCalendar,
+  onOpenIntro
 }) {
   const CalendarButton = window.FedChair.Components.CalendarButton;
+  const IntroButton = window.FedChair.Components.IntroButton;
   const [showConfirm, setShowConfirm] = React.useState(false);
   const views = ['dashboard', 'briefing', 'decision', ...(showReaction ? ['aftermath'] : [])];
 
@@ -118,6 +120,11 @@ window.FedChair.Components.Header = function({
           >
             🔄 NEW
           </button>
+
+          {/* Scenario Intro Briefing (only in scenario mode) */}
+          {gameMode === 'scenario' && onOpenIntro && (
+            <IntroButton onClick={onOpenIntro} />
+          )}
 
           {/* Economic Calendar */}
           <CalendarButton onClick={onOpenCalendar} />
