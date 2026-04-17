@@ -121,8 +121,8 @@ window.FedChair.Components.Header = function({
             🔄 NEW
           </button>
 
-          {/* Scenario Intro Briefing (only in scenario mode) */}
-          {gameMode === 'scenario' && onOpenIntro && (
+          {/* Scenario Intro Briefing (temporarily visible in all modes for testing) */}
+          {onOpenIntro && (
             <IntroButton onClick={onOpenIntro} />
           )}
 
