@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Volcker Shock · Chapters Five & Six</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-serif: 'Source Serif 4', Georgia, serif;
+    --font-sans: 'Oswald', 'Helvetica Neue', sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-italic: 'Libre Caslon Text', Georgia, serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --border-radius-lg: 4px;
+  }
+  html, body {
+    background: #2a2622;
+    margin: 0;
+    padding: 2rem 1rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 720px; margin: 0 auto; }
+
+  /* ═══ SECTION 5 ═══ */
+  .s5-root { background: #f4f1ea; padding: 2.5rem 2rem 2.25rem; border-radius: var(--border-radius-lg); font-family: var(--font-serif); color: #1a1815; margin-bottom: 2rem; }
+  .s5-kicker { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.18em; color: #7a6f5c; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .s5-rule { height: 1px; background: #c4b896; margin-bottom: 1.25rem; }
+  .s5-title { font-family: var(--font-display); font-size: 34px; font-weight: 500; line-height: 1.15; margin: 0 0 0.45rem; color: #1a1815; letter-spacing: -0.01em; }
+  .s5-deck { font-family: var(--font-italic); font-style: italic; font-size: 16px; color: #5a5448; margin: 0 0 1.4rem; line-height: 1.45; }
+  .s5-conventions { font-family: var(--font-italic); font-style: italic; font-size: 12px; color: #7a6f5c; border-top: 0.5px dotted #8a7f6a; border-bottom: 0.5px dotted #8a7f6a; padding: 0.55rem 0; margin: 0 0 1.75rem; text-align: center; }
+  .s5-body p { font-size: 17px; line-height: 1.72; margin: 0 0 1.25rem; color: #1a1815; }
+  .s5-body p.first::first-letter { float: left; font-family: var(--font-display); font-size: 58px; line-height: 0.85; padding: 6px 8px 0 0; font-weight: 500; color: #1a1815; }
+  .s5-gateway { border-bottom: 1px dotted #1a1815; cursor: pointer; padding-bottom: 1px; }
+  .s5-gateway:hover { background: #ebe5d2; }
+  .s5-depth { display: none; margin: 0.6rem 0 1.4rem; background: #e8e2ce; border: 0.5px solid #8a7f6a; border-left: 3px solid #8a1a1a; padding: 1.15rem 1.35rem 1.1rem; font-family: var(--font-serif); }
+  .s5-depth.open { display: block; }
+  .s5-depth-label { font-family: var(--font-sans); font-size: 10px; letter-spacing: 0.16em; color: #8a1a1a; text-transform: uppercase; margin-bottom: 0.55rem; font-weight: 500; }
+  .s5-depth-title { font-family: var(--font-display); font-size: 18px; font-weight: 500; line-height: 1.25; margin: 0 0 0.75rem; color: #1a1815; }
+  .s5-depth p { font-size: 15px; line-height: 1.65; margin: 0 0 0.85rem; color: #2a2419; }
+  .s5-depth p:last-of-type { margin-bottom: 0; }
+  .s5-depth em { font-style: italic; }
+  .s5-close { font-family: var(--font-sans); font-size: 10px; letter-spacing: 0.14em; color: #7a6f5c; text-transform: uppercase; cursor: pointer; margin-top: 0.85rem; display: inline-block; border-bottom: 0.5px dotted #7a6f5c; }
+  .s5-close:hover { color: #1a1815; }
+  .s5-pullquote { margin: 2rem 0; padding: 1.25rem 1.5rem 1.25rem 2rem; border-left: 3px solid #8a1a1a; font-family: var(--font-italic); font-style: italic; font-size: 20px; line-height: 1.4; color: #3a3428; }
+  .s5-pullquote .attrib { font-family: var(--font-sans); font-style: normal; font-size: 11px; letter-spacing: 0.12em; color: #7a6f5c; text-transform: uppercase; margin-top: 0.8rem; }
+
+  .s5-condition-row { display: flex; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap; }
+  .s5-condition { flex: 1 1 280px; background: #1a1815; padding: 1.15rem 1.35rem; border-left: 3px solid #8a1a1a; }
+  .s5-condition.fail { border-left-color: #7a6f5c; }
+  .s5-condition-hdr { font-family: var(--font-sans); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; margin-bottom: 0.55rem; }
+  .s5-condition.win .s5-condition-hdr { color: #c4b896; }
+  .s5-condition.fail .s5-condition-hdr { color: #7a6f5c; }
+  .s5-condition-title { font-family: var(--font-display); font-size: 17px; font-weight: 500; line-height: 1.25; margin: 0 0 0.55rem; color: #e8e2ce; }
+  .s5-condition p { font-family: var(--font-serif); font-size: 13.5px; line-height: 1.55; margin: 0; color: #a09680; }
+
+  /* ═══ SECTION 6 ═══ */
+  .s6-root { background: #1a1815; padding: 2.5rem 2rem 2.25rem; border-radius: var(--border-radius-lg); font-family: var(--font-mono); color: #c4b896; }
+  .s6-kicker { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.18em; color: #7a6f5c; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .s6-rule { height: 1px; background: #3a3428; margin-bottom: 1.25rem; }
+  .s6-title { font-family: var(--font-display); font-size: 30px; font-weight: 500; line-height: 1.15; margin: 0 0 0.45rem; color: #e8e2ce; letter-spacing: -0.01em; }
+  .s6-deck { font-family: var(--font-italic); font-style: italic; font-size: 15px; color: #7a6f5c; margin: 0 0 1.75rem; line-height: 1.45; }
+
+  .s6-section-hdr { font-family: var(--font-sans); font-size: 10px; letter-spacing: 0.22em; color: #8a1a1a; text-transform: uppercase; margin: 1.75rem 0 0.5rem; font-weight: 500; }
+  .s6-section-rule { height: 1px; background: #3a3428; margin-bottom: 0.85rem; }
+
+  .s6-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 0 0 0.25rem; }
+  .s6-cell { padding: 0.35rem 0; border-bottom: 0.5px solid #2a2419; display: flex; justify-content: space-between; gap: 0.5rem; }
+  .s6-cell:nth-child(odd) { padding-right: 1.25rem; border-right: 0.5px solid #2a2419; }
+  .s6-cell:nth-child(even) { padding-left: 1.25rem; }
+  .s6-label { font-size: 12px; color: #7a6f5c; }
+  .s6-val { font-size: 13px; color: #e8e2ce; font-weight: 500; text-align: right; }
+  .s6-val.accent { color: #c4896a; }
+
+  .s6-meeting { display: flex; justify-content: space-between; align-items: baseline; padding: 0.4rem 0; border-bottom: 0.5px solid #2a2419; }
+  .s6-meeting-num { font-size: 12px; color: #7a6f5c; min-width: 1.5rem; }
+  .s6-meeting-date { font-size: 13px; color: #e8e2ce; font-weight: 500; flex: 1; margin-left: 0.75rem; }
+  .s6-meeting-note { font-size: 11px; color: #7a6f5c; font-style: italic; font-family: var(--font-italic); text-align: right; max-width: 55%; }
+
+  .s6-coda { font-family: var(--font-serif); font-size: 16px; line-height: 1.65; margin: 2rem 0 0; color: #a09680; }
+  .s6-coda em { font-style: italic; }
+  .s6-final { font-family: var(--font-serif); font-size: 17px; line-height: 1.5; margin: 1.25rem 0 0; color: #e8e2ce; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 5: THE STAKES                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="s5-root">
+
+  <div class="s5-kicker">Scenario One · The Volcker Shock · Chapter Five</div>
+  <div class="s5-rule"></div>
+
+  <h1 class="s5-title">The stakes</h1>
+  <div class="s5-deck">What winning looks like. What losing costs. Why both hurt.</div>
+
+  <div class="s5-conventions">Passages with a dotted underline open in place.</div>
+
+  <div class="s5-body">
+
+    <p class="first">Volcker's success was not measured in jobs saved or recessions averted. It was measured in a number: the rate at which prices were rising when he was done. By that standard — and only by that standard — what he did between October 1979 and the summer of 1982 was the most consequential act of peacetime economic policy in American history. Inflation fell from above twelve percent to below three. It has never returned. Everything else that happened along the way — the two recessions, the ten percent unemployment, the political fury, the human cost — was the price of the ticket. Volcker paid it. You will be asked to decide whether to pay it too.</p>
+
+    <p>The game defines <span class="s5-gateway" onclick="document.getElementById('d-win').classList.toggle('open');">success</span> the way history defined Volcker's: by whether you break inflation, not by whether you avoid pain. And it defines <span class="s5-gateway" onclick="document.getElementById('d-lose').classList.toggle('open');">failure</span> in two ways, because there are two ways to fail at this job — one for weakness and one for recklessness.</p>
+
+    <div id="d-win" class="s5-depth">
+      <div class="s5-depth-label">In depth · The win condition</div>
+      <div class="s5-depth-title">Break it. Whatever it takes.</div>
+      <p>You win the Volcker scenario if PCE inflation is below 6 percent at the end of your eighth meeting. That is the threshold. Not two percent, not four — six. In 1979, getting inflation from twelve to six would have been considered miraculous, and historically that is roughly what Volcker achieved by mid-1982 before continuing to push it lower. Your unemployment rate may be above eight percent. Your approval rating may be in the basement. You may have received two-by-fours in the mail. None of that matters for the win condition. The only question is whether prices are stabilizing.</p>
+      <p>This is a deliberately uncomfortable standard. The game is asking you to accept that a recession — a deep, painful, job-destroying recession — is not a failure state. It is a side effect of the cure. Volcker understood this. He said publicly that "some difficult adjustments may lie ahead," which was the understatement of the decade. He also said, privately, that the alternative — years of entrenched double-digit inflation — would be worse. History has mostly agreed with him, though the families who lived through 1981 and 1982 might have framed the question differently.</p>
+      <span class="s5-close" onclick="event.stopPropagation(); document.getElementById('d-win').classList.toggle('open');">Close ✕</span>
+    </div>
+
+    <div id="d-lose" class="s5-depth">
+      <div class="s5-depth-label">In depth · The lose conditions</div>
+      <div class="s5-depth-title">Two roads to failure.</div>
+      <p>You lose the Volcker scenario in one of two ways. The first is the obvious one: inflation is still above 10 percent at the end of your eighth meeting. You tightened, but not enough, or you tightened and then lost your nerve and eased too soon. The fever is still running. The decade of pain continues, and you are the next Arthur Burns — the chairman who had the tools and didn't use them.</p>
+      <p>The second lose condition is subtler and, in some ways, more dangerous: your credibility falls below 20. Credibility in this game is a composite measure of how much the markets, Congress, and the public believe the Fed will follow through on what it says. If you tighten aggressively but communicate erratically — or if you tighten and then reverse yourself when the political pressure arrives — the markets conclude you are bluffing. Once they conclude that, your rate decisions stop working. Expectations de-anchor. The inflation premium in long-term bonds stays elevated no matter what you do, because no one believes you will hold. This is the trap Burns fell into, and it is the trap Volcker spent his entire chairmanship trying to avoid.</p>
+      <p>In practice, the credibility lose condition means you cannot simply slam rates to twenty percent in meeting one and ease at meeting two. The whipsaw destroys trust. Volcker himself made one dramatic reversal — the credit-controls episode of spring 1980, when he cut rates sharply after a Carter-imposed credit-control program backfired — and it nearly cost him the war. He recovered only because he tightened again immediately and stayed tight for eighteen months after that. You may or may not get a similar second chance.</p>
+      <span class="s5-close" onclick="event.stopPropagation(); document.getElementById('d-lose').classList.toggle('open');">Close ✕</span>
+    </div>
+
+    <div class="s5-condition-row">
+      <div class="s5-condition win">
+        <div class="s5-condition-hdr">Win condition</div>
+        <div class="s5-condition-title">Break the fever</div>
+        <p>PCE inflation below 6% at the end of Meeting 8 — regardless of unemployment, regardless of political cost.</p>
+      </div>
+      <div class="s5-condition fail">
+        <div class="s5-condition-hdr">Lose condition · weakness</div>
+        <div class="s5-condition-title">Fail to break it</div>
+        <p>PCE inflation above 10% at the end of Meeting 8. You had the tools. You didn't use them.</p>
+      </div>
+      <div class="s5-condition fail">
+        <div class="s5-condition-hdr">Lose condition · recklessness</div>
+        <div class="s5-condition-title">Lose their trust</div>
+        <p>Credibility below 20 at any point. The markets stop believing you. Your policy stops working.</p>
+      </div>
+    </div>
+
+    <p>Between the win and the two ways to lose is a narrow corridor, and it gets narrower every meeting. Tighten too slowly and the fever stays. Tighten too fast and then flinch and the markets write you off. Tighten hard and hold and <span class="s5-gateway" onclick="document.getElementById('d-cost').classList.toggle('open');">the human cost</span> mounts in ways that will test whether you can sit in the chairman's office and read the mail.</p>
+
+    <div id="d-cost" class="s5-depth">
+      <div class="s5-depth-label">In depth · The human cost</div>
+      <div class="s5-depth-title">What the numbers don't say.</div>
+      <p>Unemployment in this scenario is not an abstraction. Every percentage point of unemployment above six percent represents, roughly, a million American workers who had jobs and lost them. When unemployment hits ten percent — as it did historically in late 1982 — that is four million people beyond the baseline who are out of work. They are autoworkers in Flint, Michigan. They are construction workers in Phoenix who framed houses last year and are not framing houses this year. They are the young couples who were about to buy their first home and now cannot qualify for a mortgage. They are the small-business owners whose lines of credit were pulled when the prime rate hit twenty-one and a half percent.</p>
+      <p>You will not see their faces in the simulation. You will see their numbers on the DECIDE screen — a line moving upward, a percentage getting worse. The game does not ask you to feel guilty about this. It asks you to decide whether the alternative is worse. That is the question Volcker lived with for three years. He concluded that ten percent unemployment for eighteen months was better than eight percent inflation for ten years. You may or may not agree. But you have to choose.</p>
+      <span class="s5-close" onclick="event.stopPropagation(); document.getElementById('d-cost').classList.toggle('open');">Close ✕</span>
+    </div>
+
+    <div class="s5-pullquote">
+      "Some difficult adjustments may lie ahead."
+      <div class="attrib">— Paul Volcker, ABC News interview, October 1979</div>
+    </div>
+
+    <p>There is one more thing to understand about the stakes, and it is the thing that makes the Volcker scenario different from every other scenario in this game. In the other scenarios — the financial crisis, the pandemic, the soft landing — the question is whether you respond correctly to events. The economy breaks and you try to fix it. In the Volcker scenario, <em>you</em> are the one who breaks the economy. Deliberately. On purpose. Because you believe that breaking it now is better than letting the fever kill it slowly. The tractors at the gate are there because of you. The letters in the mailroom are addressed to you. The unemployment rate is your doing. The only defense you have is that you were right — and you won't know whether you were right until the end.</p>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 6: THE MORNING AFTER TOMORROW      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="s6-root">
+
+  <div class="s6-kicker">Scenario One · The Volcker Shock · Chapter Six</div>
+  <div class="s6-rule"></div>
+
+  <h1 class="s6-title">The morning after tomorrow</h1>
+  <div class="s6-deck">Starting conditions · October 6, 1979</div>
+
+  <div class="s6-section-hdr">Economic conditions at entry</div>
+  <div class="s6-section-rule"></div>
+
+  <div class="s6-grid">
+    <div class="s6-cell"><span class="s6-label">Fed Funds Rate</span><span class="s6-val accent">11.50%</span></div>
+    <div class="s6-cell"><span class="s6-label">PCE Inflation</span><span class="s6-val accent">12.2%</span></div>
+    <div class="s6-cell"><span class="s6-label">Core CPI</span><span class="s6-val">11.8%</span></div>
+    <div class="s6-cell"><span class="s6-label">Unemployment</span><span class="s6-val">6.0%</span></div>
+    <div class="s6-cell"><span class="s6-label">GDP Growth</span><span class="s6-val">1.0%</span></div>
+    <div class="s6-cell"><span class="s6-label">S&P 500</span><span class="s6-val">107</span></div>
+    <div class="s6-cell"><span class="s6-label">10Y Treasury</span><span class="s6-val">10.5%</span></div>
+    <div class="s6-cell"><span class="s6-label">2Y Treasury</span><span class="s6-val">11.8%</span></div>
+    <div class="s6-cell"><span class="s6-label">Gold</span><span class="s6-val">$395/oz</span></div>
+    <div class="s6-cell"><span class="s6-label">Credibility</span><span class="s6-val accent">40 / 100</span></div>
+  </div>
+
+  <div class="s6-section-hdr">FOMC meeting schedule</div>
+  <div class="s6-section-rule"></div>
+
+  <div class="s6-meeting">
+    <span class="s6-meeting-num">1</span>
+    <span class="s6-meeting-date">October 6, 1979</span>
+    <span class="s6-meeting-note">Saturday. Unscheduled. The one that changes everything.</span>
+  </div>
+  <div class="s6-meeting">
+    <span class="s6-meeting-num">2</span>
+    <span class="s6-meeting-date">January 9, 1980</span>
+    <span class="s6-meeting-note">First regular meeting of the new year. Voting rotation changes.</span>
+  </div>
+  <div class="s6-meeting">
+    <span class="s6-meeting-num">3</span>
+    <span class="s6-meeting-date">March 18, 1980</span>
+    <span class="s6-meeting-note">Carter's credit controls land. Rates near 20%.</span>
+  </div>
+  <div class="s6-meeting">
+    <span class="s6-meeting-num">4</span>
+    <span class="s6-meeting-date">May 20, 1980</span>
+    <span class="s6-meeting-note">Recession arrives. Credit controls backfire. The first test of nerve.</span>
+  </div>
+  <div class="s6-meeting">
+    <span class="s6-meeting-num">5</span>
+    <span class="s6-meeting-date">August 12, 1980</span>
+    <span class="s6-meeting-note">Brief recession ends. Inflation rebounds. Back to tightening.</span>
+  </div>
+  <div class="s6-meeting">
+    <span class="s6-meeting-num">6</span>
+    <span class="s6-meeting-date">November 18, 1980</span>
+    <span class="s6-meeting-note">Reagan wins. Unemployment rising above 7%.</span>
+  </div>
+  <div class="s6-meeting">
+    <span class="s6-meeting-num">7</span>
+    <span class="s6-meeting-date">February 3, 1981</span>
+    <span class="s6-meeting-note">Deep recession. Rates near 20% again. The tractors are coming.</span>
+  </div>
+  <div class="s6-meeting">
+    <span class="s6-meeting-num">8</span>
+    <span class="s6-meeting-date">May 18, 1981</span>
+    <span class="s6-meeting-note">Final meeting. Is the fever breaking?</span>
+  </div>
+
+  <div class="s6-section-hdr">What Volcker did</div>
+  <div class="s6-section-rule"></div>
+
+  <p class="s6-coda">After each of your eight meetings, the game will show you what the real Paul Volcker decided at the same juncture — his rate move, his statement, the market's reaction. You will see your path and his path side by side on the same chart. At the end, the game will compare your inflation, your unemployment, and your credibility to his. He won. The question is whether you win the same way, or a different way, or not at all.</p>
+
+  <p class="s6-coda">You do not have a dot plot. It did not exist until 2012. You do not have quantitative easing. It was not invented until 2008. You do not hold press conferences after FOMC meetings. That practice began in 2011. Your tools are the ones Volcker had: the federal funds rate, the discount rate, and a statement released through the press office. <em>That is all.</em></p>
+
+  <p class="s6-final">You are Paul Volcker, and the morning after tomorrow, the markets open.</p>
+
+</div>
+
+</div>
+</body>
+</html>

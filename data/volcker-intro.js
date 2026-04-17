@@ -10,7 +10,7 @@ window.FedChair.Data.volckerIntro = {
 
     // =========================================================================
     // SECTION 1: The Phone Call
-    // STATUS: Placeholder — content locked in prior session, awaiting paste
+    // STATUS: COMPLETE
     // =========================================================================
     {
       id: 'section-1',
@@ -21,8 +21,52 @@ window.FedChair.Data.volckerIntro = {
       type: 'editorial',
       content: {
         blocks: [
-          { type: 'paragraph', text: '<em>[Section 1 content locked in prior design session. Paste the full prose for \u201cThe Phone Call\u201d here.]</em>', isFirst: true },
-          { type: 'paragraph', text: 'This section will contain the narrative opening of the Volcker scenario \u2014 the Saturday morning phone call that changed monetary policy forever.' }
+          {
+            type: 'paragraph',
+            isFirst: true,
+            text: 'WASHINGTON, OCT. 6 \u2014 Federal Reserve spokesman called CBS News this afternoon. The network said it couldn\u2019t spare a camera crew. Pope John Paul II was in town, and every crew in the District was chasing the pontiff through a motorcade in the rain.'
+          },
+          {
+            type: 'paragraph',
+            text: 'The spokesman didn\u2019t argue. He said one sentence and hung up.'
+          },
+          {
+            type: 'pullquote',
+            text: '\u201cSend your crew here. Long after the pope is gone, you\u2019ll remember this one.\u201d',
+            attribution: 'Joseph Coyne, Spokesman, Board of Governors'
+          },
+          {
+            type: 'paragraph',
+            text: 'By evening, the crews had come. They crowded into the grand boardroom at the Federal Reserve\u2019s headquarters on Constitution Avenue, the room where no Fed chairman in living memory had ever called a press conference at all, much less one on a Saturday. Another spokesman opened the proceedings with what sounded like an apology. <em>Gentlemen and ladies, we are sorry to bring you out on such a beautiful day.</em> Then Paul Volcker \u2014 two months on the job as Chairman, six-foot-seven, chain-smoking cheap cigars \u2014 stepped to the microphones and told them the rules had changed.'
+          },
+          {
+            type: 'paragraph',
+            text: 'The Federal Reserve would no longer try to manage the federal funds rate day by day. From now on, it would manage the volume of reserves in the banking system \u2014 the fuel on which the whole engine of credit ran. Whatever happened to interest rates would happen. Volcker did not say how high they might go. He did not have to.'
+          },
+          {
+            type: 'paragraph',
+            text: 'He had spent the morning in an unscheduled, unannounced meeting of the Federal Open Market Committee that convened at 10:10 a.m. and ran the better part of the day. He had spent the week before that in Belgrade, at the annual meetings of the International Monetary Fund, where European finance ministers had pulled him aside one after another to tell him the dollar was sliding toward a crisis and the United States had to do something stern. He had spent the last two months watching inflation climb through a ceiling everyone had assumed was already the ceiling.'
+          },
+          {
+            type: 'paragraph',
+            text: 'September\u2019s Consumer Price Index had just landed at 12.2 percent over the year \u2014 up from 11.8 in August, up from 10.9 in May, up from 9.3 in January. It was not plateauing. It was accelerating. A gallon of milk cost nearly twice what it had in 1973. A thirty-year mortgage, if you could get one, came at better than 12 percent. Savers were watching their money shrink every month it sat in the bank. Wage-price spirals had become a fixture of the evening news.'
+          },
+          {
+            type: 'paragraph',
+            text: 'Abroad, the dollar was falling against every major currency. Gold had just crossed four hundred dollars an ounce \u2014 the first time in the history of the world \u2014 and was still climbing. In Tehran, a revolution eight months old had replaced a shah with an ayatollah, and American diplomats in the U.S. embassy were, though no one in the Fed\u2019s boardroom yet knew it, three weeks from becoming hostages. In the Oval Office, Jimmy Carter\u2019s approval rating had touched 19 percent in a national poll that month \u2014 the lowest number any American president had ever recorded. Carter had told the country, three months earlier, that it was suffering a <em>crisis of confidence</em>. The country had agreed.'
+          },
+          {
+            type: 'paragraph',
+            text: 'Into this, Volcker announced that he intended to break the fever. Not gradually. Not politely. He would squeeze the supply of money until inflation expectations cracked, and he would accept whatever interest rates the market chose to set along the way. He used the word <em>supply</em> fourteen times in the press conference. He did not use the word <em>recession</em>.'
+          },
+          {
+            type: 'paragraph',
+            text: 'Nobody in the room understood, that Saturday evening, exactly what they had just witnessed. Within a year, the federal funds rate would touch 20 percent. Within eighteen months, the prime rate would reach 21.5 percent. Iowa farmers would drive their tractors in circles around this very building in protest. Car dealers would mail coffins full of unsold keys to Volcker\u2019s office. Homebuilders would send him sawn-off two-by-fours with notes attached. Congressmen would call for his resignation. Two recessions would roll through the economy back-to-back. Unemployment would reach 10.8 percent, the worst since the Great Depression.'
+          },
+          {
+            type: 'paragraph',
+            text: 'And inflation \u2014 the fever of a decade \u2014 would finally, grudgingly, break. Everything the Federal Reserve would be for the next forty years began in that grand boardroom on the evening of October 6, 1979. The rules had changed, and the country was about to feel it. You are Paul Volcker, and the morning after tomorrow, the markets open.'
+          }
         ]
       }
     },

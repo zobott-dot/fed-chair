@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Volcker Shock · Chapter Three · The Cast</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-serif: 'Source Serif 4', Georgia, serif;
+    --font-sans: 'Oswald', 'Helvetica Neue', sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-italic: 'Libre Caslon Text', Georgia, serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --border-radius-lg: 4px;
+  }
+  html, body {
+    background: #2a2622;
+    margin: 0;
+    padding: 2rem 1rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 760px; margin: 0 auto; }
+  .s3-root { background: #f4f1ea; padding: 2.5rem 2rem 2.25rem; border-radius: var(--border-radius-lg); font-family: var(--font-serif); color: #1a1815; }
+  .s3-kicker { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.18em; color: #7a6f5c; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .s3-rule { height: 1px; background: #c4b896; margin-bottom: 1.25rem; }
+  .s3-title { font-family: var(--font-display); font-size: 34px; font-weight: 500; line-height: 1.15; margin: 0 0 0.45rem; color: #1a1815; letter-spacing: -0.01em; }
+  .s3-deck { font-family: var(--font-italic); font-style: italic; font-size: 16px; color: #5a5448; margin: 0 0 1.4rem; line-height: 1.45; }
+  .s3-conventions { font-family: var(--font-italic); font-style: italic; font-size: 12px; color: #7a6f5c; border-top: 0.5px dotted #8a7f6a; border-bottom: 0.5px dotted #8a7f6a; padding: 0.55rem 0; margin: 0 0 1.75rem; text-align: center; }
+  .s3-body p.intro { font-size: 17px; line-height: 1.72; margin: 0 0 1.25rem; color: #1a1815; }
+  .s3-body p.intro.first::first-letter { float: left; font-family: var(--font-display); font-size: 58px; line-height: 0.85; padding: 6px 8px 0 0; font-weight: 500; color: #1a1815; }
+  .s3-section-hdr { font-family: var(--font-sans); font-size: 12px; letter-spacing: 0.22em; color: #8a1a1a; text-transform: uppercase; margin: 2.25rem 0 0.25rem; font-weight: 500; }
+  .s3-section-rule { height: 1px; background: #c4b896; margin-bottom: 1rem; }
+  .s3-section-note { font-family: var(--font-italic); font-style: italic; font-size: 13px; color: #5a5448; margin: 0 0 1.25rem; line-height: 1.45; }
+
+  .s3-card { background: #ebe6d9; border: 0.5px solid #8a7f6a; border-left: 3px solid #8a1a1a; padding: 0.85rem 1.1rem 0.85rem; margin: 0 0 0.55rem; cursor: pointer; transition: background 0.15s; }
+  .s3-card:hover { background: #e4dec8; }
+  .s3-card.nonvoting { border-left-color: #8a7f6a; background: #eeeadb; }
+  .s3-card.nonvoting:hover { background: #e7e2ce; }
+  .s3-card.civilian { border-left-color: #5a5448; background: #ebe6d9; }
+  .s3-card.civilian:hover { background: #e4dec8; }
+
+  .s3-card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6rem; margin-bottom: 0.15rem; flex-wrap: wrap; }
+  .s3-card-namerole { flex: 1 1 auto; min-width: 0; }
+  .s3-card-name { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: #1a1815; line-height: 1.2; display: inline; }
+  .s3-card-role-inline { font-family: var(--font-italic); font-style: italic; font-size: 13px; color: #5a5448; margin-left: 0.4rem; }
+  .s3-card-tags { display: flex; gap: 4px; flex-shrink: 0; align-items: center; }
+  .s3-tag { font-family: var(--font-sans); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; padding: 2px 6px; border: 0.5px solid; white-space: nowrap; }
+  .s3-tag.vote { color: #8a1a1a; border-color: #8a1a1a; }
+  .s3-tag.novote { color: #7a6f5c; border-color: #8a7f6a; }
+  .s3-tag.civ { color: #5a5448; border-color: #5a5448; }
+  .s3-tag.hawk { color: #8a1a1a; border-color: #8a1a1a; background: #f4e8e1; }
+  .s3-tag.dove { color: #3a5a3a; border-color: #3a5a3a; background: #e8ede0; }
+  .s3-tag.mod { color: #5a5448; border-color: #8a7f6a; }
+
+  .s3-hook { font-family: var(--font-serif); font-size: 14.5px; line-height: 1.5; color: #2a2419; margin: 0.2rem 0 0; }
+  .s3-tap { font-family: var(--font-sans); font-size: 9px; letter-spacing: 0.14em; color: #8a1a1a; text-transform: uppercase; margin-top: 0.4rem; display: inline-block; border-bottom: 0.5px dotted #8a1a1a; }
+  .s3-card.nonvoting .s3-tap, .s3-card.civilian .s3-tap { color: #7a6f5c; border-bottom-color: #8a7f6a; }
+
+  .s3-depth { display: none; margin: 0.7rem -0.2rem -0.15rem; padding: 0.9rem 1rem 0.2rem; border-top: 0.5px dotted #8a7f6a; }
+  .s3-depth.open { display: block; }
+  .s3-depth p { font-family: var(--font-serif); font-size: 14.5px; line-height: 1.62; margin: 0 0 0.7rem; color: #2a2419; }
+  .s3-depth p:last-of-type { margin-bottom: 0.5rem; }
+  .s3-depth em { font-style: italic; }
+  .s3-close { font-family: var(--font-sans); font-size: 9px; letter-spacing: 0.14em; color: #7a6f5c; text-transform: uppercase; cursor: pointer; display: inline-block; border-bottom: 0.5px dotted #7a6f5c; margin-top: 0.2rem; }
+  .s3-close:hover { color: #1a1815; }
+
+  .s3-pullquote { margin: 2rem 0; padding: 1.25rem 1.5rem 1.25rem 2rem; border-left: 3px solid #8a1a1a; font-family: var(--font-italic); font-style: italic; font-size: 19px; line-height: 1.4; color: #3a3428; }
+  .s3-pullquote .attrib { font-family: var(--font-sans); font-style: normal; font-size: 11px; letter-spacing: 0.12em; color: #7a6f5c; text-transform: uppercase; margin-top: 0.8rem; }
+  .s3-coda { font-size: 17px; line-height: 1.72; margin: 1.5rem 0 0; color: #1a1815; }
+</style>
+</head>
+<body>
+<div class="page">
+<div class="s3-root">
+
+  <div class="s3-kicker">Scenario One · The Volcker Shock · Chapter Three</div>
+  <div class="s3-rule"></div>
+
+  <h1 class="s3-title">The cast</h1>
+  <div class="s3-deck">Nineteen at the table. A president who needs help. A country running out of patience.</div>
+
+  <div class="s3-conventions">Tap any card to open it. Voting tags mark who carries a vote at the October 6, 1979 meeting. Hawk and dove tags mark where each Fed member sits on the tightening question.</div>
+
+  <div class="s3-body">
+
+    <p class="intro first">Every monetary-policy decision in the United States of America runs through a room of nineteen people and a memo from the staff. Seven are the Board of Governors, sitting in Washington. The other twelve are the presidents of the regional Federal Reserve Banks. They have different bosses, different constituencies, different instincts. Below are the people in the room — and a few more, waiting outside it.</p>
+
+    <div class="s3-section-hdr">The Board of Governors · Washington</div>
+    <div class="s3-section-rule"></div>
+    <div class="s3-section-note">Seven seats, all with a vote at every meeting.</div>
+
+    <div class="s3-card" onclick="document.getElementById('d-volcker').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Paul A. Volcker</span><span class="s3-card-role-inline">Chairman · age 52</span></div>
+        <div class="s3-card-tags"><span class="s3-tag vote">Voting · Chair</span></div>
+      </div>
+      <p class="s3-hook">Six foot seven, a cheap cigar, and no theoretical allegiance. You.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-volcker" class="s3-depth">
+        <p>Princeton, Harvard, the London School of Economics. Treasury under-secretary under Nixon; the man in the room at Camp David in August 1971 when the gold window closed. President of the New York Fed from 1975 until two months ago. Carter nominated him in July on the advice of his Wall Street donors and against the advice of his political staff, who warned that Volcker was too hawkish to re-elect. Volcker told the President during the interview, in plain language, that he believed the Fed would have to tighten more than Miller had been willing to tighten. Carter nominated him anyway.</p>
+        <p>He lives alone in a small apartment in Washington. His wife Barbara stayed behind in New York with their teenage son because she has rheumatoid arthritis, their son has diabetes, and the salary cut from NY Fed president to Fed Chairman meant they could not afford two households on one income unless she kept her bookkeeping job. He takes the shuttle to New York on weekends. He eats cheaply. His suits fit badly.</p>
+        <p>He is not a theorist. He reads monetarist literature without converting to it. His discipline is practical: he has spent twenty years in Treasury and Fed positions watching politicians ask central bankers to paper over fiscal problems, and he has decided it will stop. He does not yet know how far he is willing to go. Neither does anyone else.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-volcker').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card" onclick="document.getElementById('d-schultz').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Frederick H. Schultz</span><span class="s3-card-role-inline">Vice Chairman · age 50</span></div>
+        <div class="s3-card-tags"><span class="s3-tag vote">Voting · Vice</span><span class="s3-tag mod">Moderate</span></div>
+      </div>
+      <p class="s3-hook">A Florida politician with no training in monetary economics and a politician’s ear for a room.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-schultz" class="s3-depth">
+        <p>Jacksonville businessman, former Florida state legislator, Democrat. Confirmed in July 1979, eleven days before Volcker. Carter appointed him as a political counterweight — someone who understood elected officials and could speak plainly to the White House. Schultz has no formal training in monetary economics and has said so in public. What he has instead is a politician’s instinct for reading a room, and he spent his first month at the Board concluding that the Fed was behind the curve. He will back Volcker on the Saturday Night Special without hesitation and will still be backing him two years from now when the farmers arrive on tractors.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-schultz').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card" onclick="document.getElementById('d-wallich').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Henry C. Wallich</span><span class="s3-card-role-inline">Governor · age 65</span></div>
+        <div class="s3-card-tags"><span class="s3-tag vote">Voting</span><span class="s3-tag hawk">Hawk</span></div>
+      </div>
+      <p class="s3-hook">Born in Berlin in 1914. Lived through Weimar. Has cast more FOMC dissents than any governor in Fed history.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-wallich" class="s3-depth">
+        <p>His father was a prosperous Berlin banker. In 1923, when Henry was nine, the Weimar hyperinflation reduced the family’s holdings to scrap paper in the space of a few months. He watched his father work out what was left on a kitchen table. The Wallichs left Germany in 1933 after the Nazi seizure of power, making their way to Argentina and then to the United States. Henry finished his education at Oberlin and took a doctorate in economics at Harvard.</p>
+        <p>He taught at Yale for twenty years, wrote a regular column for Newsweek alongside Milton Friedman and Paul Samuelson, and in 1974 was appointed to the Fed by Richard Nixon. By 1979 he has cast more dissenting votes on the FOMC than any governor in the committee’s history, almost all of them against policy he considered insufficiently hawkish. He argues his positions quietly, in a slight German accent that has never worn off, and he does not raise his voice. He does not have to. Everyone at the table knows what he remembers.</p>
+        <p>For Wallich, inflation is not an economic variable. It is a thing that destroys the savings of middle-class families and puts demagogues in office. He has been waiting five years for a chairman who would fight it. He thinks Volcker may be the one.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-wallich').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card" onclick="document.getElementById('d-coldwell').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Philip E. Coldwell</span><span class="s3-card-role-inline">Governor · age 57</span></div>
+        <div class="s3-card-tags"><span class="s3-tag vote">Voting</span><span class="s3-tag hawk">Hawk</span></div>
+      </div>
+      <p class="s3-hook">Texas banker, Ford appointee, term-limited out in early 1980. The Saturday Night Special may be his last vote that matters.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-coldwell" class="s3-depth">
+        <p>Former president of the Dallas Fed, appointed to the Board by Ford in 1974. A dry-land economist by training — his doctoral work was on agricultural banking in the Southwest. On the hawk–dove spectrum he sits just to Wallich’s right and without Wallich’s European anxieties: Coldwell is against inflation because it is bad banking. He is term-limited and will leave the Board in early 1980, which means the Saturday Night Special may be his last vote of consequence. He wants to cast it.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-coldwell').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card" onclick="document.getElementById('d-partee').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">J. Charles Partee</span><span class="s3-card-role-inline">Governor · age 52</span></div>
+        <div class="s3-card-tags"><span class="s3-tag vote">Voting</span><span class="s3-tag dove">Dove-lean</span></div>
+      </div>
+      <p class="s3-hook">The staff economist who became a governor. Will need to be convinced, meeting by meeting.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-partee" class="s3-depth">
+        <p>A career Fed economist, director of research at the Board for most of the 1970s before his appointment as governor in 1976. Partee knows the models. He worries about unemployment more than Wallich does and about inflation more than Teeters does. In September he dissented against raising the discount rate because he thought the existing tightening had not yet worked through. He is not a dove so much as a skeptic about moving faster than the data justify.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-partee').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card" onclick="document.getElementById('d-teeters').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Nancy H. Teeters</span><span class="s3-card-role-inline">Governor · age 48</span></div>
+        <div class="s3-card-tags"><span class="s3-tag vote">Voting</span><span class="s3-tag dove">Dove</span></div>
+      </div>
+      <p class="s3-hook">The first woman ever appointed to the Board of Governors. Will dissent against tightening more than anyone.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-teeters" class="s3-depth">
+        <p>Carter put her on the Fed in September 1978 after a career as a Congressional Budget Office economist and a Brookings fellow. She knows the Hill, knows the Humphrey-Hawkins Full Employment Act, and knows exactly whom the unemployment line is going to be filled with if Volcker gets his way. She is the most consistent dove on the committee and will dissent against tightening more often than any other governor in this scenario. She does it without apology and without melodrama. When a man across the table once told her that Henry Wallich had been through hyperinflation, she said she understood, but that she had been through the 1930s. She was four years old when the WPA rolled through her Indiana hometown.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-teeters').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card" onclick="document.getElementById('d-rice').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Emmett J. Rice</span><span class="s3-card-role-inline">Governor · age 60</span></div>
+        <div class="s3-card-tags"><span class="s3-tag vote">Voting</span><span class="s3-tag dove">Dove-lean</span></div>
+      </div>
+      <p class="s3-hook">Tuskegee Airman, Berkeley PhD, confirmed four months ago. Part of a loose dovish bloc of three.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-rice" class="s3-depth">
+        <p>Born in South Carolina in 1919, educated at City College of New York, drafted in the Second World War as a member of the Tuskegee Airmen, then a Fulbright fellow at the Reserve Bank of India and a Berkeley PhD. Later an advisor at the Treasury and an executive at the National Bank of Washington. He is measured, careful, and firmly on the dove side of the committee. Partee and Rice and Teeters form a loose bloc of three. When the bloc dissents, it is usually together.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-rice').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-section-hdr">The Reserve Bank presidents · voting</div>
+    <div class="s3-section-rule"></div>
+    <div class="s3-section-note">Four regional presidents hold rotating votes through 1979. The New York seat is vacant — and will stay that way until April 1980.</div>
+
+    <div class="s3-card" onclick="document.getElementById('d-ny').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">[vacant]</span><span class="s3-card-role-inline">New York Fed · permanent voter</span></div>
+        <div class="s3-card-tags"><span class="s3-tag vote">Voting · NY</span></div>
+      </div>
+      <p class="s3-hook">An empty chair at the biggest Reserve Bank in the system. Volcker wanted the bench clear.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-ny" class="s3-depth">
+        <p>Volcker held this seat himself until August, when he moved to Washington. The Board of Directors of the New York Fed will not confirm Anthony Solomon until the following April. In the meantime, Thomas Timlen — the Bank’s First Vice President and career administrator — attends meetings as the permanent alternate without a vote. The largest Reserve Bank in the system, the one closest to the markets, has no vote at the most consequential FOMC meeting of the decade. This is not quite an accident. Volcker wanted the bench clear.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-ny').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card" onclick="document.getElementById('d-black').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Robert P. Black</span><span class="s3-card-role-inline">Richmond</span></div>
+        <div class="s3-card-tags"><span class="s3-tag vote">Voting</span><span class="s3-tag hawk">Hawk</span></div>
+      </div>
+      <p class="s3-hook">A Friedman-tradition monetarist who has been arguing for tighter money all decade.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-black" class="s3-depth">
+        <p>Doctorate from Virginia, president of the Richmond Fed since 1973. Black has been arguing for tighter money and clearer monetary targets all decade. He is enthusiastic about the reserves-targeting framework Volcker is about to propose — it sounds like monetarism to him, even though Volcker is not quite a monetarist. He will vote yes on the Saturday Night Special with both hands.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-black').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card" onclick="document.getElementById('d-mayo').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Robert P. Mayo</span><span class="s3-card-role-inline">Chicago</span></div>
+        <div class="s3-card-tags"><span class="s3-tag vote">Voting</span><span class="s3-tag hawk">Hawk</span></div>
+      </div>
+      <p class="s3-hook">Former Nixon OMB director. Will get the first phone calls when tightening bites the industrial Midwest.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-mayo" class="s3-depth">
+        <p>Former director of the Nixon Office of Management and Budget, president of the Chicago Fed since 1970. Mayo is a fiscal conservative by temperament and has been uneasy about inflation since the early 1970s. He is not dramatic about it. He will support tightening without making speeches. Chicago’s district covers the industrial Midwest, which means that when tightening bites, his bank presidents and directors will be the first to tell him about the pain. He will still vote with Volcker.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-mayo').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card" onclick="document.getElementById('d-kimbrel').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Monroe Kimbrel</span><span class="s3-card-role-inline">Atlanta</span></div>
+        <div class="s3-card-tags"><span class="s3-tag vote">Voting</span><span class="s3-tag mod">Pragmatist</span></div>
+      </div>
+      <p class="s3-hook">A Georgia commercial banker. The savings-and-loan damage has already arrived in his district.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-kimbrel" class="s3-depth">
+        <p>Georgia-born commercial banker who came up through the Southeastern banking trade associations and was made president of the Atlanta Fed in 1971. Pragmatic, regional, more interested in bank supervision than in theoretical monetary policy. He will back Volcker because the alternative — continued double-digit inflation — is already visibly damaging the savings and loan institutions in his district. The pain has arrived at his doorstep before the cure.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-kimbrel').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card" onclick="document.getElementById('d-willes').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Mark H. Willes</span><span class="s3-card-role-inline">Minneapolis · age 38</span></div>
+        <div class="s3-card-tags"><span class="s3-tag vote">Voting</span><span class="s3-tag hawk">Hawk</span></div>
+      </div>
+      <p class="s3-hook">The youngest Reserve Bank president in the system. An unabashed monetarist who wants Volcker to go further.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-willes" class="s3-depth">
+        <p>Appointed at thirty-six, fresh from the University of Pennsylvania’s Wharton School, an unabashed monetarist who believes the Fed should target monetary aggregates and accept whatever volatility in short rates results. He has been arguing this position in public for two years. The new operating framework Volcker will propose on October 6 is, from Willes’s standpoint, an overdue capitulation to the right idea. He will vote yes eagerly and then argue all meeting for going further.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-willes').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-section-hdr">The Reserve Bank presidents · non-voting</div>
+    <div class="s3-section-rule"></div>
+    <div class="s3-section-note">Seven regional presidents attend, participate, and cannot vote. Four of them rotate into voting seats at the first meeting of 1980.</div>
+
+    <div class="s3-card nonvoting" onclick="document.getElementById('d-morris').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Frank E. Morris</span><span class="s3-card-role-inline">Boston</span></div>
+        <div class="s3-card-tags"><span class="s3-tag novote">Non-voting</span><span class="s3-tag mod">Moderate</span></div>
+      </div>
+      <p class="s3-hook">Eleven years at the Boston Fed. Has been worrying aloud about recession risk since summer.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-morris" class="s3-depth">
+        <p>President of the Boston Fed since 1968 — one of the longest-serving Reserve Bank presidents at the table. Economist, careful speaker, hawk on inflation but dove on the pace. Morris has been worrying aloud about recession risk since the summer. He will not be a voter until 1980, and by then the first recession will already be underway.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-morris').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card nonvoting" onclick="document.getElementById('d-eastburn').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">David P. Eastburn</span><span class="s3-card-role-inline">Philadelphia</span></div>
+        <div class="s3-card-tags"><span class="s3-tag novote">Non-voting</span><span class="s3-tag dove">Dove-lean</span></div>
+      </div>
+      <p class="s3-hook">A thoughtful moderate approaching retirement. October is one of his last major meetings.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-eastburn" class="s3-depth">
+        <p>President of the Philadelphia Fed since 1970, a thoughtful moderate with dovish leanings and a good ear for what staff economists are actually saying beneath their hedges. Eastburn will retire in early 1980, making October 1979 one of his last major FOMC meetings. He has not been a voter in 1979 and will not become one. What he says in the discussion still matters, because Volcker is counting heads as well as votes.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-eastburn').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card nonvoting" onclick="document.getElementById('d-winn').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Willis J. Winn</span><span class="s3-card-role-inline">Cleveland</span></div>
+        <div class="s3-card-tags"><span class="s3-tag novote">Non-voting</span><span class="s3-tag mod">Moderate</span></div>
+      </div>
+      <p class="s3-hook">Former dean of Wharton who came to central banking late.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-winn" class="s3-depth">
+        <p>Former dean of the Wharton School, president of the Cleveland Fed since 1971. An academic economist by training who came to central banking late. He rotates into a voting seat in 1980.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-winn').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card nonvoting" onclick="document.getElementById('d-roos').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Lawrence K. Roos</span><span class="s3-card-role-inline">St. Louis</span></div>
+        <div class="s3-card-tags"><span class="s3-tag novote">Non-voting</span><span class="s3-tag hawk">Hawk</span></div>
+      </div>
+      <p class="s3-hook">Inheritor of St. Louis’s monetarist tradition. Will argue for reserves targeting all year.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-roos" class="s3-depth">
+        <p>The St. Louis Fed has been the intellectual home of American monetarism since the 1960s under its research department, and Roos — a former county supervisor and Republican politician from Missouri — inherited that tradition when he was made president in 1976. He will be one of the most consistent voices in the committee for targeting reserves over rates. He is not a voter in 1979 but rotates into a voting seat in 1980, just in time for the post-recession rebound debate.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-roos').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card nonvoting" onclick="document.getElementById('d-baughman').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Ernest T. Baughman</span><span class="s3-card-role-inline">Dallas</span></div>
+        <div class="s3-card-tags"><span class="s3-tag novote">Non-voting</span><span class="s3-tag hawk">Hawk</span></div>
+      </div>
+      <p class="s3-hook">A career Fed economist, plain-spoken, will back Volcker through the worst of it.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-baughman" class="s3-depth">
+        <p>A career Fed economist who moved up through the Chicago Fed’s research department before taking the Dallas presidency in 1975. Hawkish, plain-spoken, and not inclined to theatrical disagreements. He will rotate into a voting seat in 1980 and back Volcker reliably through the worst of the recession.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-baughman').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card nonvoting" onclick="document.getElementById('d-guffey').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">J. Roger Guffey</span><span class="s3-card-role-inline">Kansas City</span></div>
+        <div class="s3-card-tags"><span class="s3-tag novote">Non-voting</span><span class="s3-tag mod">Moderate</span></div>
+      </div>
+      <p class="s3-hook">When the tractors reach the Eccles Building in 1981, they will be coming from his district.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-guffey" class="s3-depth">
+        <p>A Fed lawyer turned Reserve Bank president in 1976. His district includes the farm belt, which will become the most politically dangerous part of the country for the Volcker Fed within eighteen months. When the tractors arrive at the Eccles Building in 1981, they will be coming from Guffey’s district. He will still vote with Volcker when his rotation arrives.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-guffey').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card nonvoting" onclick="document.getElementById('d-balles').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">John J. Balles</span><span class="s3-card-role-inline">San Francisco</span></div>
+        <div class="s3-card-tags"><span class="s3-tag novote">Non-voting</span><span class="s3-tag hawk">Hawk</span></div>
+      </div>
+      <p class="s3-hook">The largest Reserve Bank by geography. A long-time advocate of monetary discipline.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-balles" class="s3-depth">
+        <p>Economist, former Cleveland Fed researcher, president of the San Francisco Fed since 1972. The largest Reserve Bank by geography, covering nine Western states and a quarter of the country’s GDP. Balles is a hawk and a long-time advocate of monetary discipline. He is not a voter in 1979.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-balles').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-pullquote">
+      “Nothing could get Henry to admit anything. He had lived through the hyperinflation in Germany. For Henry, you could never get inflation low enough.”
+      <div class="attrib">— Nancy Teeters on Henry Wallich, oral history, 2008</div>
+    </div>
+
+    <div class="s3-section-hdr">The White House</div>
+    <div class="s3-section-rule"></div>
+
+    <div class="s3-card civilian" onclick="document.getElementById('d-carter').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Jimmy Carter</span><span class="s3-card-role-inline">39th President · age 55</span></div>
+        <div class="s3-card-tags"><span class="s3-tag civ">President</span></div>
+      </div>
+      <p class="s3-hook">Nineteen percent approval. Appointed Volcker against his political staff’s warnings. May soon wish he hadn’t.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-carter" class="s3-depth">
+        <p>Peanut farmer, nuclear engineer, former governor of Georgia, born-again Baptist. Elected in 1976 on a promise of restoring honesty to the White House after Watergate. In July 1979 he gave a televised address his staff called <em>A Crisis of Confidence</em> and then fired his cabinet, which collapsed the speech’s small bounce overnight. By September his Gallup approval was nineteen percent. He appointed Volcker in the same month against the warnings of his political advisors, who told him a Volcker Fed would tighten into the election year and cost him a second term. Carter said he wanted the best man for the job. He has not asked Volcker to soften the tightening. He may soon wish he had.</p>
+        <p>Carter faces a primary challenge from the left. The Iranian hostage crisis will begin in two weeks. The Soviets will invade Afghanistan in December. In every direction, something is about to go worse.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-carter').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card civilian" onclick="document.getElementById('d-miller').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">G. William Miller</span><span class="s3-card-role-inline">Treasury Secretary · age 54</span></div>
+        <div class="s3-card-tags"><span class="s3-tag civ">Treasury</span></div>
+      </div>
+      <p class="s3-hook">Your predecessor at the Fed, now across the Federal Triangle. Wrong chair at both jobs.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-miller" class="s3-depth">
+        <p>A former Textron executive with no background in monetary economics. Carter appointed him Fed chairman in March 1978 as a business-friendly moderate. His seventeen months at the Fed were widely considered a failure: inflation accelerated, the dollar collapsed, and by the summer of 1979 the markets had lost confidence in the chairmanship itself. In July, Carter moved him to Treasury to get him out of the Fed without firing him, and nominated Volcker to replace him. Miller is now technically Volcker’s counterpart across the Federal Triangle. Their instincts on tightening are opposite. Miller’s instincts are about to matter less than they used to.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-miller').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card civilian" onclick="document.getElementById('d-schultze').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Charles L. Schultze</span><span class="s3-card-role-inline">CEA Chair · age 55</span></div>
+        <div class="s3-card-tags"><span class="s3-tag civ">White House</span></div>
+      </div>
+      <p class="s3-hook">Brookings Keynesian, skeptical of tightening, about to be ignored.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-schultze" class="s3-depth">
+        <p>A respected Brookings economist, Johnson-era budget director, and moderate Keynesian who has spent the Carter years trying to square the administration’s inflation rhetoric with its spending commitments. He is skeptical of the kind of tightening Volcker will propose and will say so in cabinet meetings. He will be ignored.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-schultze').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-section-hdr">The opposition</div>
+    <div class="s3-section-rule"></div>
+
+    <div class="s3-card civilian" onclick="document.getElementById('d-kennedy').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Edward M. Kennedy</span><span class="s3-card-role-inline">Senator · Massachusetts · age 47</span></div>
+        <div class="s3-card-tags"><span class="s3-tag civ">Primary challenger</span></div>
+      </div>
+      <p class="s3-hook">The last Kennedy brother in the Senate, gathering to challenge Carter from the left.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-kennedy" class="s3-depth">
+        <p>Lion of the Democratic left, and in late 1979 the gathering threat to Carter’s renomination. He will formally enter the primary on November 7 — one month after the Saturday Night Special — with a Roger Mudd interview that goes so badly it will follow him to the grave. But in October he is still ascendant, still the front-runner in the polls, and his policy platform includes wage and price controls, national health insurance, and explicit opposition to the kind of monetary tightening Volcker is about to unleash. A Kennedy Fed would look nothing like a Volcker Fed. Kennedy will not win the nomination. But the fear that he might is part of what keeps Carter from publicly disowning Volcker when the screaming starts.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-kennedy').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card civilian" onclick="document.getElementById('d-reagan').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Ronald Reagan</span><span class="s3-card-role-inline">Former Governor of California · age 68</span></div>
+        <div class="s3-card-tags"><span class="s3-tag civ">Republican challenger</span></div>
+      </div>
+      <p class="s3-hook">Will formally declare November 13. Instinctively hard-money. Will ultimately renominate you.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-reagan" class="s3-depth">
+        <p>Has been running for president in one form or another since 1968. Will formally declare his 1980 candidacy five weeks after the Saturday Night Special, on a platform of tax cuts, deregulation, and a stronger line against the Soviets. On monetary policy he is instinctively hard-money and will ultimately renominate Volcker in 1983, but in October 1979 his attacks on the Carter economy will sharpen every week. He is not yet the favorite. He will be by spring.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-reagan').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-section-hdr">Labor</div>
+    <div class="s3-section-rule"></div>
+
+    <div class="s3-card civilian" onclick="document.getElementById('d-fraser').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Douglas A. Fraser</span><span class="s3-card-role-inline">UAW President · age 63</span></div>
+        <div class="s3-card-tags"><span class="s3-tag civ">Labor</span></div>
+      </div>
+      <p class="s3-hook">Scottish-born son of a Detroit electrician. His members will be the first names on the unemployment line.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-fraser" class="s3-depth">
+        <p>Autoworker at Chrysler’s DeSoto plant from eighteen, climbed the union through the postwar era, elected UAW president in 1977. Fraser’s union has negotiated cost-of-living adjustments into every major auto contract in the country — the very mechanism that translates last year’s inflation into this year’s wages. When Volcker tightens, the first bodies to hit the unemployment line will be in Fraser’s membership: autoworkers, steelworkers, construction tradesmen, the industrial core of the New Deal coalition. Fraser will not stay silent. He has already resigned, in 1978, from a White House labor-management advisory group with a public letter accusing American business of conducting “a one-sided class war” against working people. He is not about to soften now.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-fraser').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-section-hdr">The country</div>
+    <div class="s3-section-rule"></div>
+
+    <div class="s3-card civilian" onclick="document.getElementById('d-farmers').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">The farmers</span><span class="s3-card-role-inline">Heartland</span></div>
+        <div class="s3-card-tags"><span class="s3-tag civ">Debt-financed</span></div>
+      </div>
+      <p class="s3-hook">Leveraged through the 1970s on rising land values. At twenty percent, the interest payments become fatal.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-farmers" class="s3-depth">
+        <p>American agriculture spent the 1970s on a debt-fueled expansion. Land prices rose. Export demand looked endless. Farmers borrowed against land to buy more land and against equipment to buy more equipment. When short rates move from eleven to twenty and stay there, the interest payments on that debt become immediately fatal. In early 1979 the American Agriculture Movement — an independent farm group founded in Colorado two years earlier — had already driven a tractorcade to Washington to protest parity prices. In February 1979 they were back. In early 1981, during the worst of the Volcker tightening, they will come again, circling the Eccles Building itself. You will see them from the seventh-floor window of your office. You will not like what you see.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-farmers').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card civilian" onclick="document.getElementById('d-main').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Home-builders and car dealers</span><span class="s3-card-role-inline">Main Street</span></div>
+        <div class="s3-card-tags"><span class="s3-tag civ">Rate-sensitive</span></div>
+      </div>
+      <p class="s3-hook">The canaries. They will mail you two-by-fours and cardboard coffins full of unsold car keys.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-main" class="s3-depth">
+        <p>A mortgage rate of twelve percent makes a house unaffordable. A mortgage rate of seventeen makes a house unsellable. Residential construction will contract violently when the rate shock lands, and home-builders across the country will mail two-by-fours to the Eccles Building with their districts painted on the side. Car dealers, whose customers finance at the same rates, will send the keys of unsold cars in cardboard coffins. The letters from ordinary people — savers who had been trying to buy a first house, retirees whose municipal bonds were suddenly worth half — will pile up in the mailroom so thick that the staff will begin a separate log for them.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-main').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <div class="s3-card civilian" onclick="document.getElementById('d-street').classList.toggle('open');">
+      <div class="s3-card-head">
+        <div class="s3-card-namerole"><span class="s3-card-name">Wall Street</span><span class="s3-card-role-inline">NYC</span></div>
+        <div class="s3-card-tags"><span class="s3-tag civ">Bond traders · gold bugs</span></div>
+      </div>
+      <p class="s3-hook">A bond market in crisis and a gold market in mania. They do not yet believe any American central banker will hold the line.</p>
+      <span class="s3-tap">Open ›</span>
+      <div id="d-street" class="s3-depth">
+        <p>In October 1979 Wall Street is a bond market in crisis and a gold market in mania. The ten-year Treasury yields over ten percent and no one believes the yield is high enough to compensate for the inflation risk. Gold has doubled in a year and is approaching $400 an ounce with dealers telling reporters that four hundred was unthinkable a month ago. The men in shirtsleeves at Salomon Brothers and Merrill Lynch have spent the decade watching the Fed accommodate one political pressure after another. They do not yet believe any American central banker will hold the line. On the morning of October 7 they will begin to find out.</p>
+        <span class="s3-close" onclick="event.stopPropagation(); document.getElementById('d-street').classList.toggle('open');">Close ✕</span>
+      </div>
+    </div>
+
+    <p class="s3-coda">This is who is in the room, and who is at the gate. You are about to walk into a meeting with twelve votes in it, and you need seven of them. You probably have them. Probably.</p>
+
+  </div>
+</div>
+</div>
+</body>
+</html>
