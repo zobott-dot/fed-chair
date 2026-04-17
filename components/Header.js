@@ -22,7 +22,7 @@ window.FedChair.Components.Header = function({
   const CalendarButton = window.FedChair.Components.CalendarButton;
   const IntroButton = window.FedChair.Components.IntroButton;
   const [showConfirm, setShowConfirm] = React.useState(false);
-  const views = ['dashboard', 'briefing', 'decision', ...(showReaction ? ['aftermath'] : [])];
+  const views = ['dashboard', 'decision', ...(showReaction ? ['aftermath'] : [])];
 
   const handleNewGameClick = () => {
     // If game is over or at meeting 1 with no decisions, no need to confirm
@@ -121,8 +121,8 @@ window.FedChair.Components.Header = function({
             🔄 NEW
           </button>
 
-          {/* Scenario Intro Briefing (temporarily visible in all modes for testing) */}
-          {onOpenIntro && (
+          {/* Scenario Intro Briefing (only in scenario mode) */}
+          {gameMode === 'scenario' && onOpenIntro && (
             <IntroButton onClick={onOpenIntro} />
           )}
 
@@ -248,7 +248,7 @@ window.FedChair.Components.Header = function({
               minHeight: 'auto'
             }}
           >
-            {view === 'dashboard' ? '📊 DATA' : view === 'briefing' ? '📋 BRIEF' : view === 'decision' ? '⚡ DECIDE' : '📈 RESULT'}
+            {view === 'dashboard' ? '📊 DATA' : view === 'decision' ? '⚡ DECIDE' : '📈 RESULT'}
           </button>
         ))}
       </div>
